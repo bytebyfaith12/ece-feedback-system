@@ -4,16 +4,16 @@ import { feedbackStatuses, feedbackTypes, productionSites, sentiments } from "@/
 import type { FeedbackSentiment, FeedbackType, ProductionFeedbackInput, ProductionSite } from "@/types/feedback";
 
 export const MAX_ATTACHMENT_SIZE = 5 * 1024 * 1024;
-export const allowedAttachmentTypes = ["image/png", "image/jpeg", "image/webp", "image/gif", "application/pdf"];
+export const allowedAttachmentTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
 
 const emailSchema = z.string().trim().email("Enter a valid email address.").optional().or(z.literal(""));
 
 export function ratingToSentiment(rating: number): FeedbackSentiment {
-  if (rating === 5) return "Very Positive";
-  if (rating === 4) return "Positive";
-  if (rating === 3) return "Neutral";
-  if (rating === 2) return "Negative";
-  return "Very Negative";
+  if (rating === 5) return "very_positive";
+  if (rating === 4) return "positive";
+  if (rating === 3) return "neutral";
+  if (rating === 2) return "negative";
+  return "very_negative";
 }
 
 export function stripHtml(value: string) {
@@ -31,6 +31,7 @@ export const feedbackInputSchema = z
     account: z.string().trim().max(120).optional().or(z.literal("")),
     department: z.string().trim().max(120).optional().or(z.literal("")),
     serviceType: z.string().trim().max(120).optional().or(z.literal("")),
+    staffInvolved: z.string().trim().max(120).optional().or(z.literal("")),
     visitPurpose: z.string().trim().max(120).optional().or(z.literal("")),
     personVisited: z.string().trim().max(120).optional().or(z.literal("")),
     positionApplied: z.string().trim().max(120).optional().or(z.literal("")),
@@ -84,6 +85,7 @@ export function sanitizeFeedbackInput(input: ProductionFeedbackInput): Productio
     account: input.account ? stripHtml(input.account) : "",
     department: input.department ? stripHtml(input.department) : "",
     serviceType: input.serviceType ? stripHtml(input.serviceType) : "",
+    staffInvolved: input.staffInvolved ? stripHtml(input.staffInvolved) : "",
     visitPurpose: input.visitPurpose ? stripHtml(input.visitPurpose) : "",
     personVisited: input.personVisited ? stripHtml(input.personVisited) : "",
     positionApplied: input.positionApplied ? stripHtml(input.positionApplied) : "",

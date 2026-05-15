@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { AlertCircle, ArrowRight, Building2, CheckCircle2, FileUp, Loader2, Mail, Send, UserRound, X } from "lucide-react";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { StarRating } from "@/components/forms/StarRating";
@@ -32,6 +32,7 @@ function defaultInput(type: FeedbackType = "workplace"): ProductionFeedbackInput
     account: "",
     department: "",
     serviceType: "",
+    staffInvolved: "",
     visitPurpose: "",
     personVisited: "",
     positionApplied: "",
@@ -45,6 +46,12 @@ function defaultInput(type: FeedbackType = "workplace"): ProductionFeedbackInput
 
 function pickInitialType(value: string | null): FeedbackType {
   return feedbackTypes.includes(value as FeedbackType) ? (value as FeedbackType) : "workplace";
+}
+
+function typeFromPath(pathname: string) {
+  const parts = pathname.split("/").filter(Boolean);
+  const slug = parts[parts.length - 1];
+  return feedbackTypes.includes(slug as FeedbackType) ? (slug as FeedbackType) : null;
 }
 
 function fieldErrorMap(error: unknown): FieldErrors {
@@ -75,10 +82,11 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 
 export function ProductionFeedbackForm() {
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const reducedMotion = useReducedMotion();
   const submitProductionFeedback = useFeedbackStore((state) => state.submitProductionFeedback);
-  const [input, setInput] = useState<ProductionFeedbackInput>(() => defaultInput(pickInitialType(searchParams.get("type"))));
+  const [input, setInput] = useState<ProductionFeedbackInput>(() => defaultInput(typeFromPath(location.pathname) ?? pickInitialType(searchParams.get("type"))));
   const [attachment, setAttachment] = useState<File | null>(null);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -92,11 +100,11 @@ export function ProductionFeedbackForm() {
   const messageCount = input.message.length;
 
   useEffect(() => {
-    const nextType = pickInitialType(searchParams.get("type"));
+    const nextType = typeFromPath(location.pathname) ?? pickInitialType(searchParams.get("type"));
     queueMicrotask(() => {
       setInput((current) => (current.feedbackType === nextType ? current : { ...defaultInput(nextType), fullName: current.fullName, email: current.email, isAnonymous: current.isAnonymous, site: current.site }));
     });
-  }, [searchParams]);
+  }, [location.pathname, searchParams]);
 
   const update = <K extends keyof ProductionFeedbackInput>(key: K, value: ProductionFeedbackInput[K]) => {
     setErrors((current) => ({ ...current, [key]: undefined, form: undefined }));
@@ -113,6 +121,7 @@ export function ProductionFeedbackForm() {
       floor: feedbackType === "workplace" || feedbackType === "account" ? current.floor || siteFloors[0] : "",
       department: "",
       serviceType: "",
+      staffInvolved: "",
       visitPurpose: "",
       personVisited: "",
       positionApplied: "",
@@ -262,7 +271,16 @@ export function ProductionFeedbackForm() {
               </div>
             ) : null}
             {input.feedbackType === "workplace" ? <CustomSelect label="Department" value={input.department ?? ""} onChange={(value) => update("department", value)} options={departmentOptions} placeholder="Select department" /> : null}
-            {input.feedbackType === "service" ? <CustomSelect label="Service type" value={input.serviceType ?? ""} onChange={(value) => update("serviceType", value)} options={serviceTypeOptions} placeholder="Select service" /> : null}
+            {input.feedbackType === "service" ? (
+              <>
+                <CustomSelect label="Service type" value={input.serviceType ?? ""} onChange={(value) => update("serviceType", value)} options={serviceTypeOptions} placeholder="Select service" />
+                <div>
+                  <label htmlFor="staffInvolved" className="mb-2 block text-sm font-bold text-slate-200">Staff or team involved</label>
+                  <input id="staffInvolved" value={input.staffInvolved ?? ""} onChange={(event) => update("staffInvolved", event.target.value)} className={inputClass(Boolean(errors.staffInvolved))} placeholder="IT helpdesk, HR, payroll, security..." />
+                  <FieldError id="staffInvolved-error" message={errors.staffInvolved} />
+                </div>
+              </>
+            ) : null}
             {input.feedbackType === "visitor" ? (
               <>
                 <CustomSelect label="Visit purpose" value={input.visitPurpose ?? ""} onChange={(value) => update("visitPurpose", value)} options={visitPurposeOptions} placeholder="Select purpose" />
@@ -334,7 +352,7 @@ export function ProductionFeedbackForm() {
                 <div className="flex gap-2">
                   <label className="inline-flex min-h-11 cursor-pointer items-center rounded-2xl border border-cyan-300/20 px-4 text-sm font-bold text-cyan-100 transition hover:bg-cyan-300/10">
                     Choose file
-                    <input id="attachment" type="file" accept="image/*,application/pdf" onChange={onAttachmentChange} className="sr-only" />
+                    <input id="attachment" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" onChange={onAttachmentChange} className="sr-only" />
                   </label>
                   {attachment ? (
                     <button type="button" onClick={() => setAttachment(null)} className="grid size-11 place-items-center rounded-2xl border border-slate-700 text-slate-300 hover:bg-slate-800" aria-label="Remove selected attachment">

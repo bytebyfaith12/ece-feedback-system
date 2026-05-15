@@ -328,7 +328,7 @@ export function LandingPage() {
               <Icon className="size-8 text-emerald-200" />
               <h3 className="mt-5 text-lg font-extrabold text-white">{title}</h3>
               <p className="mt-3 text-sm leading-6 text-slate-400">{description}</p>
-              <Link to={`/submit-feedback?type=${type}`} className="mt-auto inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 px-4 text-sm font-extrabold text-cyan-100 transition hover:bg-cyan-300 hover:text-[#031017]">
+              <Link to={`/feedback/${type}`} className="mt-auto inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 px-4 text-sm font-extrabold text-cyan-100 transition hover:bg-cyan-300 hover:text-[#031017]">
                 Start form <ArrowRight className="size-4" />
               </Link>
             </motion.article>
@@ -366,11 +366,11 @@ export function LandingPage() {
               const open = openFaq === id;
               return (
                 <div key={id} className="rounded-3xl border border-cyan-300/15 bg-white/[0.04]">
-                  <button onClick={() => setOpenFaq(open ? "" : id)} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-extrabold text-white">
+                  <button onClick={() => setOpenFaq(open ? "" : id)} aria-expanded={open} aria-controls={`faq-${id}`} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-extrabold text-white">
                     {question}
                     <ChevronDown className={`size-4 shrink-0 text-cyan-100 transition ${open ? "rotate-180" : ""}`} />
                   </button>
-                  {open ? <p className="border-t border-cyan-300/10 px-5 pb-5 pt-4 text-sm leading-6 text-slate-400">{answer}</p> : null}
+                  {open ? <p id={`faq-${id}`} className="border-t border-cyan-300/10 px-5 pb-5 pt-4 text-sm leading-6 text-slate-400">{answer}</p> : null}
                 </div>
               );
             })}

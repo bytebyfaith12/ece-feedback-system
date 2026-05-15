@@ -58,11 +58,11 @@ function ProtectedRoute({ adminOnly = false }: { adminOnly?: boolean }) {
   const location = useLocation();
 
   if (!authenticated) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+    return <Navigate to={adminOnly ? "/admin/login" : "/login"} replace state={{ from: location.pathname }} />;
   }
 
   if (adminOnly && user?.role !== "Admin") {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+    return <Navigate to="/admin/login" replace state={{ from: location.pathname }} />;
   }
 
   return <Outlet />;
@@ -100,12 +100,18 @@ export function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/admin/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/kiosk/:locationId" element={<KioskPage />} />
         <Route path="/qr/:locationId" element={<QRFeedbackPage />} />
         <Route path="/qr-feedback" element={<QRGridPage />} />
         <Route path="/submit-feedback" element={<WebFeedbackPage />} />
         <Route path="/feedback/new" element={<WebFeedbackPage />} />
+        <Route path="/feedback/workplace" element={<WebFeedbackPage />} />
+        <Route path="/feedback/service" element={<WebFeedbackPage />} />
+        <Route path="/feedback/visitor" element={<WebFeedbackPage />} />
+        <Route path="/feedback/applicant" element={<WebFeedbackPage />} />
+        <Route path="/feedback/account" element={<WebFeedbackPage />} />
         <Route path="/thank-you" element={<ThankYouPage />} />
 
         <Route element={<ProtectedRoute adminOnly />}>

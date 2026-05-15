@@ -1,7 +1,7 @@
 import { CheckCircle2, Home, RotateCcw } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import type { ProductionFeedbackRecord } from "@/types/feedback";
-import { feedbackTypeLabels } from "@/types/feedback";
+import { feedbackStatusLabels, feedbackTypeLabels, sentimentLabels } from "@/types/feedback";
 
 export function ThankYouPage() {
   const location = useLocation();
@@ -17,9 +17,9 @@ export function ThankYouPage() {
           <div className="mt-6 grid gap-3 rounded-3xl border border-cyan-300/12 bg-slate-950/40 p-4 text-left sm:grid-cols-2">
             <Summary label="Submission ID" value={record.submissionId} />
             <Summary label="Category" value={feedbackTypeLabels[record.feedbackType]} />
-            <Summary label="Rating" value={`${record.rating}/5 - ${record.sentiment}`} />
+            <Summary label="Rating" value={`${record.rating}/5 - ${sentimentLabels[record.sentiment]}`} />
             <Summary label="Site" value={record.site} />
-            <Summary label="Status" value={record.status} />
+            <Summary label="Status" value={feedbackStatusLabels[record.status]} />
             <Summary label="Submitted" value={new Date(record.createdAt).toLocaleString()} />
           </div>
         ) : (

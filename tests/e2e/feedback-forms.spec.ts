@@ -11,7 +11,7 @@ const cases = [
 test.describe("feedback form happy paths", () => {
   for (const item of cases) {
     test(`submits ${item.label}`, async ({ page }) => {
-      await page.goto(`/submit-feedback?type=${item.type}`);
+      await page.goto(`/feedback/${item.type}`);
       await expect(page.getByRole("heading", { name: /Tell Us What Happened/i })).toBeVisible();
       await page.getByLabel("Full name").fill("QA User");
       await page.getByLabel("Email optional").fill("qa@example.com");

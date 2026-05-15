@@ -8,12 +8,13 @@ const csvHeaders = [
   "Site",
   "Floor",
   "Account",
+  "Department",
   "Rating",
   "Sentiment",
-  "Category",
   "Message",
   "Status",
-  "Created At",
+  "Admin Notes",
+  "Submitted At",
 ];
 
 function escapeCsv(value: unknown) {
@@ -31,11 +32,12 @@ export function feedbackToCsv(feedback: FeedbackResponse[]) {
     item.siteName,
     item.floor,
     item.account ?? "",
+    item.assignedTeam ?? "",
     item.rating,
     item.sentiment ?? "",
-    item.category,
     item.message ?? item.comment ?? "",
     item.status ?? "New",
+    item.adminNotes ?? "",
     item.createdAt ?? item.submittedAt,
   ]);
 

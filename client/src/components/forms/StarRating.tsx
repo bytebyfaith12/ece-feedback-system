@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Star } from "lucide-react";
+import type { KeyboardEvent } from "react";
 
 export function StarRating({
   value,
@@ -11,9 +12,27 @@ export function StarRating({
   errorId?: string;
 }) {
   const reducedMotion = useReducedMotion();
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+      event.preventDefault();
+      onChange(Math.min(5, (value || 1) + 1));
+    }
+    if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
+      event.preventDefault();
+      onChange(Math.max(1, (value || 1) - 1));
+    }
+    if (event.key === "Home") {
+      event.preventDefault();
+      onChange(1);
+    }
+    if (event.key === "End") {
+      event.preventDefault();
+      onChange(5);
+    }
+  };
 
   return (
-    <div role="radiogroup" aria-label="Rate your experience" aria-describedby={errorId} className="flex flex-wrap gap-2">
+    <div role="radiogroup" aria-label="Rate your experience" aria-describedby={errorId} onKeyDown={handleKeyDown} className="flex flex-wrap gap-2">
       {[1, 2, 3, 4, 5].map((rating) => {
         const selected = rating <= value;
         return (

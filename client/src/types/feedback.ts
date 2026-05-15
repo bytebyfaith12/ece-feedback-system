@@ -9,11 +9,27 @@ export const feedbackTypeLabels: Record<FeedbackType, string> = {
   account: "Account Feedback",
 };
 
-export const sentiments = ["Very Negative", "Negative", "Neutral", "Positive", "Very Positive"] as const;
+export const sentiments = ["very_negative", "negative", "neutral", "positive", "very_positive"] as const;
 export type FeedbackSentiment = (typeof sentiments)[number];
 
-export const feedbackStatuses = ["New", "Reviewed", "In Progress", "Resolved", "Archived"] as const;
+export const feedbackStatuses = ["new", "reviewed", "in_progress", "resolved", "archived"] as const;
 export type ProductionFeedbackStatus = (typeof feedbackStatuses)[number];
+
+export const sentimentLabels: Record<FeedbackSentiment, string> = {
+  very_negative: "Very Negative",
+  negative: "Negative",
+  neutral: "Neutral",
+  positive: "Positive",
+  very_positive: "Very Positive",
+};
+
+export const feedbackStatusLabels: Record<ProductionFeedbackStatus, string> = {
+  new: "New",
+  reviewed: "Reviewed",
+  in_progress: "In Progress",
+  resolved: "Resolved",
+  archived: "Archived",
+};
 
 export const productionSites = ["Noel", "Macias", "Consuelo"] as const;
 export type ProductionSite = (typeof productionSites)[number];
@@ -28,6 +44,7 @@ export interface ProductionFeedbackInput {
   account?: string;
   department?: string;
   serviceType?: string;
+  staffInvolved?: string;
   visitPurpose?: string;
   personVisited?: string;
   positionApplied?: string;

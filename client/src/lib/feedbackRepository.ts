@@ -7,6 +7,8 @@ import { isSupabaseConfigured, requireSupabase } from "@/lib/supabaseClient";
 const LOCAL_FEEDBACK_KEY = "ece-echo-production-feedback-local-v1";
 const LOCAL_RATE_LIMIT_KEY = "ece-echo-feedback-rate-window-v1";
 const ATTACHMENT_BUCKET = "feedback-attachments";
+const FEEDBACK_TABLE = "feedback";
+const ATTACHMENTS_TABLE = "feedback_attachments";
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
 
@@ -22,6 +24,7 @@ type FeedbackRow = {
   account: string | null;
   department: string | null;
   service_type: string | null;
+  staff_involved: string | null;
   visit_purpose: string | null;
   person_visited: string | null;
   position_applied: string | null;
@@ -98,6 +101,7 @@ function rowToRecord(row: FeedbackRow): ProductionFeedbackRecord {
     account: row.account ?? "",
     department: row.department ?? "",
     serviceType: row.service_type ?? "",
+    staffInvolved: row.staff_involved ?? "",
     visitPurpose: row.visit_purpose ?? "",
     personVisited: row.person_visited ?? "",
     positionApplied: row.position_applied ?? "",
@@ -118,7 +122,7 @@ function rowToRecord(row: FeedbackRow): ProductionFeedbackRecord {
 }
 
 function recordToFeedbackResponse(record: ProductionFeedbackRecord): FeedbackResponse {
-  const locationName = record.account || record.department || record.serviceType || record.visitPurpose || record.site;
+  const locationName = record.account || record.department || record.staffInvolved || record.serviceType || record.visitPurpose || record.site;
   return {
     id: record.submissionId,
     submissionId: record.submissionId,
@@ -136,7 +140,7 @@ function recordToFeedbackResponse(record: ProductionFeedbackRecord): FeedbackRes
     rating: record.rating as FeedbackResponse["rating"],
     priority: record.rating <= 2 ? "High" : "Low",
     status: record.status,
-    assignedTeam: record.department || record.serviceType || record.category,
+    assignedTeam: record.department || record.staffInvolved || record.serviceType || record.category,
     source: "Web",
     comment: record.message,
     message: record.message,
@@ -192,7 +196,7 @@ export async function createProductionFeedback(input: ProductionFeedbackInput, a
     sentiment: ratingToSentiment(clean.rating),
     attachmentName: attachment?.name,
     attachmentType: attachment?.type,
-    status: "New",
+    status: "new",
     adminNotes: "",
     createdAt: now,
     updatedAt: now,
@@ -216,6 +220,7 @@ export async function createProductionFeedback(input: ProductionFeedbackInput, a
     account: next.account || null,
     department: next.department || null,
     service_type: next.serviceType || null,
+    staff_involved: next.staffInvolved || null,
     visit_purpose: next.visitPurpose || null,
     person_visited: next.personVisited || null,
     position_applied: next.positionApplied || null,
@@ -232,9 +237,19 @@ export async function createProductionFeedback(input: ProductionFeedbackInput, a
     admin_notes: "",
   };
 
-  const { data, error } = await requireSupabase().from("feedback_submissions").insert(row).select("*").single();
+  const { data, error } = await requireSupabase().from(FEEDBACK_TABLE).insert(row).select("*").single();
   if (error) throw new Error(error.message);
-  return rowToRecord(data as FeedbackRow);
+  const saved = rowToRecord(data as FeedbackRow);
+  if (attachmentUrl) {
+    await requireSupabase().from(ATTACHMENTS_TABLE).insert({
+      feedback_id: saved.id,
+      url: attachmentUrl,
+      file_name: next.attachmentName ?? "",
+      mime_type: next.attachmentType ?? "",
+      file_size: attachment?.size ?? 0,
+    });
+  }
+  return saved;
 }
 
 export async function listProductionFeedback(filters: FeedbackFilters = {}): Promise<ProductionFeedbackRecord[]> {
@@ -255,7 +270,7 @@ export async function listProductionFeedback(filters: FeedbackFilters = {}): Pro
     });
   }
 
-  let query = requireSupabase().from("feedback_submissions").select("*").order("created_at", { ascending: false });
+  let query = requireSupabase().from(FEEDBACK_TABLE).select("*").order("created_at", { ascending: false });
   if (filters.site) query = query.eq("site", filters.site);
   if (filters.floor) query = query.eq("floor", filters.floor);
   if (filters.account) query = query.eq("account", filters.account);
@@ -283,7 +298,7 @@ export async function updateProductionFeedbackStatus(id: string, status: Product
 
   const key = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id) ? "id" : "submission_id";
   const { data, error } = await requireSupabase()
-    .from("feedback_submissions")
+    .from(FEEDBACK_TABLE)
     .update({ status, admin_notes: adminNotes, updated_at: new Date().toISOString() })
     .eq(key, id)
     .select("*")

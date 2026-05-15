@@ -9,7 +9,7 @@ import { CustomSelect } from "@/components/ui/CustomSelect";
 import { downloadFeedbackCsv } from "@/lib/exportCsv";
 import { useFeedbackStore } from "@/store/useFeedbackStore";
 import type { FeedbackResponse } from "@/types/index";
-import { feedbackStatuses, feedbackTypeLabels, feedbackTypes, sentiments } from "@/types/feedback";
+import { feedbackStatusLabels, feedbackStatuses, feedbackTypeLabels, feedbackTypes, sentimentLabels, sentiments } from "@/types/feedback";
 import type { ProductionFeedbackStatus } from "@/types/feedback";
 
 const chartColors = ["#67e8f9", "#6ee7b7", "#a7f3d0", "#facc15", "#fb7185", "#c4b5fd"];
@@ -33,9 +33,9 @@ function formatDate(value?: string) {
 
 function sentimentBucket(item: FeedbackResponse) {
   if (item.sentiment) return item.sentiment;
-  if (item.rating >= 4) return "Positive";
-  if (item.rating === 3) return "Neutral";
-  return "Negative";
+  if (item.rating >= 4) return "positive";
+  if (item.rating === 3) return "neutral";
+  return "negative";
 }
 
 function trendByDay(rows: FeedbackResponse[]) {
@@ -152,8 +152,8 @@ export function ProductionAdminDashboard() {
             <CustomSelect value={site} onChange={setSite} options={["All", "Noel", "Macias", "Consuelo"]} />
             <CustomSelect value={type} onChange={setType} options={["All", ...feedbackTypes.map((item) => ({ value: item, label: feedbackTypeLabels[item] }))]} />
             <CustomSelect value={rating} onChange={setRating} options={["All", "5", "4", "3", "2", "1"]} />
-            <CustomSelect value={sentiment} onChange={setSentiment} options={["All", ...sentiments]} />
-            <CustomSelect value={status} onChange={setStatus} options={["All", ...feedbackStatuses]} />
+            <CustomSelect value={sentiment} onChange={setSentiment} options={["All", ...sentiments.map((item) => ({ value: item, label: sentimentLabels[item] }))]} />
+            <CustomSelect value={status} onChange={setStatus} options={["All", ...feedbackStatuses.map((item) => ({ value: item, label: feedbackStatusLabels[item] }))]} />
           </div>
         </section>
 
@@ -205,9 +205,9 @@ export function ProductionAdminDashboard() {
                         <td className="px-4 py-4">{item.siteName}</td>
                         <td className="px-4 py-4">{item.account || "None"}</td>
                         <td className="px-4 py-4">{item.rating}/5</td>
-                        <td className="px-4 py-4">{sentimentBucket(item)}</td>
+                        <td className="px-4 py-4">{sentimentLabels[sentimentBucket(item) as keyof typeof sentimentLabels] ?? sentimentBucket(item)}</td>
                         <td className="px-4 py-4 max-w-[220px]"><span className="block font-semibold text-white">{item.category}</span><span className="mt-1 line-clamp-2 block text-xs text-slate-500">{item.message ?? item.comment}</span></td>
-                        <td className="px-4 py-4 min-w-[180px]"><CustomSelect value={item.status ?? "New"} onChange={(value) => void setRowStatus(item, value)} options={feedbackStatuses} /></td>
+                        <td className="px-4 py-4 min-w-[180px]"><CustomSelect value={item.status ?? "new"} onChange={(value) => void setRowStatus(item, value)} options={feedbackStatuses.map((nextStatus) => ({ value: nextStatus, label: feedbackStatusLabels[nextStatus] }))} /></td>
                         <td className="px-4 py-4">{new Date(item.createdAt ?? item.submittedAt).toLocaleString()}</td>
                       </tr>
                     ))}

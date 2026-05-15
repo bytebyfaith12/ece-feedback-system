@@ -21,7 +21,7 @@ export interface FeedbackResponse {
   subcategory?: string;
   rating: SmileyRating;
   priority?: "Low" | "Medium" | "High" | "Critical";
-  status?: "New" | "Reviewed" | "Assigned" | "In Progress" | "On Hold" | "Escalated" | "Resolved" | "Closed" | "Declined" | "Archived";
+  status?: "New" | "Reviewed" | "Assigned" | "In Progress" | "On Hold" | "Escalated" | "Resolved" | "Closed" | "Declined" | "Archived" | "new" | "reviewed" | "in_progress" | "resolved" | "archived";
   assignedTeam?: string;
   source?: "Web" | "Kiosk" | "QR";
   followUpItems?: string[];

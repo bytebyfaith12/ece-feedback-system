@@ -23,11 +23,11 @@ const basePayload = {
 
 describe("feedback validation", () => {
   it("maps rating to sentiment", () => {
-    expect(ratingToSentiment(5)).toBe("Very Positive");
-    expect(ratingToSentiment(4)).toBe("Positive");
-    expect(ratingToSentiment(3)).toBe("Neutral");
-    expect(ratingToSentiment(2)).toBe("Negative");
-    expect(ratingToSentiment(1)).toBe("Very Negative");
+    expect(ratingToSentiment(5)).toBe("very_positive");
+    expect(ratingToSentiment(4)).toBe("positive");
+    expect(ratingToSentiment(3)).toBe("neutral");
+    expect(ratingToSentiment(2)).toBe("negative");
+    expect(ratingToSentiment(1)).toBe("very_negative");
   });
 
   it("accepts a valid workplace feedback payload", () => {
