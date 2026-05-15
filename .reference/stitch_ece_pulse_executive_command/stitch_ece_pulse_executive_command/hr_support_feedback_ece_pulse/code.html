@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ECE Pulse - HR Support</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#c6c6cd",
+                        "on-secondary-fixed": "#1a1b21",
+                        "primary": "#e0fdff",
+                        "outline": "#849495",
+                        "on-secondary-fixed-variant": "#45474c",
+                        "on-primary-fixed": "#002022",
+                        "surface-bright": "#333b3b",
+                        "tertiary-fixed-dim": "#e8c423",
+                        "surface-container": "#192122",
+                        "secondary-container": "#47494f",
+                        "surface-container-high": "#232b2c",
+                        "secondary-fixed": "#e2e2e9",
+                        "surface-container-lowest": "#081010",
+                        "on-primary-container": "#006a70",
+                        "on-tertiary-fixed-variant": "#554500",
+                        "surface-dim": "#0d1515",
+                        "inverse-on-surface": "#2a3232",
+                        "primary-fixed": "#6ff6ff",
+                        "on-tertiary-container": "#725e00",
+                        "surface-container-low": "#151d1e",
+                        "surface-tint": "#00dce6",
+                        "tertiary": "#fff6e4",
+                        "background": "#0d1515",
+                        "on-tertiary": "#3b2f00",
+                        "inverse-primary": "#00696f",
+                        "on-primary-fixed-variant": "#004f53",
+                        "on-tertiary-fixed": "#221b00",
+                        "inverse-surface": "#dce4e4",
+                        "error": "#ffb4ab",
+                        "on-surface": "#dce4e4",
+                        "on-background": "#dce4e4",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#ffe173",
+                        "on-primary": "#00373a",
+                        "surface-container-highest": "#2e3637",
+                        "surface-variant": "#2e3637",
+                        "on-secondary-container": "#b7b8bf",
+                        "outline-variant": "#3a494b",
+                        "tertiary-container": "#fed83a",
+                        "on-secondary": "#2e3036",
+                        "secondary-fixed-dim": "#c6c6cd",
+                        "surface": "#0d1515",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#00dce6",
+                        "primary-container": "#00f2fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "gutter": "20px",
+                        "container-padding": "24px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "widget-gap": "24px"
+                    },
+                    "fontFamily": {
+                        "display-kpi": ["metropolis", "sans-serif"],
+                        "display-kpi-mobile": ["metropolis", "sans-serif"],
+                        "body-lg": ["metropolis", "sans-serif"],
+                        "body-md": ["metropolis", "sans-serif"],
+                        "label-sm": ["JetBrains Mono", "monospace"],
+                        "headline-md": ["metropolis", "sans-serif"],
+                        "headline-lg": ["metropolis", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-kpi": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-kpi-mobile": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        @font-face {
+            font-family: 'metropolis';
+            src: url('https://fonts.cdnfonts.com/s/14352/Metropolis-Regular.woff') format('woff');
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: 'metropolis';
+            src: url('https://fonts.cdnfonts.com/s/14352/Metropolis-SemiBold.woff') format('woff');
+            font-weight: 600;
+        }
+        @font-face {
+            font-family: 'metropolis';
+            src: url('https://fonts.cdnfonts.com/s/14352/Metropolis-Bold.woff') format('woff');
+            font-weight: 700;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 8px rgba(0, 220, 230, 0.5);
+        }
+        
+        .gradient-bg {
+            background: radial-gradient(circle at top right, rgba(0, 220, 230, 0.1), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(0, 106, 112, 0.1), transparent 40%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 220, 230, 0.3); }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen gradient-bg font-body-md overflow-x-hidden">
+<!-- SideNavBar -->
+<nav class="h-screen w-64 fixed left-0 top-0 border-r border-white/10 bg-white/5 backdrop-blur-xl dark:bg-surface-container/30 flex flex-col z-50 overflow-y-auto backdrop-blur-xl border-r border-outline-variant/20 shadow-[0_0_15px_rgba(0,242,254,0.1)] hidden md:flex">
+<!-- Header -->
+<div class="p-6 border-b border-white/10">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center overflow-hidden">
+<img alt="ECE Executive Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of an executive in a modern, dark-themed corporate setting. The lighting is cinematic with subtle cyan undertones reflecting the high-tech, mission-critical environment of a command center." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADgKj6VzAjYqTUH_cFbcWAlSs4REVetAjX6JYiPnrHvo2gWqgddYekECXc9Z0gvMxp3WLh4ce-NU_jfAFUl8fCyp0WCu973vdRItKc9d9ppubnerM9UIlj3DrV4st-sZWFiaWbAQMLJ1UW93DIShjJzIagqwV2jdWhG3TBtRMrLITzBY9r23YesZnCFIPbK_rdlpqJov5sPbfO9kuG_eaDUMbnmi6gj8anC2QGnveTM359BcMEZlyIAIkWahLwtt-urECXfh5BnLU"/>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tighter text-surface-tint dark:text-primary-fixed drop-shadow-[0_0_8px_rgba(0,220,230,0.5)]">ECE Pulse</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Command Center</p>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-fixed py-2 rounded-lg text-label-sm font-label-sm font-bold tracking-wider hover:bg-primary-fixed transition-colors shadow-[0_0_10px_rgba(0,242,254,0.3)] flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                New Report
+            </button>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 py-4">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant/70 hover:text-on-surface transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors">dashboard</span>
+<span class="text-label-sm font-label-sm">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant/70 hover:text-on-surface transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors">query_stats</span>
+<span class="text-label-sm font-label-sm">Analytics</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 px-6 text-primary-fixed-dim font-bold bg-primary/10 border-r-4 border-surface-tint transition-all group translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="text-label-sm font-label-sm text-primary">HR Support</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant/70 hover:text-on-surface transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors">notifications_active</span>
+<span class="text-label-sm font-label-sm">Pulse Feed</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant/70 hover:text-on-surface transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors">description</span>
+<span class="text-label-sm font-label-sm">Reporting</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant/70 hover:text-on-surface transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors">warning</span>
+<span class="text-label-sm font-label-sm">Alerts</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant/70 hover:text-on-surface transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors">settings</span>
+<span class="text-label-sm font-label-sm">Settings</span>
+</a>
+</li>
+</ul>
+</div>
+<!-- Footer -->
+<div class="p-4 border-t border-white/10">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-4 py-2 px-6 text-on-surface-variant/70 hover:text-on-surface transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors text-sm">help</span>
+<span class="text-label-sm font-label-sm">Support</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-2 px-6 text-on-surface-variant/70 hover:text-error transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-error transition-colors text-sm">logout</span>
+<span class="text-label-sm font-label-sm">Log Out</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="md:ml-64 flex-1 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="w-full h-16 sticky top-0 z-40 bg-surface/80 backdrop-blur-md dark:bg-background/80 border-b border-outline-variant/20 flex justify-between items-center px-gutter">
+<div class="flex items-center gap-6">
+<!-- Mobile Menu Button (Hidden on Desktop) -->
+<button class="md:hidden text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="text-lg font-display-kpi text-surface-tint dark:text-primary-fixed hidden md:block glow-text">Command Center</h2>
+<!-- Search -->
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-high border-b border-outline-variant/50 border-t-0 border-l-0 border-r-0 focus:border-surface-tint focus:ring-0 text-label-sm font-label-sm text-on-surface pl-10 py-1.5 w-64 bg-transparent placeholder-on-surface-variant/50 transition-colors" placeholder="Search HR queries..." type="text"/>
+</div>
+</div>
+<!-- Global Nav Links -->
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Global View</a>
+<a class="text-label-sm font-label-sm text-surface-tint dark:text-primary-fixed border-b-2 border-surface-tint pb-1" href="#">HR Sector</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Real-time</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="bg-surface-container border border-surface-tint/30 text-surface-tint px-3 py-1 rounded-full text-label-sm font-label-sm flex items-center gap-2 hover:bg-surface-tint/10 transition-colors shadow-[0_0_10px_rgba(0,242,254,0.1)]">
+<span class="w-2 h-2 rounded-full bg-surface-tint animate-pulse"></span>
+                    Live Status
+                </button>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-sm">account_circle</span>
+</button>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 transition-colors relative">
+<span class="material-symbols-outlined text-sm">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border border-surface"></span>
+</button>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<main class="flex-1 p-container-padding">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+<div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface mb-1">HR Support Pulse</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Real-time employee sentiment &amp; interaction metrics</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 glass-card rounded-lg text-label-sm font-label-sm flex items-center gap-2 text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+                        Last 24 Hours
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="px-4 py-2 bg-primary-container/10 border border-surface-tint/50 text-surface-tint rounded-lg text-label-sm font-label-sm flex items-center gap-2 hover:bg-primary-container/20 transition-all shadow-[0_0_10px_rgba(0,242,254,0.15)]">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Export Log
+                    </button>
+</div>
+</div>
+<!-- Top Row KPIs -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-widget-gap mb-widget-gap">
+<!-- KPI 1 -->
+<div class="glass-card rounded-xl p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined" style="font-size: 64px;">timer</span>
+</div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Avg Response Time</h3>
+<span class="px-2 py-1 bg-surface-tint/10 text-surface-tint rounded text-[10px] font-label-sm font-bold border border-surface-tint/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">trending_down</span> -12%
+                        </span>
+</div>
+<div class="flex items-end gap-3">
+<div class="text-display-kpi font-display-kpi text-primary">14<span class="text-body-lg font-body-lg text-on-surface-variant ml-1">min</span></div>
+</div>
+<div class="mt-4 w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-surface-tint h-full w-[85%] rounded-full shadow-[0_0_8px_rgba(0,220,230,0.8)]"></div>
+</div>
+<p class="text-[10px] font-label-sm text-on-surface-variant/60 mt-2 text-right">Target: &lt; 15 min</p>
+</div>
+<!-- KPI 2 -->
+<div class="glass-card rounded-xl p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined" style="font-size: 64px;">handshake</span>
+</div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Concern Resolution Rate</h3>
+<span class="px-2 py-1 bg-surface-tint/10 text-surface-tint rounded text-[10px] font-label-sm font-bold border border-surface-tint/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> +3.4%
+                        </span>
+</div>
+<div class="flex items-end gap-3">
+<div class="text-display-kpi font-display-kpi text-primary">92<span class="text-body-lg font-body-lg text-on-surface-variant ml-1">%</span></div>
+</div>
+<div class="mt-4 w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden flex">
+<div class="bg-surface-tint h-full w-[92%] rounded-l-full shadow-[0_0_8px_rgba(0,220,230,0.8)]"></div>
+<div class="bg-error h-full w-[8%] rounded-r-full"></div>
+</div>
+<p class="text-[10px] font-label-sm text-on-surface-variant/60 mt-2 text-right flex items-center justify-end gap-2">
+<span class="w-2 h-2 rounded-full bg-surface-tint inline-block"></span> Resolved
+                        <span class="w-2 h-2 rounded-full bg-error inline-block ml-2"></span> Escalated
+                    </p>
+</div>
+<!-- KPI 3 -->
+<div class="glass-card rounded-xl p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined" style="font-size: 64px;">sentiment_satisfied</span>
+</div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Leave Processing Sat.</h3>
+<span class="px-2 py-1 bg-surface-container-high text-on-surface-variant rounded text-[10px] font-label-sm border border-outline-variant/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">horizontal_rule</span> 0%
+                        </span>
+</div>
+<div class="flex items-end gap-3">
+<div class="text-display-kpi font-display-kpi text-primary">4.8<span class="text-body-lg font-body-lg text-on-surface-variant ml-1">/5.0</span></div>
+</div>
+<!-- Minimal Sparkline -->
+<div class="mt-4 h-8 flex items-end gap-1">
+<div class="w-1/6 bg-surface-tint/40 h-[60%] rounded-t-sm"></div>
+<div class="w-1/6 bg-surface-tint/60 h-[75%] rounded-t-sm"></div>
+<div class="w-1/6 bg-surface-tint/50 h-[70%] rounded-t-sm"></div>
+<div class="w-1/6 bg-surface-tint/80 h-[90%] rounded-t-sm"></div>
+<div class="w-1/6 bg-surface-tint/90 h-[85%] rounded-t-sm"></div>
+<div class="w-1/6 bg-surface-tint h-[100%] rounded-t-sm shadow-[0_0_8px_rgba(0,220,230,0.5)]"></div>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout for Main Content -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-widget-gap">
+<!-- Col 1 & 2: Main Sentiment Trend -->
+<div class="lg:col-span-2 glass-card rounded-xl p-6 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface">Employee Relations Sentiment</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-1">Real-time NLP analysis of internal support tickets</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="flex items-center gap-1 text-[10px] font-label-sm text-on-surface-variant"><span class="w-2 h-2 rounded-full bg-surface-tint shadow-[0_0_5px_rgba(0,220,230,0.8)] inline-block"></span> Positive</span>
+<span class="flex items-center gap-1 text-[10px] font-label-sm text-on-surface-variant ml-2"><span class="w-2 h-2 rounded-full bg-error inline-block"></span> Negative</span>
+</div>
+</div>
+<div class="flex-1 relative min-h-[300px] border-b border-l border-outline-variant/20 pb-4 pl-4 flex items-end justify-between px-4">
+<!-- Y-axis labels -->
+<div class="absolute left-0 top-0 bottom-4 flex flex-col justify-between text-[10px] font-label-sm text-on-surface-variant/50 -ml-2 pb-4">
+<span>100</span>
+<span>75</span>
+<span>50</span>
+<span>25</span>
+<span>0</span>
+</div>
+<!-- Graph Area (Abstracted Bars/Lines) -->
+<div class="w-full h-full flex items-end justify-between relative">
+<!-- Background Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="w-full h-[1px] bg-outline-variant/10"></div>
+<div class="w-full h-[1px] bg-outline-variant/10"></div>
+<div class="w-full h-[1px] bg-outline-variant/10"></div>
+<div class="w-full h-[1px] bg-outline-variant/10"></div>
+<div class="w-full h-[1px] bg-outline-variant/10"></div>
+</div>
+<!-- Data Points -->
+<div class="relative w-8 h-[60%] flex flex-col justify-end group">
+<div class="w-full bg-error/80 h-[20%] rounded-t-sm mb-1 transition-all group-hover:h-[25%]"></div>
+<div class="w-full bg-surface-tint h-[80%] rounded-t-sm shadow-[0_0_8px_rgba(0,220,230,0.3)] transition-all group-hover:h-[85%]"></div>
+</div>
+<div class="relative w-8 h-[65%] flex flex-col justify-end group">
+<div class="w-full bg-error/80 h-[15%] rounded-t-sm mb-1 transition-all group-hover:h-[20%]"></div>
+<div class="w-full bg-surface-tint h-[85%] rounded-t-sm shadow-[0_0_8px_rgba(0,220,230,0.3)] transition-all group-hover:h-[90%]"></div>
+</div>
+<div class="relative w-8 h-[50%] flex flex-col justify-end group">
+<div class="w-full bg-error/80 h-[40%] rounded-t-sm mb-1 transition-all group-hover:h-[45%]"></div>
+<div class="w-full bg-surface-tint/60 h-[60%] rounded-t-sm transition-all group-hover:h-[65%]"></div>
+</div>
+<!-- Current Active Point -->
+<div class="relative w-8 h-[85%] flex flex-col justify-end group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-container-highest border border-surface-tint px-2 py-1 rounded text-[10px] font-label-sm text-surface-tint z-10 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">85% Pos</div>
+<div class="w-full bg-error/80 h-[10%] rounded-t-sm mb-1"></div>
+<div class="w-full bg-surface-tint h-[90%] rounded-t-sm shadow-[0_0_12px_rgba(0,220,230,0.6)] border-t border-white/50"></div>
+</div>
+<div class="relative w-8 h-[75%] flex flex-col justify-end group">
+<div class="w-full bg-error/80 h-[15%] rounded-t-sm mb-1 transition-all group-hover:h-[20%]"></div>
+<div class="w-full bg-surface-tint h-[85%] rounded-t-sm shadow-[0_0_8px_rgba(0,220,230,0.3)] transition-all group-hover:h-[90%]"></div>
+</div>
+<div class="relative w-8 h-[80%] flex flex-col justify-end group">
+<div class="w-full bg-error/80 h-[12%] rounded-t-sm mb-1 transition-all group-hover:h-[15%]"></div>
+<div class="w-full bg-surface-tint h-[88%] rounded-t-sm shadow-[0_0_8px_rgba(0,220,230,0.3)] transition-all group-hover:h-[90%]"></div>
+</div>
+</div>
+</div>
+<!-- X-axis labels -->
+<div class="flex justify-between pl-4 mt-2 text-[10px] font-label-sm text-on-surface-variant/50">
+<span>08:00</span>
+<span>10:00</span>
+<span>12:00</span>
+<span>14:00</span>
+<span>16:00</span>
+<span>18:00</span>
+</div>
+</div>
+<!-- Col 3: Live Interactions Stream -->
+<div class="glass-card rounded-xl p-6 flex flex-col h-full">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-body-lg font-body-lg text-on-surface font-semibold">Live HR Feed</h3>
+<span class="w-2 h-2 rounded-full bg-surface-tint animate-pulse shadow-[0_0_5px_rgba(0,220,230,0.8)]"></span>
+</div>
+<div class="flex-1 overflow-y-auto pr-2 space-y-4">
+<!-- Item 1 (Positive) -->
+<div class="relative pl-6 pb-4 border-l border-outline-variant/30 last:border-0 last:pb-0 group">
+<div class="absolute -left-1.5 top-1 w-3 h-3 rounded-full bg-surface-container-high border-2 border-surface-tint z-10 shadow-[0_0_8px_rgba(0,220,230,0.4)]"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-label-sm font-label-sm text-primary">Benefits Inquiry</span>
+<span class="text-[10px] font-label-sm text-on-surface-variant/70">Just now</span>
+</div>
+<p class="text-sm font-body-md text-on-surface-variant line-clamp-2 leading-tight">"Agent was incredibly helpful explaining the new vision coverage options."</p>
+<div class="mt-2 flex gap-2">
+<span class="px-2 py-0.5 bg-surface-tint/10 border border-surface-tint/20 rounded text-[9px] font-label-sm text-surface-tint">Resolved</span>
+<span class="px-2 py-0.5 bg-surface-container border border-outline-variant/30 rounded text-[9px] font-label-sm text-on-surface-variant">CSAT: 5/5</span>
+</div>
+</div>
+<!-- Item 2 (Neutral/Ongoing) -->
+<div class="relative pl-6 pb-4 border-l border-outline-variant/30 last:border-0 last:pb-0 group">
+<div class="absolute -left-1.5 top-1 w-3 h-3 rounded-full bg-surface-container-high border-2 border-tertiary-fixed-dim z-10"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-label-sm font-label-sm text-tertiary-fixed-dim">Payroll Discrepancy</span>
+<span class="text-[10px] font-label-sm text-on-surface-variant/70">12m ago</span>
+</div>
+<p class="text-sm font-body-md text-on-surface-variant line-clamp-2 leading-tight">Ticket escalated to Tier 2 support regarding overtime calculation for last period.</p>
+<div class="mt-2 flex gap-2">
+<span class="px-2 py-0.5 bg-tertiary-fixed-dim/10 border border-tertiary-fixed-dim/20 rounded text-[9px] font-label-sm text-tertiary-fixed-dim">Investigating</span>
+</div>
+</div>
+<!-- Item 3 (Negative) -->
+<div class="relative pl-6 pb-4 border-l border-outline-variant/30 last:border-0 last:pb-0 group">
+<div class="absolute -left-1.5 top-1 w-3 h-3 rounded-full bg-surface-container-high border-2 border-error z-10 shadow-[0_0_8px_rgba(255,180,171,0.4)]"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-label-sm font-label-sm text-error">Leave Denial</span>
+<span class="text-[10px] font-label-sm text-on-surface-variant/70">45m ago</span>
+</div>
+<p class="text-sm font-body-md text-on-surface-variant line-clamp-2 leading-tight">"Frustrated with the lack of clarity on why my bereavement leave was initially flagged."</p>
+<div class="mt-2 flex gap-2">
+<span class="px-2 py-0.5 bg-error/10 border border-error/20 rounded text-[9px] font-label-sm text-error">Requires Follow-up</span>
+<span class="px-2 py-0.5 bg-surface-container border border-outline-variant/30 rounded text-[9px] font-label-sm text-on-surface-variant">CSAT: 2/5</span>
+</div>
+</div>
+<!-- Item 4 (Positive) -->
+<div class="relative pl-6 pb-0 border-l-0 group">
+<div class="absolute -left-1.5 top-1 w-3 h-3 rounded-full bg-surface-container-high border-2 border-surface-tint z-10"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-label-sm font-label-sm text-primary">Onboarding Issue</span>
+<span class="text-[10px] font-label-sm text-on-surface-variant/70">1h ago</span>
+</div>
+<p class="text-sm font-body-md text-on-surface-variant line-clamp-2 leading-tight">System access granted swiftly after reporting delay.</p>
+</div>
+</div>
+<button class="w-full mt-4 py-2 border border-outline-variant/30 rounded-lg text-[10px] font-label-sm text-on-surface-variant hover:bg-white/5 transition-colors uppercase tracking-widest">
+                        View Full Log
+                    </button>
+</div>
+</div>
+<!-- Bottom Row: Categorized Breakdowns -->
+<div class="mt-widget-gap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-widget-gap">
+<div class="glass-card rounded-xl p-5 border-t-2 border-t-surface-tint">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-surface-tint text-sm">health_and_safety</span>
+<h4 class="text-label-sm font-label-sm text-on-surface">Benefits &amp; Health</h4>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-headline-md font-headline-md text-primary">42%</span>
+<span class="text-[10px] font-label-sm text-surface-tint">+5% vol</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 mt-3 rounded-full"><div class="bg-surface-tint h-full w-[42%] rounded-full shadow-[0_0_5px_rgba(0,220,230,0.5)]"></div></div>
+</div>
+<div class="glass-card rounded-xl p-5 border-t-2 border-t-tertiary-fixed-dim">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-sm">payments</span>
+<h4 class="text-label-sm font-label-sm text-on-surface">Payroll Queries</h4>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-headline-md font-headline-md text-tertiary-fixed-dim">28%</span>
+<span class="text-[10px] font-label-sm text-on-surface-variant">-2% vol</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 mt-3 rounded-full"><div class="bg-tertiary-fixed-dim h-full w-[28%] rounded-full"></div></div>
+</div>
+<div class="glass-card rounded-xl p-5 border-t-2 border-t-on-surface-variant">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">flight_takeoff</span>
+<h4 class="text-label-sm font-label-sm text-on-surface">Leave &amp; PTO</h4>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-headline-md font-headline-md text-on-surface">18%</span>
+<span class="text-[10px] font-label-sm text-on-surface-variant">Stable</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 mt-3 rounded-full"><div class="bg-on-surface-variant h-full w-[18%] rounded-full"></div></div>
+</div>
+<div class="glass-card rounded-xl p-5 border-t-2 border-t-error">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-error text-sm">gavel</span>
+<h4 class="text-label-sm font-label-sm text-on-surface">Disciplinary / Rel.</h4>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-headline-md font-headline-md text-error">12%</span>
+<span class="text-[10px] font-label-sm text-error">+1% vol</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 mt-3 rounded-full"><div class="bg-error h-full w-[12%] rounded-full shadow-[0_0_5px_rgba(255,180,171,0.5)]"></div></div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

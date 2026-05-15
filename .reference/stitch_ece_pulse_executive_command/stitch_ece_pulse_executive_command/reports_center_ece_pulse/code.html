@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ECE Pulse - Reports Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#c6c6cd",
+                        "on-secondary-fixed": "#1a1b21",
+                        "primary": "#e0fdff",
+                        "outline": "#849495",
+                        "on-secondary-fixed-variant": "#45474c",
+                        "on-primary-fixed": "#002022",
+                        "surface-bright": "#333b3b",
+                        "tertiary-fixed-dim": "#e8c423",
+                        "surface-container": "#192122",
+                        "secondary-container": "#47494f",
+                        "surface-container-high": "#232b2c",
+                        "secondary-fixed": "#e2e2e9",
+                        "surface-container-lowest": "#081010",
+                        "on-primary-container": "#006a70",
+                        "on-tertiary-fixed-variant": "#554500",
+                        "surface-dim": "#0d1515",
+                        "inverse-on-surface": "#2a3232",
+                        "primary-fixed": "#6ff6ff",
+                        "on-tertiary-container": "#725e00",
+                        "surface-container-low": "#151d1e",
+                        "surface-tint": "#00dce6",
+                        "tertiary": "#fff6e4",
+                        "background": "#0d1515",
+                        "on-tertiary": "#3b2f00",
+                        "inverse-primary": "#00696f",
+                        "on-primary-fixed-variant": "#004f53",
+                        "on-tertiary-fixed": "#221b00",
+                        "inverse-surface": "#dce4e4",
+                        "error": "#ffb4ab",
+                        "on-surface": "#dce4e4",
+                        "on-background": "#dce4e4",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#ffe173",
+                        "on-primary": "#00373a",
+                        "surface-container-highest": "#2e3637",
+                        "surface-variant": "#2e3637",
+                        "on-secondary-container": "#b7b8bf",
+                        "outline-variant": "#3a494b",
+                        "tertiary-container": "#fed83a",
+                        "on-secondary": "#2e3036",
+                        "secondary-fixed-dim": "#c6c6cd",
+                        "surface": "#0d1515",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#00dce6",
+                        "primary-container": "#00f2fe"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "stack-sm": "8px",
+                        "gutter": "20px",
+                        "container-padding": "24px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "widget-gap": "24px"
+                    },
+                    fontFamily: {
+                        "display-kpi": ["metropolis", "sans-serif"],
+                        "display-kpi-mobile": ["metropolis", "sans-serif"],
+                        "body-lg": ["metropolis", "sans-serif"],
+                        "body-md": ["metropolis", "sans-serif"],
+                        "label-sm": ["JetBrains Mono", "monospace"],
+                        "headline-md": ["metropolis", "sans-serif"],
+                        "headline-lg": ["metropolis", "sans-serif"]
+                    },
+                    fontSize: {
+                        "display-kpi": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "display-kpi-mobile": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Glassmorphism utility classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-panel:hover {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        .glow-btn {
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+        .glow-btn:hover {
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.8);
+        }
+        .table-row-hover:hover {
+            background: rgba(0, 242, 254, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md h-screen overflow-hidden flex selection:bg-surface-tint/30 selection:text-white">
+<!-- SideNavBar Component -->
+<nav class="bg-white/5 backdrop-blur-xl dark:bg-surface-container/30 h-screen w-64 fixed left-0 top-0 border-r border-white/10 backdrop-blur-xl border-r border-outline-variant/20 shadow-[0_0_15px_rgba(0,242,254,0.1)] flex flex-col h-full z-50 overflow-y-auto hidden md:flex">
+<!-- Header -->
+<div class="p-6 border-b border-white/10">
+<div class="flex items-center gap-4 mb-4">
+<img alt="ECE Executive Avatar" class="w-10 h-10 rounded-full border border-surface-tint" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBwLcJiOzR9M3UuuagshCRj1bR-EDt-nIGt2jtKLWoKMGnSUW2mhvbrHZoatJu-mnASiY7C7I9YxPaKsb8c4M_CPMgaHD1rYYdoBAvYV2Lo5m0bfaMWKx2G9SLiKhqjhJmv1GisCT9TKkfotScnLw6Gckm3OrAPlLQhpdKdAgZI-NWVNtAKQjUk2l1ZcWhuj0fg0rYpo0QDzUoTaQYHW5q6VM6qk7EcdsS4LL-uhVkqgSK1m7Lm2xCok5mBh3MHqtRk_uzUoS_pmw"/>
+<div>
+<h1 class="text-xl font-bold tracking-tighter text-surface-tint dark:text-primary-fixed drop-shadow-[0_0_8px_rgba(0,220,230,0.5)]">ECE Pulse</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Command Center</p>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-fixed font-label-sm rounded-lg py-2 glow-btn hover:bg-primary-fixed-dim transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> New Report
+            </button>
+</div>
+<!-- Main Navigation -->
+<div class="flex-1 py-4 flex flex-col gap-1">
+<a class="text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+<a class="text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="text-body-md font-body-md">Analytics</span>
+</a>
+<a class="text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="text-body-md font-body-md">Pulse Feed</span>
+</a>
+<!-- ACTIVE STATE -->
+<a class="text-primary-fixed-dim font-bold bg-primary/10 border-r-4 border-surface-tint py-3 px-6 transition-all translate-x-1 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="description" data-weight="fill" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="text-body-md font-body-md text-primary dark:text-primary-fixed">Reporting</span>
+</a>
+<a class="text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+<span class="text-body-md font-body-md">Alerts</span>
+</a>
+<a class="text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-body-md font-body-md">Settings</span>
+</a>
+</div>
+<!-- Footer Navigation -->
+<div class="mt-auto border-t border-white/10 p-4 flex flex-col gap-1">
+<a class="text-on-surface-variant/70 hover:text-on-surface py-2 px-4 rounded-lg hover:bg-white/5 transition-all flex items-center gap-3 text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help">help</span> Support
+            </a>
+<a class="text-on-surface-variant/70 hover:text-on-surface py-2 px-4 rounded-lg hover:bg-white/5 transition-all flex items-center gap-3 text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span> Log Out
+            </a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 flex flex-col h-screen overflow-hidden bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-surface-container/50 via-background to-background">
+<!-- TopNavBar Component -->
+<header class="bg-surface/80 backdrop-blur-md dark:bg-background/80 border-b border-outline-variant/20 flex justify-between items-center px-gutter w-full h-16 sticky top-0 z-40">
+<!-- Brand / Context -->
+<div class="flex items-center gap-6">
+<span class="text-lg font-display-kpi text-surface-tint dark:text-primary-fixed md:hidden">Command Center</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-lg transition-colors px-3 py-1 text-label-sm font-label-sm" href="#">Global View</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-lg transition-colors px-3 py-1 text-label-sm font-label-sm" href="#">BPO Sector</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-lg transition-colors px-3 py-1 text-label-sm font-label-sm" href="#">Real-time</a>
+</nav>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button class="hidden md:flex bg-primary-container/10 border border-surface-tint text-surface-tint px-4 py-1.5 rounded-lg text-label-sm font-label-sm hover:bg-surface-tint/20 transition-all items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-surface-tint animate-pulse"></span> Live Status
+                </button>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<button class="p-2 hover:text-surface-tint transition-colors"><span class="material-symbols-outlined" data-icon="account_circle">account_circle</span></button>
+<button class="p-2 hover:text-surface-tint transition-colors"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="p-2 hover:text-surface-tint transition-colors"><span class="material-symbols-outlined" data-icon="settings">settings</span></button>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-container-padding">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface mb-2">Reports Center</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant">Generate, schedule, and export operational intelligence.</p>
+</div>
+<!-- Global Report Actions -->
+<div class="flex flex-wrap gap-3">
+<button class="glass-panel text-on-surface px-4 py-2 rounded-lg text-label-sm font-label-sm flex items-center gap-2 hover:text-surface-tint hover:border-surface-tint/50 transition-all">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span> Export to PDF
+                    </button>
+<button class="glass-panel text-on-surface px-4 py-2 rounded-lg text-label-sm font-label-sm flex items-center gap-2 hover:text-surface-tint hover:border-surface-tint/50 transition-all">
+<span class="material-symbols-outlined text-sm">table_view</span> Export to Excel
+                    </button>
+<button class="bg-primary-container text-on-primary-fixed px-5 py-2 rounded-lg text-label-sm font-label-sm font-bold flex items-center gap-2 glow-btn">
+<span class="material-symbols-outlined text-sm">slideshow</span> Generate PowerPoint
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-widget-gap">
+<!-- Primary Report Generator -->
+<div class="md:col-span-8 glass-panel rounded-xl p-6 flex flex-col gap-6">
+<div class="flex justify-between items-center border-b border-white/10 pb-4">
+<h3 class="text-headline-md font-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">magic_button</span> Custom Report Builder
+                        </h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Date Range -->
+<div class="flex flex-col gap-2">
+<label class="text-label-sm font-label-sm text-on-surface-variant">Timeframe</label>
+<select class="w-full bg-surface-container-high border-b-2 border-transparent border-b-surface-tint/30 text-on-surface p-3 rounded-t-md focus:ring-0 focus:border-b-surface-tint transition-all text-body-md">
+<option>Daily (Last 24h)</option>
+<option>Weekly (Last 7 Days)</option>
+<option selected="">Monthly (YTD)</option>
+<option>Custom Range</option>
+</select>
+</div>
+<!-- Scope -->
+<div class="flex flex-col gap-2">
+<label class="text-label-sm font-label-sm text-on-surface-variant">Department Scope</label>
+<select class="w-full bg-surface-container-high border-b-2 border-transparent border-b-surface-tint/30 text-on-surface p-3 rounded-t-md focus:ring-0 focus:border-b-surface-tint transition-all text-body-md">
+<option selected="">All Departments</option>
+<option>IT Infrastructure</option>
+<option>Human Resources</option>
+<option>Facilities Management</option>
+</select>
+</div>
+<!-- Site -->
+<div class="flex flex-col gap-2">
+<label class="text-label-sm font-label-sm text-on-surface-variant">Site Comparison</label>
+<select class="w-full bg-surface-container-high border-b-2 border-transparent border-b-surface-tint/30 text-on-surface p-3 rounded-t-md focus:ring-0 focus:border-b-surface-tint transition-all text-body-md">
+<option selected="">Global Aggregated</option>
+<option>North America vs EMEA</option>
+<option>Top 5 Sites</option>
+</select>
+</div>
+</div>
+<div class="mt-auto flex justify-end gap-4 pt-4">
+<button class="px-6 py-2 rounded-lg text-label-sm font-label-sm text-surface-tint border border-surface-tint hover:bg-surface-tint/10 transition-all">Save Template</button>
+<button class="px-6 py-2 rounded-lg text-label-sm font-label-sm bg-surface-tint text-on-primary-fixed font-bold hover:bg-primary-fixed transition-all glow-btn">Compile Report</button>
+</div>
+</div>
+<!-- Scheduled Reports List -->
+<div class="md:col-span-4 glass-panel rounded-xl p-6 flex flex-col gap-4">
+<h3 class="text-body-lg font-headline-md text-on-surface mb-2 flex items-center justify-between">
+                        Scheduled Runs
+                        <button class="text-surface-tint hover:text-primary-fixed"><span class="material-symbols-outlined text-sm">edit</span></button>
+</h3>
+<div class="flex flex-col gap-3">
+<div class="bg-surface-container-high/50 p-3 rounded-lg border border-white/5 flex justify-between items-center group hover:border-surface-tint/30 transition-all cursor-pointer">
+<div>
+<p class="text-body-md font-body-md text-on-surface">Weekly Executive Summary</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-1">Every Monday @ 08:00 AM</p>
+</div>
+<span class="material-symbols-outlined text-surface-tint opacity-0 group-hover:opacity-100 transition-opacity">play_arrow</span>
+</div>
+<div class="bg-surface-container-high/50 p-3 rounded-lg border border-white/5 flex justify-between items-center group hover:border-surface-tint/30 transition-all cursor-pointer">
+<div>
+<p class="text-body-md font-body-md text-on-surface">IT Incident Rollup</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-1">Daily @ 17:00 PM</p>
+</div>
+<span class="material-symbols-outlined text-surface-tint opacity-0 group-hover:opacity-100 transition-opacity">play_arrow</span>
+</div>
+<div class="bg-surface-container-high/50 p-3 rounded-lg border border-white/5 flex justify-between items-center group hover:border-surface-tint/30 transition-all cursor-pointer">
+<div>
+<p class="text-body-md font-body-md text-on-surface">Monthly HR Attrition</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-1">1st of Month @ 09:00 AM</p>
+</div>
+<span class="material-symbols-outlined text-surface-tint opacity-0 group-hover:opacity-100 transition-opacity">play_arrow</span>
+</div>
+</div>
+</div>
+<!-- Recent Reports Table -->
+<div class="md:col-span-12 glass-panel rounded-xl overflow-hidden mt-4">
+<div class="p-6 border-b border-white/10 flex justify-between items-center">
+<h3 class="text-headline-md font-headline-md text-on-surface">Report Archive</h3>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-lowest border border-white/10 rounded-lg pl-9 pr-4 py-1.5 text-label-sm font-label-sm text-on-surface focus:border-surface-tint focus:ring-0 w-64" placeholder="Search archive..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-high/30 text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">
+<tr>
+<th class="px-6 py-4 font-medium">Report Name</th>
+<th class="px-6 py-4 font-medium">Type</th>
+<th class="px-6 py-4 font-medium">Generated Date</th>
+<th class="px-6 py-4 font-medium">Status</th>
+<th class="px-6 py-4 font-medium text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="text-body-md font-body-md text-on-surface divide-y divide-white/5">
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-surface-tint">description</span>
+                                        Q3 Executive Performance Brief
+                                    </td>
+<td class="px-6 py-4 text-on-surface-variant">Executive</td>
+<td class="px-6 py-4 text-label-sm font-label-sm">Oct 15, 2023 - 09:30 AM</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-surface-tint/10 text-surface-tint border border-surface-tint/20 rounded text-label-sm font-label-sm">Completed</span>
+</td>
+<td class="px-6 py-4 text-right flex justify-end gap-2">
+<button class="p-1 hover:text-surface-tint transition-colors"><span class="material-symbols-outlined text-sm">download</span></button>
+<button class="p-1 hover:text-surface-tint transition-colors"><span class="material-symbols-outlined text-sm">share</span></button>
+</td>
+</tr>
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-surface-tint">bar_chart</span>
+                                        IT Infrastructure Downtime
+                                    </td>
+<td class="px-6 py-4 text-on-surface-variant">Departmental</td>
+<td class="px-6 py-4 text-label-sm font-label-sm">Oct 14, 2023 - 17:05 PM</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-surface-tint/10 text-surface-tint border border-surface-tint/20 rounded text-label-sm font-label-sm">Completed</span>
+</td>
+<td class="px-6 py-4 text-right flex justify-end gap-2">
+<button class="p-1 hover:text-surface-tint transition-colors"><span class="material-symbols-outlined text-sm">download</span></button>
+<button class="p-1 hover:text-surface-tint transition-colors"><span class="material-symbols-outlined text-sm">share</span></button>
+</td>
+</tr>
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary-fixed-dim">pending</span>
+                                        APAC vs EMEA Site Comparison
+                                    </td>
+<td class="px-6 py-4 text-on-surface-variant">Site Comparison</td>
+<td class="px-6 py-4 text-label-sm font-label-sm">Generating...</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-tertiary-container/10 text-tertiary-fixed-dim border border-tertiary-fixed-dim/20 rounded text-label-sm font-label-sm animate-pulse">Processing</span>
+</td>
+<td class="px-6 py-4 text-right flex justify-end gap-2">
+<button class="p-1 text-on-surface-variant/50 cursor-not-allowed"><span class="material-symbols-outlined text-sm">download</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

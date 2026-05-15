@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ECE Pulse - WiFi Quality Monitoring</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#c6c6cd",
+                        "on-secondary-fixed": "#1a1b21",
+                        "primary": "#e0fdff",
+                        "outline": "#849495",
+                        "on-secondary-fixed-variant": "#45474c",
+                        "on-primary-fixed": "#002022",
+                        "surface-bright": "#333b3b",
+                        "tertiary-fixed-dim": "#e8c423",
+                        "surface-container": "#192122",
+                        "secondary-container": "#47494f",
+                        "surface-container-high": "#232b2c",
+                        "secondary-fixed": "#e2e2e9",
+                        "surface-container-lowest": "#081010",
+                        "on-primary-container": "#006a70",
+                        "on-tertiary-fixed-variant": "#554500",
+                        "surface-dim": "#0d1515",
+                        "inverse-on-surface": "#2a3232",
+                        "primary-fixed": "#6ff6ff",
+                        "on-tertiary-container": "#725e00",
+                        "surface-container-low": "#151d1e",
+                        "surface-tint": "#00dce6",
+                        "tertiary": "#fff6e4",
+                        "background": "#0d1515",
+                        "on-tertiary": "#3b2f00",
+                        "inverse-primary": "#00696f",
+                        "on-primary-fixed-variant": "#004f53",
+                        "on-tertiary-fixed": "#221b00",
+                        "inverse-surface": "#dce4e4",
+                        "error": "#ffb4ab",
+                        "on-surface": "#dce4e4",
+                        "on-background": "#dce4e4",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#ffe173",
+                        "on-primary": "#00373a",
+                        "surface-container-highest": "#2e3637",
+                        "surface-variant": "#2e3637",
+                        "on-secondary-container": "#b7b8bf",
+                        "outline-variant": "#3a494b",
+                        "tertiary-container": "#fed83a",
+                        "on-secondary": "#2e3036",
+                        "secondary-fixed-dim": "#c6c6cd",
+                        "surface": "#0d1515",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#00dce6",
+                        "primary-container": "#00f2fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "gutter": "20px",
+                        "container-padding": "24px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "widget-gap": "24px"
+                    },
+                    "fontFamily": {
+                        "display-kpi": ["metropolis", "sans-serif"],
+                        "display-kpi-mobile": ["metropolis", "sans-serif"],
+                        "body-lg": ["metropolis", "sans-serif"],
+                        "body-md": ["metropolis", "sans-serif"],
+                        "label-sm": ["JetBrains Mono", "monospace"],
+                        "headline-md": ["metropolis", "sans-serif"],
+                        "headline-lg": ["metropolis", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-kpi": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-kpi-mobile": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Fallback for metropolis if not locally installed */
+        @font-face {
+            font-family: 'metropolis';
+            src: local('Inter'), local('Segoe UI'), sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-accent {
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        }
+        
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md flex h-screen overflow-hidden selection:bg-surface-tint selection:text-on-primary-container">
+<!-- SIDE NAV BAR (Shared Component) -->
+<nav class="hidden md:flex bg-white/5 backdrop-blur-xl dark:bg-surface-container/30 h-screen w-64 fixed left-0 top-0 border-r border-white/10 backdrop-blur-xl border-r border-outline-variant/20 shadow-[0_0_15px_rgba(0,242,254,0.1)] flex-col z-50 overflow-y-auto">
+<!-- Header -->
+<div class="p-6 border-b border-white/10">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded-lg bg-surface-tint flex items-center justify-center glow-accent">
+<span class="material-symbols-outlined text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">sensors</span>
+</div>
+<span class="text-xl font-bold tracking-tighter text-surface-tint dark:text-primary-fixed drop-shadow-[0_0_8px_rgba(0,220,230,0.5)]">ECE Pulse</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Command Center</p>
+</div>
+<!-- Main Nav -->
+<div class="flex-1 py-4 flex flex-col gap-1">
+<!-- Dashboard (Inactive) -->
+<a class="flex items-center gap-4 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<!-- Analytics (ACTIVE) -->
+<a class="flex items-center gap-4 text-primary-fixed-dim font-bold bg-primary/10 border-r-4 border-surface-tint py-3 px-6 transition-all translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">query_stats</span>
+<span class="font-label-sm text-label-sm">Analytics</span>
+</a>
+<!-- Pulse Feed (Inactive) -->
+<a class="flex items-center gap-4 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="font-label-sm text-label-sm">Pulse Feed</span>
+</a>
+<!-- Reporting (Inactive) -->
+<a class="flex items-center gap-4 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-sm text-label-sm">Reporting</span>
+</a>
+<!-- Alerts (Inactive) -->
+<a class="flex items-center gap-4 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">warning</span>
+<span class="font-label-sm text-label-sm">Alerts</span>
+</a>
+<!-- Settings (Inactive) -->
+<a class="flex items-center gap-4 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</div>
+<!-- CTA -->
+<div class="p-6">
+<button class="w-full bg-surface-tint text-on-primary-fixed font-label-sm text-label-sm py-3 rounded-lg shadow-[0_0_15px_rgba(0,242,254,0.3)] hover:brightness-110 transition-all flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                New Report
+            </button>
+</div>
+<!-- Footer Nav -->
+<div class="mt-auto border-t border-white/10 py-4 flex flex-col gap-1">
+<a class="flex items-center gap-4 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-sm text-label-sm">Support</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-sm text-label-sm">Log Out</span>
+</a>
+</div>
+</nav>
+<!-- MAIN WRAPPER -->
+<div class="flex-1 flex flex-col h-full ml-0 md:ml-64 relative bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-surface-container/40 via-background to-background">
+<!-- TOP NAV BAR (Shared Component) -->
+<header class="bg-surface/80 backdrop-blur-md dark:bg-background/80 w-full h-16 sticky top-0 z-40 border-b border-outline-variant/20 flex justify-between items-center px-gutter">
+<!-- Mobile Menu Toggle (Placeholder) -->
+<button class="md:hidden text-on-surface-variant p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Brand/Product (Desktop) -->
+<div class="hidden md:flex items-center gap-4">
+<span class="text-lg font-display-kpi text-surface-tint dark:text-primary-fixed">Command Center</span>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-lg px-3 py-1.5 transition-colors" href="#">Global View</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-lg px-3 py-1.5 transition-colors" href="#">BPO Sector</a>
+<a class="font-label-sm text-label-sm text-surface-tint dark:text-primary-fixed border-b-2 border-surface-tint pb-1 scale-95 transition-transform duration-150" href="#">Real-time</a>
+</nav>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1">
+<span class="w-2 h-2 rounded-full bg-surface-tint animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-surface-tint">Live Status</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<button class="p-2 hover:bg-primary-container/20 rounded-lg transition-colors hover:text-on-surface"><span class="material-symbols-outlined">account_circle</span></button>
+<button class="p-2 hover:bg-primary-container/20 rounded-lg transition-colors hover:text-on-surface"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-2 hover:bg-primary-container/20 rounded-lg transition-colors hover:text-on-surface"><span class="material-symbols-outlined">settings</span></button>
+</div>
+</div>
+</header>
+<!-- MAIN CANVAS -->
+<main class="flex-1 overflow-y-auto p-container-padding">
+<!-- Context Header & Filters -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-widget-gap gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">WiFi Quality Monitoring</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Real-time signal analysis and dead zone detection.</p>
+</div>
+<!-- Site/Floor Selector -->
+<div class="flex gap-3 bg-surface-container-high p-1 rounded-xl border border-white/10">
+<button class="px-4 py-2 rounded-lg bg-surface-tint/10 text-surface-tint border border-surface-tint/30 font-label-sm text-label-sm flex items-center gap-2 shadow-[0_0_10px_rgba(0,220,230,0.1)]">
+<span class="material-symbols-outlined text-[18px]">domain</span>
+                        Walmart - Site Alpha
+                    </button>
+<button class="px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 font-label-sm text-label-sm transition-colors">
+                        Ashley Furniture
+                    </button>
+<button class="px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 font-label-sm text-label-sm transition-colors">
+                        Macy's Logistics
+                    </button>
+</div>
+</div>
+<!-- BENTO GRID -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-widget-gap">
+<!-- MAIN HEATMAP CARD (Spans 8 cols on desktop) -->
+<div class="md:col-span-8 glass-card rounded-xl p-6 flex flex-col group relative overflow-hidden">
+<!-- Glow effect on hover -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface-tint/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+<div class="flex justify-between items-center mb-6 relative z-10">
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">map</span>
+                            Production Floor Heatmap
+                        </h2>
+<div class="flex gap-2">
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant"><div class="w-2 h-2 rounded-full bg-surface-tint"></div> Optimal</span>
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant"><div class="w-2 h-2 rounded-full bg-tertiary-container"></div> Weak</span>
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant"><div class="w-2 h-2 rounded-full bg-error"></div> Dead Zone</span>
+</div>
+</div>
+<!-- Floorplan Visualization Area -->
+<div class="relative w-full h-[400px] bg-surface-container rounded-lg border border-white/5 overflow-hidden flex items-center justify-center">
+<!-- Abstract Grid Background simulating floorplan blueprint -->
+<div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
+<!-- Simulated Hardware/Zones -->
+<div class="absolute top-10 left-10 border border-white/20 w-32 h-32 rounded flex items-center justify-center text-on-surface-variant/30 font-label-sm">Zone A</div>
+<div class="absolute bottom-20 right-20 border border-white/20 w-48 h-24 rounded flex items-center justify-center text-on-surface-variant/30 font-label-sm">Loading Dock</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border border-white/20 w-64 h-64 rounded-full flex items-center justify-center text-on-surface-variant/30 font-label-sm">Central Hub</div>
+<!-- Heat Spots (Simulated Data) -->
+<!-- Good Signal -->
+<div class="absolute top-1/4 left-1/4 w-48 h-48 bg-surface-tint/30 rounded-full blur-3xl"></div>
+<div class="absolute top-[30%] left-[30%] text-surface-tint"><span class="material-symbols-outlined">wifi</span></div>
+<!-- Good Signal -->
+<div class="absolute bottom-1/4 left-1/3 w-64 h-64 bg-surface-tint/20 rounded-full blur-3xl"></div>
+<!-- Weak Signal -->
+<div class="absolute top-1/3 right-1/4 w-32 h-32 bg-tertiary-container/30 rounded-full blur-2xl"></div>
+<div class="absolute top-[40%] right-[30%] text-tertiary-container"><span class="material-symbols-outlined">wifi_1_bar</span></div>
+<!-- Dead Zone (Red) -->
+<div class="absolute bottom-10 right-10 w-40 h-40 bg-error/40 rounded-full blur-2xl animate-pulse"></div>
+<div class="absolute bottom-[15%] right-[15%] text-error"><span class="material-symbols-outlined">wifi_off</span></div>
+<!-- Interactive overlay indicating a selected area -->
+<div class="absolute bottom-10 right-10 w-32 h-32 border-2 border-error/50 rounded-lg border-dashed"></div>
+</div>
+</div>
+<!-- KPI & METRICS COLUMN (Spans 4 cols on desktop) -->
+<div class="md:col-span-4 flex flex-col gap-widget-gap">
+<!-- KPI 1: Avg Signal -->
+<div class="glass-card rounded-xl p-6 flex flex-col hover:-translate-y-1 transition-transform duration-300">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Avg Signal Strength</span>
+<span class="material-symbols-outlined text-surface-tint">network_check</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="font-display-kpi text-display-kpi text-primary">-62</span>
+<span class="font-body-md text-body-md text-on-surface-variant mb-2">dBm</span>
+</div>
+<!-- Sparkline simulated with CSS gradient -->
+<div class="mt-4 h-8 w-full flex items-end gap-1 opacity-80">
+<div class="w-1/6 bg-surface-tint rounded-t-sm" style="height: 60%"></div>
+<div class="w-1/6 bg-surface-tint rounded-t-sm" style="height: 70%"></div>
+<div class="w-1/6 bg-surface-tint rounded-t-sm" style="height: 50%"></div>
+<div class="w-1/6 bg-surface-tint rounded-t-sm" style="height: 80%"></div>
+<div class="w-1/6 bg-surface-tint rounded-t-sm" style="height: 75%"></div>
+<div class="w-1/6 bg-surface-tint rounded-t-sm glow-accent" style="height: 90%"></div>
+</div>
+</div>
+<!-- KPI 2: Active Devices -->
+<div class="glass-card rounded-xl p-6 flex flex-col hover:-translate-y-1 transition-transform duration-300">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Active Scanners</span>
+<span class="material-symbols-outlined text-primary-fixed">devices</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="font-display-kpi text-display-kpi text-primary">1,204</span>
+</div>
+<div class="mt-2 flex items-center gap-2 text-surface-tint font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+4% from last hour</span>
+</div>
+</div>
+<!-- KPI 3: Disconnect Rate -->
+<div class="glass-card rounded-xl p-6 flex flex-col hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden">
+<!-- Subtle warning gradient -->
+<div class="absolute inset-0 bg-gradient-to-t from-error/5 to-transparent pointer-events-none"></div>
+<div class="flex justify-between items-start mb-2 relative z-10">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Drop Rate / Hr</span>
+<span class="material-symbols-outlined text-error">warning</span>
+</div>
+<div class="flex items-end gap-2 relative z-10">
+<span class="font-display-kpi text-display-kpi text-error">2.4</span>
+<span class="font-body-md text-body-md text-error mb-2">%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full mt-4 relative z-10 overflow-hidden">
+<div class="bg-error h-full rounded-full w-[24%]"></div>
+</div>
+</div>
+</div>
+<!-- INCIDENT LOG (Spans 6 cols) -->
+<div class="md:col-span-6 glass-card rounded-xl p-0 flex flex-col overflow-hidden">
+<div class="p-6 border-b border-white/10 flex justify-between items-center bg-surface-container/20">
+<h3 class="font-headline-md text-headline-md text-primary">Recent Disconnects</h3>
+<button class="text-surface-tint font-label-sm text-label-sm hover:underline">View All</button>
+</div>
+<div class="flex flex-col">
+<!-- List Item 1 (Critical) -->
+<div class="px-6 py-4 border-b border-white/5 flex items-center justify-between hover:bg-white/5 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_rgba(255,180,171,0.6)]"></div>
+<div>
+<p class="font-body-md text-body-md text-on-surface">Loading Dock B - AP 4 Offline</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Scanner #4521 lost connection during transfer.</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-1 rounded">10:42 AM</span>
+</div>
+<!-- List Item 2 (Warning) -->
+<div class="px-6 py-4 border-b border-white/5 flex items-center justify-between hover:bg-white/5 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-tertiary-container shadow-[0_0_8px_rgba(254,216,58,0.4)]"></div>
+<div>
+<p class="font-body-md text-body-md text-on-surface">Aisle 12 - High Latency</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Avg response &gt; 300ms. Possible interference.</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-1 rounded">10:15 AM</span>
+</div>
+<!-- List Item 3 -->
+<div class="px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-surface-tint"></div>
+<div>
+<p class="font-body-md text-body-md text-on-surface">Zone C - AP Restarted</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Automated recovery successful.</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-1 rounded">09:30 AM</span>
+</div>
+</div>
+</div>
+<!-- SIGNAL STABILITY TREND (Spans 6 cols) -->
+<div class="md:col-span-6 glass-card rounded-xl p-6 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Signal Stability</h3>
+<div class="flex gap-2">
+<button class="font-label-sm text-label-sm bg-surface-container text-on-surface px-3 py-1 rounded hover:bg-white/10 transition-colors">1H</button>
+<button class="font-label-sm text-label-sm bg-surface-tint text-on-primary-fixed px-3 py-1 rounded shadow-[0_0_10px_rgba(0,220,230,0.2)]">12H</button>
+</div>
+</div>
+<!-- CSS Chart Representation -->
+<div class="flex-1 min-h-[200px] w-full flex items-end gap-2 relative">
+<!-- Y-Axis Labels -->
+<div class="absolute left-0 top-0 bottom-0 flex flex-col justify-between font-label-sm text-label-sm text-on-surface-variant/50 pb-6">
+<span>-40</span>
+<span>-60</span>
+<span>-80</span>
+</div>
+<!-- Grid Lines -->
+<div class="absolute inset-0 ml-8 border-b border-white/5 pb-6 flex flex-col justify-between">
+<div class="w-full border-b border-white/5 border-dashed"></div>
+<div class="w-full border-b border-white/5 border-dashed"></div>
+<div class="w-full border-b border-white/5 border-dashed"></div>
+</div>
+<!-- Bars Container -->
+<div class="flex-1 flex items-end justify-between ml-10 h-full pb-6 z-10">
+<!-- Simulated Data Points -->
+<div class="w-full flex justify-around items-end h-[80%] gap-1">
+<div class="w-full bg-surface-tint/20 hover:bg-surface-tint/50 transition-colors rounded-t" style="height: 60%"></div>
+<div class="w-full bg-surface-tint/20 hover:bg-surface-tint/50 transition-colors rounded-t" style="height: 65%"></div>
+<div class="w-full bg-surface-tint/20 hover:bg-surface-tint/50 transition-colors rounded-t" style="height: 70%"></div>
+<div class="w-full bg-surface-tint/20 hover:bg-surface-tint/50 transition-colors rounded-t" style="height: 55%"></div>
+<!-- Dip indicating an issue -->
+<div class="w-full bg-error/40 hover:bg-error/60 transition-colors rounded-t" style="height: 30%"></div>
+<div class="w-full bg-tertiary-container/40 hover:bg-tertiary-container/60 transition-colors rounded-t" style="height: 45%"></div>
+<div class="w-full bg-surface-tint/20 hover:bg-surface-tint/50 transition-colors rounded-t" style="height: 75%"></div>
+<div class="w-full bg-surface-tint/40 hover:bg-surface-tint/70 glow-accent transition-colors rounded-t border-t-2 border-surface-tint" style="height: 85%"></div>
+</div>
+</div>
+<!-- X-Axis Labels -->
+<div class="absolute bottom-0 left-10 right-0 flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>00:00</span>
+<span>04:00</span>
+<span>08:00</span>
+<span>Now</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

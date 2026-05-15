@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign Up - ECE Pulse</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Sora:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#d4e4fa",
+                    "error-container": "#93000a",
+                    "background": "#051424",
+                    "on-surface-variant": "#b9cac9",
+                    "surface-tint": "#00dddd",
+                    "secondary": "#6bd8cb",
+                    "tertiary-fixed-dim": "#bbc9cb",
+                    "on-primary": "#003737",
+                    "secondary-fixed-dim": "#6bd8cb",
+                    "on-secondary-fixed": "#00201d",
+                    "on-secondary-fixed-variant": "#005049",
+                    "error": "#ffb4ab",
+                    "surface-container-lowest": "#010f1f",
+                    "surface-container-low": "#0d1c2d",
+                    "on-error": "#690005",
+                    "on-primary-container": "#007070",
+                    "primary-fixed-dim": "#00dddd",
+                    "on-secondary": "#003732",
+                    "inverse-primary": "#006a6a",
+                    "on-surface": "#d4e4fa",
+                    "surface-dim": "#051424",
+                    "outline": "#839493",
+                    "surface-variant": "#273647",
+                    "primary-container": "#00fbfb",
+                    "on-error-container": "#ffdad6",
+                    "primary-fixed": "#00fbfb",
+                    "surface": "#051424",
+                    "secondary-fixed": "#89f5e7",
+                    "surface-container": "#122131",
+                    "tertiary-container": "#d7e5e8",
+                    "outline-variant": "#3a4a49",
+                    "surface-container-high": "#1c2b3c",
+                    "tertiary": "#ffffff",
+                    "on-tertiary-container": "#5a6769",
+                    "on-tertiary": "#263235",
+                    "on-primary-fixed-variant": "#004f4f",
+                    "inverse-on-surface": "#233143",
+                    "primary": "#ffffff",
+                    "on-primary-fixed": "#002020",
+                    "on-tertiary-fixed-variant": "#3c494b",
+                    "secondary-container": "#29a195",
+                    "surface-container-highest": "#273647",
+                    "on-tertiary-fixed": "#111e20",
+                    "surface-bright": "#2c3a4c",
+                    "on-secondary-container": "#00302b",
+                    "inverse-surface": "#d4e4fa",
+                    "tertiary-fixed": "#d7e5e8"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "4rem",
+                    "stack-sm": "0.5rem",
+                    "gutter": "2rem",
+                    "stack-md": "1.5rem",
+                    "margin-mobile": "1.5rem",
+                    "container-max": "1440px",
+                    "stack-lg": "3rem"
+            },
+            "fontFamily": {
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "stats-xl": [
+                            "Sora"
+                    ],
+                    "display-lg": [
+                            "Sora"
+                    ],
+                    "headline-md": [
+                            "Sora"
+                    ],
+                    "headline-lg": [
+                            "Sora"
+                    ],
+                    "label-sm": [
+                            "JetBrains Mono"
+                    ],
+                    "headline-lg-mobile": [
+                            "Sora"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "stats-xl": [
+                            "40px",
+                            {
+                                    "lineHeight": "48px",
+                                    "letterSpacing": "-0.03em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar for dropdowns */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(5, 20, 36, 0.8); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 221, 221, 0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 221, 221, 0.4); }
+        
+        /* Auto-fill override to prevent white backgrounds in dark mode */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #051424 inset !important;
+            -webkit-text-fill-color: #d4e4fa !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* Base input styling to reuse */
+        .cyber-input {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            color: var(--tw-colors-on-surface);
+            transition: all 0.3s ease;
+        }
+        .cyber-input:focus {
+            outline: none;
+            border-color: var(--tw-colors-surface-tint);
+            box-shadow: inset 0 0 15px rgba(0, 221, 221, 0.15), 0 0 10px rgba(0, 221, 221, 0.1);
+        }
+        .cyber-input::placeholder {
+            color: rgba(185, 202, 201, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen relative overflow-hidden flex items-center justify-center p-margin-mobile md:p-gutter font-body-md text-body-md">
+<!-- Ambient Background Effects -->
+<div class="fixed top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-secondary-container/10 blur-[120px] pointer-events-none"></div>
+<div class="fixed bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-primary-container/5 blur-[150px] pointer-events-none"></div>
+<!-- Main Signup Container -->
+<main class="w-full max-w-[800px] z-10 relative">
+<!-- Glassmorphism Card -->
+<div class="bg-surface-container-lowest/40 backdrop-blur-[20px] rounded-2xl border-t border-l border-white/10 border-b border-r border-black/50 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_0_0_1px_rgba(255,255,255,0.02)] p-6 md:p-10 relative overflow-hidden">
+<!-- Subtle card inner glow -->
+<div class="absolute top-0 right-0 w-1/2 h-1/2 bg-surface-tint/5 blur-[80px] pointer-events-none"></div>
+<!-- Header Section -->
+<div class="text-center mb-stack-lg">
+<div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-surface-container border border-white/5 mb-stack-sm shadow-[0_0_15px_rgba(0,221,221,0.1)]">
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">add_moderator</span>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-white mb-2">Initialize Profile</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Configure your executive access credentials</p>
+</div>
+<!-- Form -->
+<form action="#" class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-stack-md" method="POST">
+<!-- Full Name -->
+<div class="md:col-span-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block uppercase tracking-widest" for="fullName">Identification</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">badge</span>
+<input class="cyber-input font-body-md text-body-md" id="fullName" name="fullName" placeholder="Authorized Full Name" required="" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div class="md:col-span-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block uppercase tracking-widest" for="email">Comm Link</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">mail</span>
+<input class="cyber-input font-body-md text-body-md" id="email" name="email" placeholder="Corporate Email" required="" type="email"/>
+</div>
+</div>
+<!-- Password -->
+<div class="md:col-span-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block uppercase tracking-widest" for="password">Security Key</label>
+<div class="relative mb-2">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">key</span>
+<input class="cyber-input font-body-md text-body-md" id="password" name="password" placeholder="••••••••••••" required="" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-surface-tint transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility_off</span>
+</button>
+</div>
+<!-- Password Strength Meter -->
+<div class="flex gap-1.5 h-1.5 mt-2">
+<div class="flex-1 bg-surface-tint rounded-full shadow-[0_0_5px_rgba(0,221,221,0.5)]"></div>
+<div class="flex-1 bg-surface-tint rounded-full shadow-[0_0_5px_rgba(0,221,221,0.5)]"></div>
+<div class="flex-1 bg-white/10 rounded-full"></div>
+<div class="flex-1 bg-white/10 rounded-full"></div>
+</div>
+<p class="font-label-sm text-[10px] text-surface-tint mt-1 text-right tracking-widest">MODERATE</p>
+</div>
+<!-- Role -->
+<div class="md:col-span-1 mt-2 border-t border-white/5 pt-stack-md md:border-t-0 md:pt-0">
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block uppercase tracking-widest" for="role">Clearance Level</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">admin_panel_settings</span>
+<select class="cyber-input font-body-md text-body-md appearance-none" id="role" name="role" required="">
+<option class="bg-surface text-on-surface-variant" disabled="" selected="" value="">Select Designation...</option>
+<option class="bg-surface text-on-surface" value="admin">System Administrator</option>
+<option class="bg-surface text-on-surface" value="it">IT Command</option>
+<option class="bg-surface text-on-surface" value="hr">Human Resources</option>
+<option class="bg-surface text-on-surface" value="exec">Executive Overview</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Department -->
+<div class="md:col-span-1 mt-2 border-t border-white/5 pt-stack-md md:border-t-0 md:pt-0 md:mt-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block uppercase tracking-widest" for="department">Division</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">account_tree</span>
+<select class="cyber-input font-body-md text-body-md appearance-none" id="department" name="department" required="">
+<option class="bg-surface text-on-surface-variant" disabled="" selected="" value="">Select Branch...</option>
+<option class="bg-surface text-on-surface" value="ops">Operations</option>
+<option class="bg-surface text-on-surface" value="eng">Engineering</option>
+<option class="bg-surface text-on-surface" value="sec">Cyber Security</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Site -->
+<div class="md:col-span-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block uppercase tracking-widest" for="site">Primary Node</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">location_on</span>
+<select class="cyber-input font-body-md text-body-md appearance-none" id="site" name="site" required="">
+<option class="bg-surface text-on-surface-variant" disabled="" selected="" value="">Select Facility...</option>
+<option class="bg-surface text-on-surface" value="noel">Sector Noel</option>
+<option class="bg-surface text-on-surface" value="macias">Sector Macias</option>
+<option class="bg-surface text-on-surface" value="consuelo">Sector Consuelo</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Account -->
+<div class="md:col-span-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block uppercase tracking-widest" for="account">Sub-Domain</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">business</span>
+<select class="cyber-input font-body-md text-body-md appearance-none" id="account" name="account" required="">
+<option class="bg-surface text-on-surface-variant" disabled="" selected="" value="">Awaiting Node Selection...</option>
+<!-- Dynamically populated based on site selection conceptually -->
+<option class="bg-surface text-on-surface" value="alpha">Alpha Cluster</option>
+<option class="bg-surface text-on-surface" value="beta">Beta Cluster</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Action Area -->
+<div class="md:col-span-2 mt-stack-md pt-stack-md border-t border-white/5">
+<button class="w-full bg-surface-tint text-black font-label-sm text-label-sm py-4 rounded-lg uppercase tracking-widest hover:shadow-[0_0_20px_rgba(0,221,221,0.4)] hover:bg-primary-container transition-all flex items-center justify-center gap-2 group" type="submit">
+<span class="material-symbols-outlined text-[18px] group-hover:scale-110 transition-transform">how_to_reg</span>
+                        Establish Credentials
+                    </button>
+<div class="text-center mt-stack-md">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Already cleared? 
+                            <a class="text-surface-tint hover:text-white transition-colors underline-offset-4 hover:underline" href="#">Authenticate Here</a>
+</p>
+</div>
+</div>
+</form>
+</div>
+<!-- Footer / Legal -->
+<div class="text-center mt-stack-md">
+<p class="font-label-sm text-[10px] text-on-surface-variant/40 tracking-widest uppercase">ECE Pulse Core Systems • Secure Connection Established</p>
+</div>
+</main>
+</body></html>

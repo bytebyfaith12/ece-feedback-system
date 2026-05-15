@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Feedback Detail - Case Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#d4e4fa",
+                      "error-container": "#93000a",
+                      "background": "#051424",
+                      "on-surface-variant": "#b9cac9",
+                      "surface-tint": "#00dddd",
+                      "secondary": "#6bd8cb",
+                      "tertiary-fixed-dim": "#bbc9cb",
+                      "on-primary": "#003737",
+                      "secondary-fixed-dim": "#6bd8cb",
+                      "on-secondary-fixed": "#00201d",
+                      "on-secondary-fixed-variant": "#005049",
+                      "error": "#ffb4ab",
+                      "surface-container-lowest": "#010f1f",
+                      "surface-container-low": "#0d1c2d",
+                      "on-error": "#690005",
+                      "on-primary-container": "#007070",
+                      "primary-fixed-dim": "#00dddd",
+                      "on-secondary": "#003732",
+                      "inverse-primary": "#006a6a",
+                      "on-surface": "#d4e4fa",
+                      "surface-dim": "#051424",
+                      "outline": "#839493",
+                      "surface-variant": "#273647",
+                      "primary-container": "#00fbfb",
+                      "on-error-container": "#ffdad6",
+                      "primary-fixed": "#00fbfb",
+                      "surface": "#051424",
+                      "secondary-fixed": "#89f5e7",
+                      "surface-container": "#122131",
+                      "tertiary-container": "#d7e5e8",
+                      "outline-variant": "#3a4a49",
+                      "surface-container-high": "#1c2b3c",
+                      "tertiary": "#ffffff",
+                      "on-tertiary-container": "#5a6769",
+                      "on-tertiary": "#263235",
+                      "on-primary-fixed-variant": "#004f4f",
+                      "inverse-on-surface": "#233143",
+                      "primary": "#ffffff",
+                      "on-primary-fixed": "#002020",
+                      "on-tertiary-fixed-variant": "#3c494b",
+                      "secondary-container": "#29a195",
+                      "surface-container-highest": "#273647",
+                      "on-tertiary-fixed": "#111e20",
+                      "surface-bright": "#2c3a4c",
+                      "on-secondary-container": "#00302b",
+                      "inverse-surface": "#d4e4fa",
+                      "tertiary-fixed": "#d7e5e8"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "4rem",
+                      "stack-sm": "0.5rem",
+                      "gutter": "2rem",
+                      "stack-md": "1.5rem",
+                      "margin-mobile": "1.5rem",
+                      "container-max": "1440px",
+                      "stack-lg": "3rem"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "stats-xl": ["Sora"],
+                      "display-lg": ["Sora"],
+                      "headline-md": ["Sora"],
+                      "headline-lg": ["Sora"],
+                      "label-sm": ["JetBrains Mono"],
+                      "headline-lg-mobile": ["Sora"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "stats-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0; }
+        .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+        
+        /* Cyber Glassmorphism Utilities */
+        .glass-shell {
+            background-color: rgba(5, 20, 36, 0.7); /* surface color with opacity */
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-pane {
+            background: linear-gradient(145deg, rgba(28, 43, 60, 0.6) 0%, rgba(5, 20, 36, 0.8) 100%); /* surface-container-high to background */
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(0, 221, 221, 0.15); /* Subtle cyan top edge catchlight */
+            border-left: 1px solid rgba(0, 221, 221, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .cyber-input {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(131, 148, 147, 0.3); /* outline with opacity */
+            transition: all 0.2s ease;
+        }
+        
+        .cyber-input:focus {
+            border-color: #00dddd; /* surface-tint */
+            box-shadow: inset 0 0 12px rgba(0, 221, 221, 0.15), 0 0 8px rgba(0, 221, 221, 0.2);
+            outline: none;
+        }
+
+        .btn-cyan {
+            background-color: #00dddd;
+            color: #051424;
+            transition: all 0.3s ease;
+        }
+        .btn-cyan:hover {
+            box-shadow: 0 0 15px rgba(0, 221, 221, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost-cyan {
+            background-color: transparent;
+            border: 1px solid #00dddd;
+            color: #00dddd;
+            transition: all 0.3s ease;
+        }
+        .btn-ghost-cyan:hover {
+            background-color: rgba(0, 221, 221, 0.1);
+            box-shadow: 0 0 10px rgba(0, 221, 221, 0.2);
+        }
+
+        /* Custom Scrollbar for inner areas if needed */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(131, 148, 147, 0.3); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 221, 221, 0.5); }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden antialiased selection:bg-surface-tint selection:text-on-primary">
+<!-- Contextual Header (Replaces global nav for task-focused view) -->
+<header class="glass-shell sticky top-0 z-50 w-full px-margin-mobile md:px-margin-desktop py-4">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<!-- Left: Navigation & Context -->
+<div class="flex flex-wrap items-center gap-4 md:gap-6">
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-surface-tint transition-colors group">
+<span class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform duration-300">arrow_back</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Queue</span>
+</button>
+<div class="hidden md:block w-px h-6 bg-white/10"></div>
+<div class="flex items-center gap-4">
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">TKT-8992</h1>
+<!-- Badges -->
+<div class="flex items-center gap-2">
+<span class="bg-secondary-container/10 border border-secondary-container/50 text-surface-tint px-3 py-1 rounded-full font-label-sm text-label-sm flex items-center gap-1.5 backdrop-blur-sm shadow-[0_0_10px_rgba(0,221,221,0.1)]">
+<span class="w-1.5 h-1.5 rounded-full bg-surface-tint animate-pulse"></span>
+                            In Progress
+                        </span>
+<span class="bg-error-container/20 border border-error/30 text-error px-3 py-1 rounded-full font-label-sm text-label-sm flex items-center gap-1.5 backdrop-blur-sm">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                            High Priority
+                        </span>
+</div>
+</div>
+</div>
+<!-- Right: Primary Actions -->
+<div class="flex items-center gap-3 w-full md:w-auto">
+<button class="btn-ghost-cyan flex-1 md:flex-none px-5 py-2.5 rounded font-label-sm text-label-sm uppercase tracking-wider flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+                    Escalate
+                </button>
+<button class="btn-cyan flex-1 md:flex-none px-6 py-2.5 rounded font-label-sm text-label-sm uppercase tracking-wider font-bold flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                    Resolve
+                </button>
+</div>
+</div>
+</header>
+<!-- Main Canvas Layout -->
+<main class="w-full flex-grow py-stack-md md:py-stack-lg px-margin-mobile md:px-margin-desktop">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Submitter & Metadata (Col Span 3) -->
+<div class="col-span-1 md:col-span-3 flex flex-col gap-stack-md">
+<!-- Submitter Profile Card -->
+<div class="glass-pane rounded-xl p-6 flex flex-col gap-5">
+<div class="flex items-center gap-2 border-b border-white/5 pb-2">
+<span class="material-symbols-outlined text-surface-tint text-[16px]">person</span>
+<h2 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Reporter Profile</h2>
+</div>
+<div class="flex items-center gap-4">
+<img alt="Elena Carter Profile" class="w-14 h-14 rounded-full border border-surface-tint/30 object-cover shadow-[0_0_15px_rgba(0,221,221,0.15)]" data-alt="A highly detailed, professional headshot of a female executive in her early 40s. The lighting is dramatic and cinematic, featuring cool blue and cyan rim lights that match a high-tech corporate environment. She is wearing a dark, tailored blazer against a slightly out-of-focus background of a modern glass-walled office. The mood is confident, serious, and intelligent, fitting perfectly into a premium, cyber-infused enterprise dashboard UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYUPaJ5skXSoHXZqJCEf7Zh3WgWNQ7Z8gBDgL0pJfR4PJnwNYdebfvtQxGj9pHP5KislA5z_Y1cJs1pRiKFBuf5DUmB7X2S28tEvqst-I6q27V0vkC0GWBDiwoBz49fbmmsXQriPZqcJvuMZfibCdW6cxRfvapkrRcYgLTVKQGuBAE4vc51QMkR8Yx2dairpKGyELx7vCE03cik_-gWeLW9MJswvEczoXiBHjtt7AdUCWDemTTjASViKPjcxwfVEfkMdjWoutN6qs"/>
+<div>
+<div class="font-body-lg text-body-lg text-primary font-semibold">Elena Carter</div>
+<div class="font-label-sm text-label-sm text-secondary mt-0.5">VP of Operations</div>
+</div>
+</div>
+<div class="flex flex-col gap-3 mt-1">
+<div class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-surface-tint transition-colors">mail</span>
+<span class="font-body-md text-body-md">elena.c@corp-bpo.net</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-surface-tint transition-colors">call</span>
+<span class="font-body-md text-body-md">+1 (555) 019-8372</span>
+</div>
+</div>
+</div>
+<!-- Context Data Card -->
+<div class="glass-pane rounded-xl p-6 flex flex-col gap-5">
+<div class="flex items-center gap-2 border-b border-white/5 pb-2">
+<span class="material-symbols-outlined text-surface-tint text-[16px]">database</span>
+<h2 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Context Metadata</h2>
+</div>
+<dl class="flex flex-col gap-4">
+<div class="flex flex-col gap-1">
+<dt class="font-label-sm text-label-sm text-outline">Site Location</dt>
+<dd class="font-body-md text-body-md text-primary flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+                                CX Hub - Alpha (NY)
+                            </dd>
+</div>
+<div class="flex flex-col gap-1">
+<dt class="font-label-sm text-label-sm text-outline">Client Account</dt>
+<dd class="font-body-md text-body-md text-primary">TechGlobal Partners</dd>
+</div>
+<div class="flex flex-col gap-1">
+<dt class="font-label-sm text-label-sm text-outline">Impact Area</dt>
+<dd class="font-body-md text-body-md text-primary">Floor 4, Production Wing B</dd>
+</div>
+<div class="w-full h-px bg-white/5 my-1"></div>
+<div class="flex justify-between items-center">
+<dt class="font-label-sm text-label-sm text-outline">Created</dt>
+<dd class="font-label-sm text-label-sm text-primary">Oct 24, 09:14 AM</dd>
+</div>
+</dl>
+</div>
+</div>
+<!-- Center Column: Core Content (Col Span 5) -->
+<div class="col-span-1 md:col-span-5 flex flex-col gap-stack-md">
+<!-- Issue Description Card -->
+<div class="glass-pane rounded-xl p-6 md:p-8 flex flex-col gap-6">
+<div class="flex flex-col gap-4">
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container text-on-surface px-2.5 py-1 rounded font-label-sm text-label-sm border border-white/5">Facilities</span>
+<span class="bg-surface-container text-on-surface px-2.5 py-1 rounded font-label-sm text-label-sm border border-white/5">Climate Control</span>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary tracking-tight">
+                            HVAC System Failure in Sector 4
+                        </h2>
+</div>
+<div class="w-full h-px border-t border-dashed border-white/10"></div>
+<div class="font-body-md text-body-md text-on-surface-variant flex flex-col gap-4 leading-relaxed">
+<p>
+                            Multiple agents in Sector 4 are reporting extreme temperature drops. Current ambient temperature is reading near 62°F according to localized sensors. This is causing significant discomfort and impacting operational efficiency for the TechGlobal partner queues, leading to a spike in impromptu breaks.
+                        </p>
+<p>
+                            Initial physical checks by the floor supervisor indicate the primary VAV (Variable Air Volume) box for Wing B might be stuck in the open position, forcing continuous cold air regardless of thermostat settings. Requesting immediate maintenance dispatch to override or physically repair the damper actuator before the high-volume afternoon shift arrives.
+                        </p>
+</div>
+</div>
+<!-- Attachments Gallery (Empty State) -->
+<div class="glass-pane rounded-xl p-6 flex flex-col gap-5">
+<div class="flex items-center gap-2 border-b border-white/5 pb-2">
+<span class="material-symbols-outlined text-surface-tint text-[16px]">attachment</span>
+<h2 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Artifacts &amp; Media</h2>
+</div>
+<!-- Wireframe Empty State -->
+<div class="w-full h-48 rounded-lg border-2 border-dashed border-surface-tint/20 bg-surface/30 flex flex-col items-center justify-center gap-4 hover:border-surface-tint/60 hover:bg-surface-container-high/50 transition-all duration-300 cursor-pointer group">
+<div class="relative w-16 h-16 flex items-center justify-center">
+<div class="absolute inset-0 border border-surface-tint/30 rounded-lg transform rotate-6 group-hover:rotate-12 transition-transform duration-300"></div>
+<div class="absolute inset-0 border border-surface-tint/30 rounded-lg transform -rotate-6 group-hover:-rotate-12 transition-transform duration-300"></div>
+<span class="material-symbols-outlined text-[32px] text-surface-tint/60 group-hover:text-surface-tint transition-colors relative z-10 drop-shadow-[0_0_8px_rgba(0,221,221,0.5)]">cloud_upload</span>
+</div>
+<div class="text-center flex flex-col gap-1">
+<div class="font-body-md text-body-md text-primary group-hover:text-surface-tint transition-colors">Drag and drop diagnostic files</div>
+<div class="font-label-sm text-label-sm text-outline">or click to browse local system</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Actions & Timeline (Col Span 4) -->
+<div class="col-span-1 md:col-span-4 flex flex-col gap-stack-md h-full">
+<!-- Action Panel -->
+<div class="glass-pane rounded-xl p-6 flex flex-col gap-6">
+<div class="flex items-center gap-2 border-b border-white/5 pb-2">
+<span class="material-symbols-outlined text-surface-tint text-[16px]">build</span>
+<h2 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Operations Panel</h2>
+</div>
+<!-- Assignment Dropdown -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-secondary tracking-wide">Assign Dispatch Team</label>
+<div class="relative">
+<select class="w-full cyber-input rounded-md text-primary font-body-md py-3 px-4 appearance-none cursor-pointer">
+<option value="maint_alpha">Maintenance Team Alpha</option>
+<option value="hvac_spec">HVAC Specialists (External)</option>
+<option value="gen_fac">General Facilities</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-surface-tint pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Internal Note Input -->
+<div class="flex flex-col gap-2 mt-2">
+<label class="font-label-sm text-label-sm text-secondary tracking-wide">Add Internal Log</label>
+<textarea class="w-full cyber-input rounded-md text-primary font-body-md py-3 px-4 h-28 resize-none placeholder-outline" placeholder="Enter diagnostic notes or status updates..."></textarea>
+<div class="flex justify-end mt-2">
+<button class="text-surface-tint hover:text-white transition-colors font-label-sm text-label-sm uppercase flex items-center gap-1.5 tracking-wider">
+<span class="material-symbols-outlined text-[16px]">send</span> 
+                                Append Log
+                            </button>
+</div>
+</div>
+</div>
+<!-- Timeline / Activity Log -->
+<div class="glass-pane rounded-xl p-6 flex flex-col gap-5 flex-grow">
+<div class="flex items-center gap-2 border-b border-white/5 pb-2">
+<span class="material-symbols-outlined text-surface-tint text-[16px]">history</span>
+<h2 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Activity Trace</h2>
+</div>
+<div class="relative pl-4 mt-2 flex flex-col gap-8">
+<!-- Connecting Glowing Line -->
+<div class="absolute left-[19px] top-2 bottom-2 w-px bg-gradient-to-b from-surface-tint/40 via-surface-tint/10 to-transparent"></div>
+<!-- Timeline Item: Current -->
+<div class="relative flex gap-4 items-start">
+<div class="w-6 h-6 rounded-full bg-background border-2 border-surface-tint flex items-center justify-center z-10 shadow-[0_0_12px_rgba(0,221,221,0.4)]">
+<div class="w-2 h-2 rounded-full bg-surface-tint"></div>
+</div>
+<div class="flex flex-col gap-0.5 pt-0.5">
+<div class="font-label-sm text-label-sm text-surface-tint tracking-wider">Just Now</div>
+<div class="font-body-md text-body-md text-primary">Status escalated to In Progress</div>
+<div class="font-label-sm text-label-sm text-outline mt-1 border-t border-white/5 pt-1">Automated System Routing</div>
+</div>
+</div>
+<!-- Timeline Item: Past -->
+<div class="relative flex gap-4 items-start opacity-70 hover:opacity-100 transition-opacity">
+<div class="w-6 h-6 rounded-full bg-surface-container-high border-2 border-outline flex items-center justify-center z-10">
+</div>
+<div class="flex flex-col gap-0.5 pt-0.5">
+<div class="font-label-sm text-label-sm text-outline tracking-wider">09:14 AM</div>
+<div class="font-body-md text-body-md text-primary">Ticket Initialized &amp; Submitted</div>
+<div class="font-label-sm text-label-sm text-outline mt-1 border-t border-white/5 pt-1">Elena Carter via Portal</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

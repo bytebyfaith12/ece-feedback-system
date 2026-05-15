@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>System Audit Logs - Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#d4e4fa",
+                        "error-container": "#93000a",
+                        "background": "#051424",
+                        "on-surface-variant": "#b9cac9",
+                        "surface-tint": "#00dddd",
+                        "secondary": "#6bd8cb",
+                        "tertiary-fixed-dim": "#bbc9cb",
+                        "on-primary": "#003737",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "on-secondary-fixed": "#00201d",
+                        "on-secondary-fixed-variant": "#005049",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#010f1f",
+                        "surface-container-low": "#0d1c2d",
+                        "on-error": "#690005",
+                        "on-primary-container": "#007070",
+                        "primary-fixed-dim": "#00dddd",
+                        "on-secondary": "#003732",
+                        "inverse-primary": "#006a6a",
+                        "on-surface": "#d4e4fa",
+                        "surface-dim": "#051424",
+                        "outline": "#839493",
+                        "surface-variant": "#273647",
+                        "primary-container": "#00fbfb",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#00fbfb",
+                        "surface": "#051424",
+                        "secondary-fixed": "#89f5e7",
+                        "surface-container": "#122131",
+                        "tertiary-container": "#d7e5e8",
+                        "outline-variant": "#3a4a49",
+                        "surface-container-high": "#1c2b3c",
+                        "tertiary": "#ffffff",
+                        "on-tertiary-container": "#5a6769",
+                        "on-tertiary": "#263235",
+                        "on-primary-fixed-variant": "#004f4f",
+                        "inverse-on-surface": "#233143",
+                        "primary": "#ffffff",
+                        "on-primary-fixed": "#002020",
+                        "on-tertiary-fixed-variant": "#3c494b",
+                        "secondary-container": "#29a195",
+                        "surface-container-highest": "#273647",
+                        "on-tertiary-fixed": "#111e20",
+                        "surface-bright": "#2c3a4c",
+                        "on-secondary-container": "#00302b",
+                        "inverse-surface": "#d4e4fa",
+                        "tertiary-fixed": "#d7e5e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "4rem",
+                        "stack-sm": "0.5rem",
+                        "gutter": "2rem",
+                        "stack-md": "1.5rem",
+                        "margin-mobile": "1.5rem",
+                        "container-max": "1440px",
+                        "stack-lg": "3rem"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "stats-xl": ["Sora"],
+                        "display-lg": ["Sora"],
+                        "headline-md": ["Sora"],
+                        "headline-lg": ["Sora"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Sora"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "stats-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md antialiased overflow-hidden selection:bg-surface-tint/30 selection:text-surface-tint flex">
+<!-- Background Base Layer -->
+<div class="fixed inset-0 pointer-events-none z-[-1] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-surface-tint/5 via-background to-background"></div>
+<!-- SideNavBar (from JSON) -->
+<nav class="hidden md:flex flex-col h-screen w-64 fixed docked left-0 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 backdrop-blur-xl border-r border-white/5 shadow-2xl py-stack-md z-40">
+<!-- Header -->
+<div class="px-gutter mb-stack-lg flex items-center gap-stack-sm">
+<div class="h-10 w-10 rounded-lg bg-surface-container flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-surface-tint">admin_panel_settings</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Command Center</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70">V2.0.4 Online</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto px-stack-sm space-y-1">
+<!-- Dashboard -->
+<a class="flex items-center gap-stack-sm px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] transition-all group" href="#">
+<span class="material-symbols-outlined opacity-70 group-hover:opacity-100">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<!-- Submit Feedback -->
+<a class="flex items-center gap-stack-sm px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] transition-all group" href="#">
+<span class="material-symbols-outlined opacity-70 group-hover:opacity-100">rate_review</span>
+<span class="font-label-sm text-label-sm">Submit Feedback</span>
+</a>
+<!-- Pulse Feed -->
+<a class="flex items-center gap-stack-sm px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] transition-all group" href="#">
+<span class="material-symbols-outlined opacity-70 group-hover:opacity-100">sensors</span>
+<span class="font-label-sm text-label-sm">Pulse Feed</span>
+</a>
+<!-- Analytics -->
+<a class="flex items-center gap-stack-sm px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] transition-all group" href="#">
+<span class="material-symbols-outlined opacity-70 group-hover:opacity-100">analytics</span>
+<span class="font-label-sm text-label-sm">Analytics</span>
+</a>
+<!-- Sites -->
+<a class="flex items-center gap-stack-sm px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] transition-all group" href="#">
+<span class="material-symbols-outlined opacity-70 group-hover:opacity-100">location_on</span>
+<span class="font-label-sm text-label-sm">Sites</span>
+</a>
+<!-- Accounts -->
+<a class="flex items-center gap-stack-sm px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] transition-all group" href="#">
+<span class="material-symbols-outlined opacity-70 group-hover:opacity-100">group</span>
+<span class="font-label-sm text-label-sm">Accounts</span>
+</a>
+<!-- Categories -->
+<a class="flex items-center gap-stack-sm px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] transition-all group" href="#">
+<span class="material-symbols-outlined opacity-70 group-hover:opacity-100">category</span>
+<span class="font-label-sm text-label-sm">Categories</span>
+</a>
+<!-- Alerts -->
+<a class="flex items-center gap-stack-sm px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] transition-all group" href="#">
+<span class="material-symbols-outlined opacity-70 group-hover:opacity-100">notifications_active</span>
+<span class="font-label-sm text-label-sm">Alerts</span>
+</a>
+<!-- Reports -->
+<a class="flex items-center gap-stack-sm px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] transition-all group" href="#">
+<span class="material-symbols-outlined opacity-70 group-hover:opacity-100">description</span>
+<span class="font-label-sm text-label-sm">Reports</span>
+</a>
+<!-- Admin (Active) -->
+<a class="flex items-center gap-stack-sm px-4 py-3 rounded-lg bg-secondary-container/20 text-surface-tint border-l-4 border-surface-tint translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="font-label-sm text-label-sm">Admin</span>
+</a>
+</div>
+<!-- Footer Actions -->
+<div class="px-stack-sm mt-auto space-y-1 pt-stack-md border-t border-white/5">
+<button class="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-surface-tint text-background font-label-sm text-label-sm hover:shadow-[0_0_15px_rgba(0,221,221,0.5)] transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                New Report
+            </button>
+<div class="pt-stack-sm space-y-1">
+<a class="flex items-center gap-stack-sm px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 transition-all group" href="#">
+<span class="material-symbols-outlined text-sm opacity-70 group-hover:opacity-100">help</span>
+<span class="font-label-sm text-label-sm">Support</span>
+</a>
+<a class="flex items-center gap-stack-sm px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 transition-all group" href="#">
+<span class="material-symbols-outlined text-sm opacity-70 group-hover:opacity-100">logout</span>
+<span class="font-label-sm text-label-sm">Logout</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="flex-1 ml-0 md:ml-64 h-screen overflow-y-auto px-margin-mobile md:px-margin-desktop py-stack-lg max-w-container-max mx-auto relative">
+<!-- Header Area -->
+<header class="mb-stack-lg flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+<div>
+<p class="font-label-sm text-label-sm text-surface-tint uppercase mb-2 tracking-widest flex items-center gap-2">
+<span class="h-1 w-4 bg-surface-tint rounded-full"></span>
+                    System Ledger
+                </p>
+<h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface tracking-tighter">System Audit Logs</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">Real-time tracking of all executive actions, system events, and security access points across the network.</p>
+</div>
+<!-- Global Actions -->
+<div class="flex gap-3">
+<button class="px-4 py-2 rounded border border-surface-tint text-surface-tint font-label-sm text-label-sm hover:bg-surface-tint/10 transition-colors flex items-center gap-2 backdrop-blur-md">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                    Export CSV
+                </button>
+</div>
+</header>
+<!-- Controls / Toolbar -->
+<section class="mb-stack-md flex flex-col lg:flex-row gap-4 items-stretch lg:items-center p-4 rounded-xl bg-surface-container/40 backdrop-blur-xl border border-white/5 shadow-lg">
+<!-- Search -->
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-highest/50 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-on-surface font-label-sm text-label-sm placeholder-on-surface-variant/50 focus:outline-none focus:border-surface-tint focus:ring-1 focus:ring-surface-tint/50 transition-all" placeholder="Search actor, action, or target IP..." type="text"/>
+</div>
+<!-- Filters -->
+<div class="flex gap-3 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-highest/30 border border-white/5 cursor-pointer hover:bg-surface-container-highest/50 transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[16px] text-surface-tint">filter_alt</span>
+<span class="font-label-sm text-label-sm text-on-surface">Event Type: All</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-highest/30 border border-white/5 cursor-pointer hover:bg-surface-container-highest/50 transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[16px] text-surface-tint">calendar_today</span>
+<span class="font-label-sm text-label-sm text-on-surface">Last 24 Hours</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-highest/30 border border-white/5 cursor-pointer hover:bg-surface-container-highest/50 transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[16px] text-surface-tint">shield_person</span>
+<span class="font-label-sm text-label-sm text-on-surface">Actor: All Users</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</section>
+<!-- Data Grid (The Ledger) -->
+<div class="rounded-xl bg-surface-container-lowest/60 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col relative">
+<!-- Subtle top border glow -->
+<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-surface-tint/0 via-surface-tint/50 to-surface-tint/0"></div>
+<!-- Grid Header -->
+<div class="grid grid-cols-12 gap-4 px-6 py-4 bg-surface-container-high/50 border-b border-white/5 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+<div class="col-span-2">Timestamp (UTC)</div>
+<div class="col-span-2">Actor</div>
+<div class="col-span-2">Action</div>
+<div class="col-span-3">Target / Detail</div>
+<div class="col-span-2">IP Address</div>
+<div class="col-span-1 text-right">Status</div>
+</div>
+<!-- Grid Body -->
+<div class="flex-col overflow-y-auto max-h-[614px] divide-y divide-white/5">
+<!-- Row 1 -->
+<div class="grid grid-cols-12 gap-4 px-6 py-3.5 items-center hover:bg-white/5 transition-colors group">
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface opacity-80">23-10-27 14:32:01</div>
+<div class="col-span-2 font-label-sm text-label-sm text-secondary">admin_exec_01</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface">
+<span class="px-2 py-0.5 rounded bg-surface-tint/10 text-surface-tint border border-surface-tint/20">AUTH_LOGIN</span>
+</div>
+<div class="col-span-3 font-label-sm text-label-sm text-on-surface-variant truncate">System Gateway Authentication</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface-variant opacity-60">192.168.1.104</div>
+<div class="col-span-1 flex justify-end items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface">OK</span>
+<div class="w-2 h-2 rounded-full bg-surface-tint shadow-[0_0_8px_#00dddd]"></div>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-12 gap-4 px-6 py-3.5 items-center hover:bg-white/5 transition-colors group">
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface opacity-80">23-10-27 14:35:12</div>
+<div class="col-span-2 font-label-sm text-label-sm text-secondary">system_daemon</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface">
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed-dim/10 text-tertiary-fixed-dim border border-tertiary-fixed-dim/20">STATUS_CHANGE</span>
+</div>
+<div class="col-span-3 font-label-sm text-label-sm text-on-surface-variant truncate">Node Cluster Alpha -&gt; Offline</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface-variant opacity-60">10.0.0.55</div>
+<div class="col-span-1 flex justify-end items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface">WARN</span>
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_#ffb4ab]"></div>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="grid grid-cols-12 gap-4 px-6 py-3.5 items-center hover:bg-white/5 transition-colors group">
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface opacity-80">23-10-27 15:01:44</div>
+<div class="col-span-2 font-label-sm text-label-sm text-secondary">user_mgr_04</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface">
+<span class="px-2 py-0.5 rounded bg-secondary-container/30 text-secondary border border-secondary/20">REPORT_EXPORT</span>
+</div>
+<div class="col-span-3 font-label-sm text-label-sm text-on-surface-variant truncate">Q3 Financial Analytics Summary (.csv)</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface-variant opacity-60">172.16.254.1</div>
+<div class="col-span-1 flex justify-end items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface">OK</span>
+<div class="w-2 h-2 rounded-full bg-surface-tint shadow-[0_0_8px_#00dddd]"></div>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="grid grid-cols-12 gap-4 px-6 py-3.5 items-center hover:bg-white/5 transition-colors group">
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface opacity-80">23-10-27 15:15:00</div>
+<div class="col-span-2 font-label-sm text-label-sm text-secondary">admin_exec_01</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface">
+<span class="px-2 py-0.5 rounded bg-primary-container/20 text-primary-container border border-primary-container/20">CONFIG_EDIT</span>
+</div>
+<div class="col-span-3 font-label-sm text-label-sm text-on-surface-variant truncate">Global Rate Limit Threshold modified</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface-variant opacity-60">192.168.1.104</div>
+<div class="col-span-1 flex justify-end items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface">OK</span>
+<div class="w-2 h-2 rounded-full bg-surface-tint shadow-[0_0_8px_#00dddd]"></div>
+</div>
+</div>
+<!-- Row 5 -->
+<div class="grid grid-cols-12 gap-4 px-6 py-3.5 items-center hover:bg-white/5 transition-colors group">
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface opacity-80">23-10-27 15:22:18</div>
+<div class="col-span-2 font-label-sm text-label-sm text-error-container">unknown_entity</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface">
+<span class="px-2 py-0.5 rounded bg-error-container/40 text-error border border-error/30">AUTH_DENIED</span>
+</div>
+<div class="col-span-3 font-label-sm text-label-sm text-on-surface-variant truncate">Multiple failed attempts on Root</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface-variant opacity-60">45.22.19.100</div>
+<div class="col-span-1 flex justify-end items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface">FAIL</span>
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_#ffb4ab] animate-pulse"></div>
+</div>
+</div>
+<!-- Row 6 -->
+<div class="grid grid-cols-12 gap-4 px-6 py-3.5 items-center hover:bg-white/5 transition-colors group">
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface opacity-80">23-10-27 16:00:05</div>
+<div class="col-span-2 font-label-sm text-label-sm text-secondary">cron_service</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface">
+<span class="px-2 py-0.5 rounded bg-outline-variant/30 text-outline border border-outline/20">DATA_SYNC</span>
+</div>
+<div class="col-span-3 font-label-sm text-label-sm text-on-surface-variant truncate">Regional Database Replication Routine</div>
+<div class="col-span-2 font-label-sm text-label-sm text-on-surface-variant opacity-60">internal_net</div>
+<div class="col-span-1 flex justify-end items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface">OK</span>
+<div class="w-2 h-2 rounded-full bg-surface-tint shadow-[0_0_8px_#00dddd]"></div>
+</div>
+</div>
+</div>
+<!-- Footer / Pagination -->
+<div class="px-6 py-4 bg-surface-container/30 border-t border-white/5 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Showing 1-6 of 1,204 events</span>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded bg-surface-container-highest/50 border border-white/10 flex items-center justify-center text-on-surface-variant hover:text-surface-tint hover:border-surface-tint/50 transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-container-highest/50 border border-white/10 flex items-center justify-center text-on-surface-variant hover:text-surface-tint hover:border-surface-tint/50 transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

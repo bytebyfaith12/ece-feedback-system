@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login - ECE Pulse</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#c6c6cd",
+                        "on-secondary-fixed": "#1a1b21",
+                        "primary": "#e0fdff",
+                        "outline": "#849495",
+                        "on-secondary-fixed-variant": "#45474c",
+                        "on-primary-fixed": "#002022",
+                        "surface-bright": "#333b3b",
+                        "tertiary-fixed-dim": "#e8c423",
+                        "surface-container": "#192122",
+                        "secondary-container": "#47494f",
+                        "surface-container-high": "#232b2c",
+                        "secondary-fixed": "#e2e2e9",
+                        "surface-container-lowest": "#081010",
+                        "on-primary-container": "#006a70",
+                        "on-tertiary-fixed-variant": "#554500",
+                        "surface-dim": "#0d1515",
+                        "inverse-on-surface": "#2a3232",
+                        "primary-fixed": "#6ff6ff",
+                        "on-tertiary-container": "#725e00",
+                        "surface-container-low": "#151d1e",
+                        "surface-tint": "#00dce6",
+                        "tertiary": "#fff6e4",
+                        "background": "#0d1515",
+                        "on-tertiary": "#3b2f00",
+                        "inverse-primary": "#00696f",
+                        "on-primary-fixed-variant": "#004f53",
+                        "on-tertiary-fixed": "#221b00",
+                        "inverse-surface": "#dce4e4",
+                        "error": "#ffb4ab",
+                        "on-surface": "#dce4e4",
+                        "on-background": "#dce4e4",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#ffe173",
+                        "on-primary": "#00373a",
+                        "surface-container-highest": "#2e3637",
+                        "surface-variant": "#2e3637",
+                        "on-secondary-container": "#b7b8bf",
+                        "outline-variant": "#3a494b",
+                        "tertiary-container": "#fed83a",
+                        "on-secondary": "#2e3036",
+                        "secondary-fixed-dim": "#c6c6cd",
+                        "surface": "#0d1515",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#00dce6",
+                        "primary-container": "#00f2fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "gutter": "20px",
+                        "container-padding": "24px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "widget-gap": "24px"
+                    },
+                    "fontFamily": {
+                        "display-kpi": ["metropolis"],
+                        "display-kpi-mobile": ["metropolis"],
+                        "body-lg": ["metropolis"],
+                        "body-md": ["metropolis"],
+                        "label-sm": ["jetbrainsMono"],
+                        "headline-md": ["metropolis"],
+                        "headline-lg": ["metropolis"]
+                    },
+                    "fontSize": {
+                        "display-kpi": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-kpi-mobile": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap');
+        /* Mocking Metropolis font mapping to system sans for this environment to ensure text renders if custom font fails */
+        @font-face {
+            font-family: 'metropolis';
+            src: local('system-ui'), local('-apple-system'), local('BlinkMacSystemFont'), local('Segoe UI'), local('Roboto'), local('Oxygen'), local('Ubuntu'), local('Cantarell'), local('Open Sans'), local('Helvetica Neue'), local('sans-serif');
+        }
+    </style>
+</head>
+<!-- Suppressing Navigation Shell due to Transactional/Linear Intent (Login Page) -->
+<body class="bg-background min-h-screen flex items-center justify-center relative overflow-hidden font-body-md text-on-surface m-0 p-0">
+<!-- Atmospheric Background with glowing orbs simulating data particles -->
+<div class="absolute inset-0 z-0 pointer-events-none">
+<div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-surface-tint/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-primary-container/5 rounded-full blur-[150px]"></div>
+<!-- Texture Overlay -->
+<div class="absolute inset-0 opacity-20 mix-blend-overlay bg-cover bg-center" data-alt="Abstract representation of dark cyberpunk data streams flowing downwards. High-contrast neon cyan (#00dce6) vertical light trails against a deep, almost black atmospheric background. The lighting suggests a high-end corporate server room or executive dashboard environment, emitting a soft, cold technological glow." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBJ5-gf1OyFNvO_NavIdU0NrJpsbqhTNKL0CzmpHJri3ZduR9_1GhtrnasKNQtY4Tr2dnwuebMzHpwu4ffDRS3TPnRbGeilrJe56z2miycMSd8wBJwBI17h6dIcPnZA27NxB9oZ66SYmLldgAbI0uGGjCIGvNBG-yJetdgte1PbcS_ll2cnLgokRjvwCXd1Y_PmnM4y6ObJhmfqatK6AclnhDWPQGoDjohaKl4YVI6X9_NCq50hDgPp7dqhbu3J73tcG8PS6yoA6n0')"></div>
+</div>
+<!-- Login Container: Glassmorphism Card -->
+<div class="relative z-10 w-full max-w-md mx-gutter p-stack-lg bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_0_25px_rgba(0,242,254,0.1)] flex flex-col gap-stack-lg">
+<!-- Header / Logo -->
+<div class="flex flex-col items-center justify-center text-center gap-stack-sm mb-2">
+<div class="w-16 h-16 flex items-center justify-center rounded-full bg-primary/10 border border-surface-tint/30 shadow-[0_0_15px_rgba(0,242,254,0.3)] mb-2">
+<span class="material-symbols-outlined text-4xl text-primary-fixed drop-shadow-[0_0_8px_rgba(0,220,230,0.5)]" style="font-variation-settings: 'FILL' 1;">
+                    data_exploration
+                </span>
+</div>
+<h1 class="font-display-kpi text-display-kpi-mobile md:text-display-kpi text-surface-tint tracking-tighter drop-shadow-[0_0_8px_rgba(0,220,230,0.5)] m-0">
+                ECE Pulse
+            </h1>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-[0.2em]">
+                Command Center
+            </span>
+</div>
+<!-- Login Form -->
+<form class="flex flex-col gap-stack-md">
+<!-- Email Input -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-2" for="email">
+<span class="material-symbols-outlined text-[16px]">mail</span> Email Address
+                </label>
+<input class="w-full bg-surface-container-lowest/40 border-0 border-b-2 border-outline-variant focus:border-surface-tint focus:bg-surface-container-low/80 focus:ring-0 outline-none px-4 py-3 text-on-surface font-body-md transition-all rounded-t-DEFAULT placeholder:text-on-surface-variant/40" id="email" placeholder="executive@ece.com" required="" type="email"/>
+</div>
+<!-- Password Input -->
+<div class="flex flex-col gap-stack-sm">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-2" for="password">
+<span class="material-symbols-outlined text-[16px]">lock</span> Password
+                    </label>
+<a class="font-label-sm text-label-sm text-surface-tint hover:text-primary-fixed transition-colors" href="#">Forgot Password?</a>
+</div>
+<input class="w-full bg-surface-container-lowest/40 border-0 border-b-2 border-outline-variant focus:border-surface-tint focus:bg-surface-container-low/80 focus:ring-0 outline-none px-4 py-3 text-on-surface font-body-md transition-all rounded-t-DEFAULT placeholder:text-on-surface-variant/40" id="password" placeholder="••••••••" required="" type="password"/>
+</div>
+<!-- Options -->
+<div class="flex items-center gap-3 py-2">
+<input class="w-4 h-4 rounded border-outline-variant bg-surface-container-lowest/50 text-surface-tint focus:ring-surface-tint focus:ring-offset-background cursor-pointer" id="remember" type="checkbox"/>
+<label class="font-body-md text-body-md text-on-surface-variant cursor-pointer select-none" for="remember">Remember Me</label>
+</div>
+<!-- Submit Action -->
+<button class="mt-4 w-full bg-primary-container text-black font-headline-md text-headline-md-mobile md:text-headline-md py-4 px-6 rounded-lg shadow-[0_0_10px_rgba(0,242,254,0.5)] hover:shadow-[0_0_20px_rgba(0,242,254,0.8)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3 group" type="submit">
+<span>Initialize Login</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">
+                    arrow_forward
+                </span>
+</button>
+</form>
+<!-- Footer Meta -->
+<div class="text-center mt-4">
+<span class="font-label-sm text-label-sm text-outline flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">shield</span>
+                Secure Executive Gateway
+            </span>
+</div>
+</div>
+</body></html>

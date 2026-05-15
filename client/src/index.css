@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-heading: "Bungee", system-ui, sans-serif;
+  --font-body: "Poppins", system-ui, sans-serif;
+  --echo-bg: #051424;
+  --echo-bg-deep: #010f1f;
+  --echo-card: rgba(13, 28, 45, 0.58);
+  --echo-cyan: #00dddd;
+  --echo-green: #38f8a2;
+  --z-content: 1;
+  --z-card: 10;
+  --z-sidebar: 1000;
+  --z-topbar: 2000;
+  --z-dropdown: 9000;
+  --z-modal: 10000;
+  --z-toast: 11000;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: var(--font-body);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(13, 28, 45, 0.96) 0%, rgba(5, 20, 36, 0.98) 58%, #010f1f 100%),
+      #051424;
+    color: #d4e4fa;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  button,
+  input,
+  select,
+  textarea,
+  table {
+    font-family: var(--font-body);
+  }
+}
+
+@layer components {
+  .logo-font,
+  .display-title,
+  .hero-title,
+  .wallboard-title {
+    font-family: var(--font-heading);
+    letter-spacing: 0.02em;
+  }
+
+  .echo-glass {
+    background: linear-gradient(135deg, rgba(28, 43, 60, 0.48), rgba(5, 20, 36, 0.72));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-top-color: rgba(0, 221, 221, 0.22);
+    border-left-color: rgba(0, 221, 221, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 50px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(18px);
+  }
+
+  .echo-input {
+    @apply rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20;
+  }
+}
+
+@keyframes echo-radar {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+}
+
+@keyframes echo-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes echo-breathe {
+  0%, 100% {
+    box-shadow: 0 0 18px rgba(0, 221, 221, 0.14);
+  }
+  50% {
+    box-shadow: 0 0 34px rgba(56, 248, 162, 0.26);
+  }
+}
+
+@keyframes echo-wiggle {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  35% {
+    transform: rotate(-5deg) scale(1.08);
+  }
+  70% {
+    transform: rotate(5deg) scale(1.08);
+  }
+}
+
+.animate-echo-radar {
+  animation: echo-radar 2.3s ease-out infinite;
+}
+
+.animate-echo-float {
+  animation: echo-float 5s ease-in-out infinite;
+}
+
+.animate-echo-breathe {
+  animation: echo-breathe 3s ease-in-out infinite;
+}
+
+.hover-wiggle:hover {
+  animation: echo-wiggle 0.42s ease-in-out;
+}

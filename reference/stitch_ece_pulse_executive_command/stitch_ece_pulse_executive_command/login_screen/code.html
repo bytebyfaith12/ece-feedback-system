@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Command Center - Secure Access</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Sora:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#d4e4fa",
+                        "error-container": "#93000a",
+                        "background": "#051424",
+                        "on-surface-variant": "#b9cac9",
+                        "surface-tint": "#00dddd",
+                        "secondary": "#6bd8cb",
+                        "tertiary-fixed-dim": "#bbc9cb",
+                        "on-primary": "#003737",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "on-secondary-fixed": "#00201d",
+                        "on-secondary-fixed-variant": "#005049",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#010f1f",
+                        "surface-container-low": "#0d1c2d",
+                        "on-error": "#690005",
+                        "on-primary-container": "#007070",
+                        "primary-fixed-dim": "#00dddd",
+                        "on-secondary": "#003732",
+                        "inverse-primary": "#006a6a",
+                        "on-surface": "#d4e4fa",
+                        "surface-dim": "#051424",
+                        "outline": "#839493",
+                        "surface-variant": "#273647",
+                        "primary-container": "#00fbfb",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#00fbfb",
+                        "surface": "#051424",
+                        "secondary-fixed": "#89f5e7",
+                        "surface-container": "#122131",
+                        "tertiary-container": "#d7e5e8",
+                        "outline-variant": "#3a4a49",
+                        "surface-container-high": "#1c2b3c",
+                        "tertiary": "#ffffff",
+                        "on-tertiary-container": "#5a6769",
+                        "on-tertiary": "#263235",
+                        "on-primary-fixed-variant": "#004f4f",
+                        "inverse-on-surface": "#233143",
+                        "primary": "#ffffff",
+                        "on-primary-fixed": "#002020",
+                        "on-tertiary-fixed-variant": "#3c494b",
+                        "secondary-container": "#29a195",
+                        "surface-container-highest": "#273647",
+                        "on-tertiary-fixed": "#111e20",
+                        "surface-bright": "#2c3a4c",
+                        "on-secondary-container": "#00302b",
+                        "inverse-surface": "#d4e4fa",
+                        "tertiary-fixed": "#d7e5e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "4rem",
+                        "stack-sm": "0.5rem",
+                        "gutter": "2rem",
+                        "stack-md": "1.5rem",
+                        "margin-mobile": "1.5rem",
+                        "container-max": "1440px",
+                        "stack-lg": "3rem"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "stats-xl": ["Sora"],
+                        "display-lg": ["Sora"],
+                        "headline-md": ["Sora"],
+                        "headline-lg": ["Sora"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Sora"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "stats-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 221, 221, 0.03) 1px, transparent 1px), 
+                linear-gradient(to bottom, rgba(0, 221, 221, 0.03) 1px, transparent 1px);
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(1, 15, 31, 0.8) 0%, rgba(5, 20, 36, 0.9) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex items-center justify-center relative overflow-hidden font-body-md text-body-md text-on-background selection:bg-surface-tint selection:text-on-primary">
+<!-- Ambient Background Elements -->
+<div class="absolute inset-0 cyber-grid pointer-events-none z-0"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-surface-tint/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
+<!-- Login Container -->
+<main class="w-full max-w-md px-margin-mobile relative z-10 flex flex-col items-center">
+<!-- Glassmorphism Card -->
+<div class="w-full glass-panel border border-t-surface-tint/20 border-l-surface-tint/20 border-b-white/5 border-r-white/5 rounded-xl p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
+<!-- Inner subtle glow top edge -->
+<div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-surface-tint/40 to-transparent"></div>
+<!-- Header -->
+<div class="text-center mb-stack-lg">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-surface-container border border-white/10 mb-stack-md relative group">
+<div class="absolute inset-0 rounded-full bg-surface-tint/20 blur-md group-hover:bg-surface-tint/40 transition-colors duration-500"></div>
+<span class="material-symbols-outlined text-surface-tint text-3xl relative z-10" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mb-2">Command Center</h1>
+<p class="font-label-sm text-label-sm text-surface-tint uppercase tracking-[0.15em] opacity-80">Authentication Node</p>
+</div>
+<!-- Login Form -->
+<form class="flex flex-col gap-stack-md">
+<!-- Email Field -->
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest block mb-2">Executive Identifier</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-surface-tint/70 group-focus-within:text-surface-tint transition-colors">person</span>
+</div>
+<input class="w-full bg-black/40 border border-white/10 rounded-lg py-3 pl-12 pr-4 font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/30 focus:outline-none focus:border-surface-tint focus:ring-1 focus:ring-surface-tint shadow-inner transition-all" placeholder="admin@ece-pulse.sys" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest block mb-2">Secure Passcode</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-surface-tint/70 group-focus-within:text-surface-tint transition-colors">key</span>
+</div>
+<input class="w-full bg-black/40 border border-white/10 rounded-lg py-3 pl-12 pr-12 font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/30 focus:outline-none focus:border-surface-tint focus:ring-1 focus:ring-surface-tint shadow-inner transition-all" placeholder="••••••••••••" type="password"/>
+<button class="absolute inset-y-0 right-0 pr-4 flex items-center text-on-surface-variant hover:text-surface-tint transition-colors focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Actions Row -->
+<div class="flex items-center justify-between mt-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center justify-center">
+<input class="peer sr-only" type="checkbox"/>
+<div class="w-5 h-5 rounded border border-white/20 bg-black/40 peer-checked:bg-surface-tint peer-checked:border-surface-tint transition-colors"></div>
+<span class="material-symbols-outlined absolute text-on-primary text-[14px] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Remember Me</span>
+</label>
+<a class="font-label-sm text-label-sm text-surface-tint hover:text-primary-container transition-colors hover:underline underline-offset-4" href="#">Forgot Password?</a>
+</div>
+<!-- Primary CTA -->
+<button class="w-full mt-stack-sm bg-surface-tint text-on-primary font-label-sm text-label-sm uppercase tracking-widest py-4 rounded-lg flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(0,221,221,0.4)] hover:bg-primary-container active:scale-[0.98] transition-all duration-300 group relative overflow-hidden" type="button">
+<span class="relative z-10 font-bold">Access Command Center</span>
+<span class="material-symbols-outlined relative z-10 group-hover:translate-x-1 transition-transform">login</span>
+<!-- Button inner glare -->
+<div class="absolute top-0 left-[-100%] w-1/2 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:left-[200%] transition-all duration-1000 ease-in-out"></div>
+</button>
+</form>
+</div>
+<!-- Footer Notice -->
+<div class="mt-stack-lg text-center opacity-60">
+<p class="font-label-sm text-label-sm text-surface-tint uppercase tracking-[0.2em] flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+                Secure Executive Access Only
+            </p>
+</div>
+</main>
+</body></html>

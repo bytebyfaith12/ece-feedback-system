@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Floor &amp; Site Management - ECE Pulse</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        @font-face {
+            font-family: 'metropolis';
+            src: url('https://fonts.cdnfonts.com/s/14545/Metropolis-Regular.woff') format('woff');
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: 'metropolis';
+            src: url('https://fonts.cdnfonts.com/s/14545/Metropolis-SemiBold.woff') format('woff');
+            font-weight: 600;
+        }
+        @font-face {
+            font-family: 'metropolis';
+            src: url('https://fonts.cdnfonts.com/s/14545/Metropolis-Bold.woff') format('woff');
+            font-weight: 700;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap');
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#c6c6cd",
+                        "on-secondary-fixed": "#1a1b21",
+                        "primary": "#e0fdff",
+                        "outline": "#849495",
+                        "on-secondary-fixed-variant": "#45474c",
+                        "on-primary-fixed": "#002022",
+                        "surface-bright": "#333b3b",
+                        "tertiary-fixed-dim": "#e8c423",
+                        "surface-container": "#192122",
+                        "secondary-container": "#47494f",
+                        "surface-container-high": "#232b2c",
+                        "secondary-fixed": "#e2e2e9",
+                        "surface-container-lowest": "#081010",
+                        "on-primary-container": "#006a70",
+                        "on-tertiary-fixed-variant": "#554500",
+                        "surface-dim": "#0d1515",
+                        "inverse-on-surface": "#2a3232",
+                        "primary-fixed": "#6ff6ff",
+                        "on-tertiary-container": "#725e00",
+                        "surface-container-low": "#151d1e",
+                        "surface-tint": "#00dce6",
+                        "tertiary": "#fff6e4",
+                        "background": "#0d1515",
+                        "on-tertiary": "#3b2f00",
+                        "inverse-primary": "#00696f",
+                        "on-primary-fixed-variant": "#004f53",
+                        "on-tertiary-fixed": "#221b00",
+                        "inverse-surface": "#dce4e4",
+                        "error": "#ffb4ab",
+                        "on-surface": "#dce4e4",
+                        "on-background": "#dce4e4",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#ffe173",
+                        "on-primary": "#00373a",
+                        "surface-container-highest": "#2e3637",
+                        "surface-variant": "#2e3637",
+                        "on-secondary-container": "#b7b8bf",
+                        "outline-variant": "#3a494b",
+                        "tertiary-container": "#fed83a",
+                        "on-secondary": "#2e3036",
+                        "secondary-fixed-dim": "#c6c6cd",
+                        "surface": "#0d1515",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#00dce6",
+                        "primary-container": "#00f2fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "gutter": "20px",
+                        "container-padding": "24px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "widget-gap": "24px"
+                    },
+                    "fontFamily": {
+                        "display-kpi": ["metropolis"],
+                        "display-kpi-mobile": ["metropolis"],
+                        "body-lg": ["metropolis"],
+                        "body-md": ["metropolis"],
+                        "label-sm": ["jetbrainsMono"],
+                        "headline-md": ["metropolis"],
+                        "headline-lg": ["metropolis"]
+                    },
+                    "fontSize": {
+                        "display-kpi": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-kpi-mobile": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden selection:bg-surface-tint/30 selection:text-surface-tint">
+<!-- TopNavBar -->
+<nav class="full-width h-16 sticky top-0 z-40 bg-surface/80 backdrop-blur-md dark:bg-background/80 border-b border-outline-variant/20 flex justify-between items-center px-gutter w-full ml-64 transition-all duration-300">
+<div class="flex items-center gap-stack-md">
+<span class="text-lg font-display-kpi text-surface-tint dark:text-primary-fixed">Command Center</span>
+</div>
+<div class="flex items-center gap-stack-lg">
+<ul class="flex gap-stack-sm">
+<li><a class="text-on-surface-variant hover:text-on-surface px-3 py-2 text-label-sm font-label-sm transition-colors hover:bg-primary-container/20 rounded-lg" href="#">Global View</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface px-3 py-2 text-label-sm font-label-sm transition-colors hover:bg-primary-container/20 rounded-lg" href="#">BPO Sector</a></li>
+<li><a class="text-surface-tint dark:text-primary-fixed border-b-2 border-surface-tint pb-1 px-3 py-2 text-label-sm font-label-sm scale-95 transition-transform duration-150" href="#">Real-time</a></li>
+</ul>
+<div class="flex items-center gap-stack-md">
+<button class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-4 py-2 rounded-full shadow-[0_0_10px_rgba(0,242,254,0.5)] hover:shadow-[0_0_15px_rgba(0,242,254,0.8)] transition-all flex items-center gap-2">
+                    Live Status
+                </button>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-2 rounded-full hover:bg-surface-variant/50 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<img alt="Executive User" class="w-8 h-8 rounded-full border border-surface-tint/30" data-alt="Close up portrait of an executive user in a high tech command center environment. Dramatic rim lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJl0omih5hBLD805G_EKs74PwpmEd4lfMT7EhECZ0du2Uegb29ofC9M7R_AcaT0q67MUfl7S8DEXbozBsUq6OfL_AIlfgoKld9Zo3LWVGuajWLeFvefaGVw5fBG4BNukB7TRAkGPeCZ0srq_J_ZQ32x4YXHZz0alj8ppORss1jy42tvdKan8F1AiqKIvVdbMYxL6JXK7JbfkV87N0NkHDE8Kudz7SmhYB7CVS3SDlmRv7GRDm5d2xWraWuJn4IdOncDhch-pT-9Mk"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="bg-white/5 backdrop-blur-xl dark:bg-surface-container/30 h-screen w-64 fixed left-0 top-0 border-r border-white/10 shadow-[0_0_15px_rgba(0,242,254,0.1)] flex flex-col h-full z-50 overflow-y-auto backdrop-blur-xl border-r border-outline-variant/20 transition-all duration-300">
+<div class="p-container-padding border-b border-white/5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-tint/20 flex items-center justify-center border border-surface-tint/30 shadow-[0_0_10px_rgba(0,220,230,0.2)]">
+<span class="material-symbols-outlined text-surface-tint">dashboard</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tighter text-surface-tint dark:text-primary-fixed drop-shadow-[0_0_8px_rgba(0,220,230,0.5)]">ECE Pulse</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Command Center</p>
+</div>
+</div>
+</div>
+<div class="flex-1 py-container-padding flex flex-col gap-2">
+<nav class="flex flex-col gap-1 px-4">
+<a class="text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md rounded-lg flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors" data-icon="dashboard">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+<a class="text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md rounded-lg flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors" data-icon="query_stats">query_stats</span>
+<span class="text-body-md font-body-md">Analytics</span>
+</a>
+<a class="text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md rounded-lg flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors" data-icon="notifications_active">notifications_active</span>
+<span class="text-body-md font-body-md">Pulse Feed</span>
+</a>
+<a class="text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md rounded-lg flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors" data-icon="description">description</span>
+<span class="text-body-md font-body-md">Reporting</span>
+</a>
+<a class="text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md rounded-lg flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors" data-icon="warning">warning</span>
+<span class="text-body-md font-body-md">Alerts</span>
+</a>
+<a class="text-primary-fixed-dim font-bold bg-primary/10 border-r-4 border-surface-tint py-3 px-6 transition-all rounded-lg flex items-center gap-3 translate-x-1" href="#">
+<span class="material-symbols-outlined text-surface-tint" data-icon="settings">settings</span>
+<span class="text-body-md font-body-md">Settings</span>
+</a>
+</nav>
+</div>
+<div class="p-container-padding border-t border-white/5 flex flex-col gap-2">
+<button class="w-full bg-surface-variant/30 border border-surface-tint/20 text-surface-tint font-label-sm text-label-sm py-2 rounded-lg hover:bg-surface-tint/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> New Report
+            </button>
+<nav class="flex flex-col gap-1 mt-4">
+<a class="text-on-surface-variant/70 hover:text-on-surface py-2 px-4 transition-all hover:bg-white/5 hover:backdrop-blur-md rounded-lg flex items-center gap-3 text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help">help</span> Support
+                </a>
+<a class="text-on-surface-variant/70 hover:text-on-surface py-2 px-4 transition-all hover:bg-white/5 hover:backdrop-blur-md rounded-lg flex items-center gap-3 text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span> Log Out
+                </a>
+</nav>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 p-container-padding min-h-[calc(100vh-64px)] grid grid-cols-12 gap-widget-gap relative">
+<!-- Header -->
+<header class="col-span-12 flex justify-between items-end mb-stack-sm">
+<div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface">Floor &amp; Site Management</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">Hierarchical overview and configuration of physical locations.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 rounded-lg border border-surface-tint bg-transparent text-surface-tint font-label-sm text-label-sm hover:bg-surface-tint/10 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">edit</span> Edit Floor
+                </button>
+<button class="px-6 py-2 rounded-lg bg-primary-container text-on-primary-container font-label-sm text-label-sm shadow-[0_0_10px_rgba(0,242,254,0.3)] hover:shadow-[0_0_15px_rgba(0,242,254,0.6)] transition-all hover:-translate-y-0.5 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Add Site
+                </button>
+</div>
+</header>
+<!-- Split Pane Layout -->
+<!-- Left Pane: Site Hierarchy -->
+<section class="col-span-12 lg:col-span-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-container-padding flex flex-col shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+<div class="flex justify-between items-center mb-stack-md pb-2 border-b border-white/5">
+<h3 class="text-headline-md font-headline-md text-on-surface">Site Directory</h3>
+<span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer hover:text-surface-tint transition-colors">filter_list</span>
+</div>
+<div class="overflow-y-auto pr-2 custom-scrollbar flex-1">
+<!-- Site 1 -->
+<div class="mb-4">
+<div class="flex items-center justify-between group cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint text-sm transition-transform group-hover:rotate-90">chevron_right</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">domain</span>
+<span class="text-body-md font-body-md font-semibold text-on-surface">Noel</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-surface-tint shadow-[0_0_5px_rgba(0,220,230,0.8)]"></div>
+</div>
+</div>
+<!-- Site 2 (Expanded) -->
+<div class="mb-4">
+<div class="flex items-center justify-between bg-surface-tint/10 border-l-2 border-surface-tint p-2 rounded-r-lg mb-2 cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint text-sm rotate-90">chevron_right</span>
+<span class="material-symbols-outlined text-surface-tint text-sm">domain</span>
+<span class="text-body-md font-body-md font-semibold text-primary-fixed">Annex</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-surface-tint shadow-[0_0_5px_rgba(0,220,230,0.8)]"></div>
+</div>
+<!-- Floors -->
+<div class="ml-6 pl-2 border-l border-white/10 flex flex-col gap-1">
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-white/5 cursor-pointer transition-colors group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">layers</span>
+<span class="text-body-md font-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Walmart</span>
+</div>
+<span class="text-label-sm font-label-sm text-surface-tint">FL 1</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-variant/30 cursor-pointer group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-sm">layers</span>
+<span class="text-body-md font-body-md text-on-surface font-medium">Ashley</span>
+</div>
+<span class="text-label-sm font-label-sm text-surface-tint">FL 2</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-white/5 cursor-pointer transition-colors group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">layers</span>
+<span class="text-body-md font-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Papaya</span>
+</div>
+<span class="text-label-sm font-label-sm text-surface-tint">FL 3</span>
+</div>
+</div>
+</div>
+<!-- Site 3 -->
+<div class="mb-4">
+<div class="flex items-center justify-between group cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint text-sm transition-transform group-hover:rotate-90">chevron_right</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">domain</span>
+<span class="text-body-md font-body-md font-semibold text-on-surface">Macias</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_5px_rgba(255,180,171,0.8)]"></div>
+</div>
+</div>
+<!-- Site 4 -->
+<div class="mb-4">
+<div class="flex items-center justify-between group cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint text-sm transition-transform group-hover:rotate-90">chevron_right</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">domain</span>
+<span class="text-body-md font-body-md font-semibold text-on-surface">Consuelo</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-tertiary-container shadow-[0_0_5px_rgba(254,216,58,0.8)]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Pane: Floor Stats/Management -->
+<section class="col-span-12 lg:col-span-8 flex flex-col gap-widget-gap">
+<!-- Context Header -->
+<div class="bg-surface-container-low rounded-xl p-6 border border-white/5 shadow-[0_4px_24px_rgba(0,0,0,0.2)] flex justify-between items-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-r from-surface-tint/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-label-sm font-label-sm text-surface-tint">Annex Site</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">arrow_forward</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Floor 2</span>
+</div>
+<h2 class="text-headline-lg font-headline-lg text-primary-fixed">Ashley Account Workspace</h2>
+</div>
+<div class="flex gap-4 items-center z-10">
+<div class="text-right">
+<p class="text-label-sm font-label-sm text-on-surface-variant">Overall Sentiment</p>
+<p class="text-headline-md font-headline-md text-surface-tint">88% Positive</p>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-surface-tint flex items-center justify-center bg-surface-tint/10 shadow-[0_0_15px_rgba(0,220,230,0.2)]">
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">mood</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-2 gap-widget-gap">
+<!-- Stat Card 1 -->
+<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-container-padding hover:-translate-y-1 transition-transform duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_32px_rgba(0,242,254,0.15)] relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-surface-tint/10 rounded-full blur-2xl"></div>
+<div class="flex justify-between items-start mb-stack-md">
+<h4 class="text-body-md font-body-md text-on-surface-variant">Active Terminals</h4>
+<span class="material-symbols-outlined text-surface-tint bg-surface-tint/10 p-2 rounded-lg">desktop_windows</span>
+</div>
+<div class="flex items-end gap-3">
+<span class="text-display-kpi font-display-kpi text-on-surface tracking-tighter">142</span>
+<span class="text-label-sm font-label-sm text-surface-tint mb-2 flex items-center"><span class="material-symbols-outlined text-xs">arrow_upward</span> 12%</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full mt-4 overflow-hidden">
+<div class="bg-surface-tint h-full w-[85%] rounded-full shadow-[0_0_8px_rgba(0,220,230,0.8)]"></div>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-container-padding hover:-translate-y-1 transition-transform duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_32px_rgba(0,242,254,0.15)] relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-tertiary-container/10 rounded-full blur-2xl"></div>
+<div class="flex justify-between items-start mb-stack-md">
+<h4 class="text-body-md font-body-md text-on-surface-variant">Current Issues</h4>
+<span class="material-symbols-outlined text-tertiary-container bg-tertiary-container/10 p-2 rounded-lg">report_problem</span>
+</div>
+<div class="flex items-end gap-3">
+<span class="text-display-kpi font-display-kpi text-on-surface tracking-tighter">3</span>
+<span class="text-label-sm font-label-sm text-tertiary-container mb-2 flex items-center"><span class="material-symbols-outlined text-xs">arrow_downward</span> -2</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full mt-4 overflow-hidden">
+<div class="bg-tertiary-container h-full w-[15%] rounded-full shadow-[0_0_8px_rgba(254,216,58,0.8)]"></div>
+</div>
+</div>
+</div>
+<!-- Floor Map Placeholder / Quick Actions -->
+<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-container-padding flex-1 shadow-[0_4px_24px_rgba(0,0,0,0.2)] flex flex-col relative overflow-hidden">
+<div class="flex justify-between items-center mb-stack-md">
+<h3 class="text-headline-md font-headline-md text-on-surface">Floor Layout Overview</h3>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg border border-white/10 hover:bg-white/5 transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">zoom_in</span>
+</button>
+<button class="p-2 rounded-lg border border-white/10 hover:bg-white/5 transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">settings_overscan</span>
+</button>
+</div>
+</div>
+<div class="flex-1 bg-surface-container-lowest/50 rounded-lg border border-white/5 relative flex items-center justify-center min-h-[300px] overflow-hidden group">
+<!-- Abstract blueprint representation -->
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#3a494b 1px, transparent 1px); background-size: 20px 20px;"></div>
+<div class="text-center z-10">
+<span class="material-symbols-outlined text-6xl text-surface-tint/30 mb-4 drop-shadow-[0_0_15px_rgba(0,220,230,0.2)]">map</span>
+<p class="text-body-lg font-body-lg text-on-surface-variant">Interactive Floor Map</p>
+<p class="text-label-sm font-label-sm text-outline mt-2">Zone configuration available in edit mode.</p>
+<button class="mt-6 px-6 py-2 rounded-lg border border-surface-tint/50 text-surface-tint font-label-sm text-label-sm hover:bg-surface-tint/10 hover:border-surface-tint transition-all">
+                            Enter Edit Mode
+                        </button>
+</div>
+<!-- Glowing accent lines simulating data flow -->
+<div class="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-surface-tint/30 to-transparent transform -translate-y-1/2"></div>
+<div class="absolute left-1/3 top-0 w-px h-full bg-gradient-to-b from-transparent via-primary-fixed/20 to-transparent transform -translate-x-1/2"></div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

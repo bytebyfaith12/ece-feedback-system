@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ECE Pulse - Facilities Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+        /* Assuming Metropolis is available locally or replaced by a suitable sans-serif fallback if not in system */
+        @font-face {
+            font-family: 'metropolis';
+            src: local('Inter'), local('sans-serif');
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#ffdad6",
+                    "secondary": "#c6c6cd",
+                    "on-secondary-fixed": "#1a1b21",
+                    "primary": "#e0fdff",
+                    "outline": "#849495",
+                    "on-secondary-fixed-variant": "#45474c",
+                    "on-primary-fixed": "#002022",
+                    "surface-bright": "#333b3b",
+                    "tertiary-fixed-dim": "#e8c423",
+                    "surface-container": "#192122",
+                    "secondary-container": "#47494f",
+                    "surface-container-high": "#232b2c",
+                    "secondary-fixed": "#e2e2e9",
+                    "surface-container-lowest": "#081010",
+                    "on-primary-container": "#006a70",
+                    "on-tertiary-fixed-variant": "#554500",
+                    "surface-dim": "#0d1515",
+                    "inverse-on-surface": "#2a3232",
+                    "primary-fixed": "#6ff6ff",
+                    "on-tertiary-container": "#725e00",
+                    "surface-container-low": "#151d1e",
+                    "surface-tint": "#00dce6",
+                    "tertiary": "#fff6e4",
+                    "background": "#0d1515",
+                    "on-tertiary": "#3b2f00",
+                    "inverse-primary": "#00696f",
+                    "on-primary-fixed-variant": "#004f53",
+                    "on-tertiary-fixed": "#221b00",
+                    "inverse-surface": "#dce4e4",
+                    "error": "#ffb4ab",
+                    "on-surface": "#dce4e4",
+                    "on-background": "#dce4e4",
+                    "on-surface-variant": "#b9cacb",
+                    "tertiary-fixed": "#ffe173",
+                    "on-primary": "#00373a",
+                    "surface-container-highest": "#2e3637",
+                    "surface-variant": "#2e3637",
+                    "on-secondary-container": "#b7b8bf",
+                    "outline-variant": "#3a494b",
+                    "tertiary-container": "#fed83a",
+                    "on-secondary": "#2e3036",
+                    "secondary-fixed-dim": "#c6c6cd",
+                    "surface": "#0d1515",
+                    "on-error": "#690005",
+                    "error-container": "#93000a",
+                    "primary-fixed-dim": "#00dce6",
+                    "primary-container": "#00f2fe"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "gutter": "20px",
+                    "container-padding": "24px",
+                    "stack-md": "16px",
+                    "stack-lg": "32px",
+                    "widget-gap": "24px"
+            },
+            "fontFamily": {
+                    "display-kpi": ["metropolis"],
+                    "display-kpi-mobile": ["metropolis"],
+                    "body-lg": ["metropolis"],
+                    "body-md": ["metropolis"],
+                    "label-sm": ["jetbrainsMono"],
+                    "headline-md": ["metropolis"],
+                    "headline-lg": ["metropolis"]
+            },
+            "fontSize": {
+                    "display-kpi": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-kpi-mobile": ["36px", {"lineHeight": "44px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex selection:bg-surface-tint/30 selection:text-primary">
+<!-- SideNavBar -->
+<nav class="bg-white/5 backdrop-blur-xl dark:bg-surface-container/30 h-screen w-64 fixed left-0 top-0 border-r border-white/10 flex flex-col z-50 overflow-y-auto border-r border-outline-variant/20 shadow-[0_0_15px_rgba(0,242,254,0.1)]">
+<!-- Header -->
+<div class="px-6 py-8 flex flex-col gap-2 border-b border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-surface-tint drop-shadow-[0_0_8px_rgba(0,220,230,0.5)]" style="font-variation-settings: 'FILL' 1;">electric_bolt</span>
+<span class="text-xl font-bold tracking-tighter text-surface-tint dark:text-primary-fixed drop-shadow-[0_0_8px_rgba(0,220,230,0.5)]">ECE Pulse</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Command Center</span>
+</div>
+<!-- Main Navigation Tabs -->
+<div class="flex-1 py-4 flex flex-col">
+<!-- Active Tab: Dashboard (Mapped from Facilities Management intent) -->
+<a class="flex items-center gap-3 text-primary-fixed-dim font-bold bg-primary/10 border-r-4 border-surface-tint py-3 px-6 transition-all translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="text-body-md font-body-md">Analytics</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="text-body-md font-body-md">Pulse Feed</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-body-md font-body-md">Reporting</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">warning</span>
+<span class="text-body-md font-body-md">Alerts</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-body-md font-body-md">Settings</span>
+</a>
+</div>
+<!-- CTA -->
+<div class="px-6 py-4">
+<button class="w-full bg-primary-container text-background py-2 rounded font-bold text-label-sm uppercase tracking-wider shadow-[0_0_10px_rgba(0,242,254,0.5)] hover:bg-primary-fixed hover:-translate-y-0.5 transition-all">
+                New Report
+            </button>
+</div>
+<!-- Footer Navigation Tabs -->
+<div class="border-t border-white/5 py-4 flex flex-col">
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-label-sm font-label-sm">Support</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-label-sm font-label-sm">Log Out</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="ml-64 flex-1 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface/80 backdrop-blur-md dark:bg-background/80 h-16 sticky top-0 z-40 border-b border-outline-variant/20 flex justify-between items-center px-gutter w-full">
+<!-- Product Name & Logo (Left) -->
+<div class="flex items-center gap-4">
+<div class="text-lg font-display-kpi text-surface-tint dark:text-primary-fixed">Command Center</div>
+</div>
+<!-- Search/Nav (Center area mapping) -->
+<div class="hidden md:flex flex-1 mx-8 border-l border-white/10 pl-8">
+<div class="flex gap-6">
+<a class="text-surface-tint dark:text-primary-fixed border-b-2 border-surface-tint pb-1 text-label-sm font-label-sm uppercase tracking-wider scale-95 transition-transform duration-150" href="#">Global View</a>
+<a class="text-on-surface-variant hover:text-on-surface text-label-sm font-label-sm uppercase tracking-wider hover:bg-primary-container/20 rounded-lg transition-colors px-2 py-1 -ml-2" href="#">BPO Sector</a>
+<a class="text-on-surface-variant hover:text-on-surface text-label-sm font-label-sm uppercase tracking-wider hover:bg-primary-container/20 rounded-lg transition-colors px-2 py-1" href="#">Real-time</a>
+</div>
+</div>
+<!-- Actions (Right) -->
+<div class="flex items-center gap-4">
+<button class="border border-surface-tint text-surface-tint px-4 py-1.5 rounded text-label-sm font-label-sm uppercase tracking-wider hover:bg-surface-tint/10 transition-colors flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-surface-tint shadow-[0_0_5px_rgba(0,220,230,0.8)] animate-pulse"></span>
+                    Live Status
+                </button>
+<div class="flex gap-2 border-l border-white/10 pl-4">
+<button class="p-2 text-on-surface-variant hover:text-primary-fixed hover:bg-primary-container/20 rounded-lg transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary-fixed hover:bg-primary-container/20 rounded-lg transition-colors flex items-center justify-center relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary-fixed hover:bg-primary-container/20 rounded-lg transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Page Canvas: Facilities Management -->
+<main class="flex-1 p-container-padding space-y-widget-gap">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-stack-md">
+<div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface tracking-tight">Facilities Environment</h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">Live physical infrastructure health matrix.</p>
+</div>
+<div class="flex gap-3">
+<div class="flex items-center gap-2 bg-surface-container/50 px-3 py-1.5 rounded-full border border-white/5 text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[16px] text-surface-tint">update</span>
+<span>Updated: Just now</span>
+</div>
+</div>
+</div>
+<!-- KPI Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-widget-gap">
+<!-- Cleanliness KPI -->
+<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6 shadow-[0_0_15px_rgba(0,242,254,0.02)] hover:shadow-[0_0_15px_rgba(0,242,254,0.15)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-tint/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">cleaning_services</span>
+<span class="text-label-sm font-label-sm uppercase tracking-wider">Overall Cleanliness</span>
+</div>
+<span class="material-symbols-outlined text-surface-tint text-[20px]">trending_up</span>
+</div>
+<div class="flex items-end gap-3">
+<span class="text-display-kpi font-display-kpi text-on-surface">94<span class="text-headline-md">%</span></span>
+<span class="text-surface-tint text-label-sm font-label-sm mb-2">+2.4% vs last week</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-4 overflow-hidden">
+<div class="bg-surface-tint h-full w-[94%] shadow-[0_0_10px_rgba(0,220,230,0.8)]"></div>
+</div>
+</div>
+<!-- Maintenance Requests KPI -->
+<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6 shadow-[0_0_15px_rgba(0,242,254,0.02)] hover:shadow-[0_0_15px_rgba(0,242,254,0.15)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-error/10 rounded-full blur-2xl -mr-16 -mt-16"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">build_circle</span>
+<span class="text-label-sm font-label-sm uppercase tracking-wider">Active Maintenance</span>
+</div>
+<span class="material-symbols-outlined text-error text-[20px]">priority_high</span>
+</div>
+<div class="flex items-end gap-3 relative z-10">
+<span class="text-display-kpi font-display-kpi text-on-surface">12</span>
+<span class="text-error text-label-sm font-label-sm mb-2">3 Critical</span>
+</div>
+<div class="flex gap-1 mt-4 relative z-10">
+<!-- Simulated sparkline dots -->
+<div class="h-6 w-2 bg-surface-container-highest rounded-sm flex items-end"><div class="w-full h-[30%] bg-on-surface-variant rounded-sm"></div></div>
+<div class="h-6 w-2 bg-surface-container-highest rounded-sm flex items-end"><div class="w-full h-[50%] bg-on-surface-variant rounded-sm"></div></div>
+<div class="h-6 w-2 bg-surface-container-highest rounded-sm flex items-end"><div class="w-full h-[20%] bg-on-surface-variant rounded-sm"></div></div>
+<div class="h-6 w-2 bg-surface-container-highest rounded-sm flex items-end"><div class="w-full h-[80%] bg-tertiary-container rounded-sm"></div></div>
+<div class="h-6 w-2 bg-surface-container-highest rounded-sm flex items-end"><div class="w-full h-[100%] bg-error rounded-sm shadow-[0_0_5px_rgba(255,180,171,0.5)]"></div></div>
+</div>
+</div>
+<!-- AC Comfort Score KPI -->
+<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6 shadow-[0_0_15px_rgba(0,242,254,0.02)] hover:shadow-[0_0_15px_rgba(0,242,254,0.15)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-fixed/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">air</span>
+<span class="text-label-sm font-label-sm uppercase tracking-wider">AC Comfort Score</span>
+</div>
+<span class="material-symbols-outlined text-primary-fixed text-[20px]">check_circle</span>
+</div>
+<div class="flex items-end gap-3">
+<span class="text-display-kpi font-display-kpi text-on-surface">88<span class="text-headline-md">/100</span></span>
+<span class="text-primary-fixed text-label-sm font-label-sm mb-2">Optimal range</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-4 overflow-hidden flex">
+<div class="bg-primary-fixed h-full w-[88%] shadow-[0_0_10px_rgba(111,246,255,0.6)]"></div>
+</div>
+</div>
+</div>
+<!-- Tactical Matrix & Real-time Tracking Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-widget-gap">
+<!-- Floor-by-floor facilities health matrix (Takes 2 columns) -->
+<div class="lg:col-span-2 bg-surface-container/30 border border-white/5 rounded-xl p-6 flex flex-col h-full">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-headline-md font-headline-md text-on-surface">Sector Status Matrix</h2>
+<button class="text-label-sm font-label-sm text-surface-tint border border-surface-tint/30 px-3 py-1 rounded hover:bg-surface-tint/10 transition-colors">Expand View</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+<!-- Floor 1 -->
+<div class="bg-surface-container-high/50 p-4 rounded-lg border border-white/5 hover:border-surface-tint/30 transition-colors cursor-pointer group">
+<div class="flex justify-between items-center mb-3">
+<h3 class="text-body-lg font-body-lg text-on-surface flex items-center gap-2">
+                                    Sector Alpha <span class="text-label-sm text-on-surface-variant">(Fl 1-2)</span>
+</h3>
+<div class="w-2.5 h-2.5 rounded-full bg-surface-tint shadow-[0_0_8px_rgba(0,220,230,0.8)]"></div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">HVAC Loop</span>
+<span class="text-surface-tint">Nominal</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Sanitation</span>
+<span class="text-surface-tint">98%</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Power Draw</span>
+<span class="text-on-surface">42kW</span>
+</div>
+</div>
+</div>
+<!-- Floor 2 -->
+<div class="bg-surface-container-high/50 p-4 rounded-lg border border-white/5 hover:border-tertiary-container/30 transition-colors cursor-pointer group relative overflow-hidden">
+<div class="absolute inset-0 bg-tertiary-container/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-center mb-3 relative z-10">
+<h3 class="text-body-lg font-body-lg text-on-surface flex items-center gap-2">
+                                    Sector Beta <span class="text-label-sm text-on-surface-variant">(Fl 3-4)</span>
+</h3>
+<div class="w-2.5 h-2.5 rounded-full bg-tertiary-container shadow-[0_0_8px_rgba(254,216,58,0.8)]"></div>
+</div>
+<div class="space-y-3 relative z-10">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">HVAC Loop</span>
+<span class="text-tertiary-container">Temp Spike (+2°C)</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Sanitation</span>
+<span class="text-surface-tint">95%</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Power Draw</span>
+<span class="text-on-surface">48kW</span>
+</div>
+</div>
+</div>
+<!-- Floor 3 -->
+<div class="bg-surface-container-high/50 p-4 rounded-lg border border-white/5 hover:border-error/30 transition-colors cursor-pointer group relative overflow-hidden">
+<div class="absolute inset-0 bg-error/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-center mb-3 relative z-10">
+<h3 class="text-body-lg font-body-lg text-on-surface flex items-center gap-2">
+                                    Sector Gamma <span class="text-label-sm text-on-surface-variant">(Fl 5)</span>
+</h3>
+<div class="w-2.5 h-2.5 rounded-full bg-error shadow-[0_0_8px_rgba(255,180,171,0.8)] animate-pulse"></div>
+</div>
+<div class="space-y-3 relative z-10">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">HVAC Loop</span>
+<span class="text-surface-tint">Nominal</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Sanitation</span>
+<span class="text-error border border-error/30 px-1.5 py-0.5 rounded">Spill Alert Active</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Power Draw</span>
+<span class="text-on-surface">39kW</span>
+</div>
+</div>
+</div>
+<!-- Floor 4 -->
+<div class="bg-surface-container-high/50 p-4 rounded-lg border border-white/5 hover:border-surface-tint/30 transition-colors cursor-pointer group">
+<div class="flex justify-between items-center mb-3">
+<h3 class="text-body-lg font-body-lg text-on-surface flex items-center gap-2">
+                                    Sector Delta <span class="text-label-sm text-on-surface-variant">(Fl 6-7)</span>
+</h3>
+<div class="w-2.5 h-2.5 rounded-full bg-surface-tint shadow-[0_0_8px_rgba(0,220,230,0.8)]"></div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">HVAC Loop</span>
+<span class="text-surface-tint">Nominal</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Sanitation</span>
+<span class="text-surface-tint">99%</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Power Draw</span>
+<span class="text-on-surface">45kW</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Real-time Tracking (Maintenance Feed) -->
+<div class="bg-surface-container/30 border border-white/5 rounded-xl p-6 flex flex-col h-full">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-headline-md font-headline-md text-on-surface">Live Dispatch</h2>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-surface-tint transition-colors">more_horiz</span>
+</div>
+<div class="flex-1 space-y-6">
+<!-- Track Item 1 -->
+<div class="relative pl-6">
+<!-- Vertical Line -->
+<div class="absolute left-[7px] top-6 bottom-[-24px] w-[2px] bg-white/10"></div>
+<!-- Status Dot -->
+<div class="absolute left-0 top-1.5 w-4 h-4 rounded-full bg-surface-container border-2 border-surface-tint flex items-center justify-center z-10">
+<div class="w-1.5 h-1.5 bg-surface-tint rounded-full shadow-[0_0_5px_rgba(0,220,230,1)]"></div>
+</div>
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-body-md font-body-md text-on-surface">HVAC Reset - Beta</h4>
+<span class="text-label-sm font-label-sm text-surface-tint">In Progress</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-1">Tech ID: #4492 dispatched to Floor 3 panel.</p>
+<span class="text-label-sm font-label-sm text-on-surface-variant/50">10:42 AM</span>
+</div>
+<!-- Track Item 2 -->
+<div class="relative pl-6">
+<!-- Vertical Line -->
+<div class="absolute left-[7px] top-6 bottom-[-24px] w-[2px] bg-white/10"></div>
+<!-- Status Dot -->
+<div class="absolute left-0 top-1.5 w-4 h-4 rounded-full bg-surface-container border-2 border-error flex items-center justify-center z-10">
+<div class="w-1.5 h-1.5 bg-error rounded-full shadow-[0_0_5px_rgba(255,180,171,1)] animate-pulse"></div>
+</div>
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-body-md font-body-md text-on-surface">Sanitation - Gamma</h4>
+<span class="text-label-sm font-label-sm text-error">Unassigned</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-1">Spill reported near elevator bank Fl 5.</p>
+<span class="text-label-sm font-label-sm text-on-surface-variant/50">10:38 AM</span>
+</div>
+<!-- Track Item 3 -->
+<div class="relative pl-6">
+<!-- Status Dot -->
+<div class="absolute left-0 top-1.5 w-4 h-4 rounded-full bg-surface-container border-2 border-on-surface-variant/30 flex items-center justify-center z-10">
+<div class="w-1.5 h-1.5 bg-on-surface-variant/30 rounded-full"></div>
+</div>
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-body-md font-body-md text-on-surface-variant">Lighting Fixture - Alpha</h4>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Resolved</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant/70 mb-1">Replaced LED unit #B-12 on Floor 1.</p>
+<span class="text-label-sm font-label-sm text-on-surface-variant/50">09:15 AM</span>
+</div>
+</div>
+<button class="w-full mt-6 py-2 border border-white/10 rounded text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors">
+                        View All Logs
+                    </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

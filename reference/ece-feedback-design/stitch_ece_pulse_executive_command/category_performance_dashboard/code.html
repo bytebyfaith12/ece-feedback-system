@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Category Performance Dashboard - ECE Pulse</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Sora:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#d4e4fa",
+                        "error-container": "#93000a",
+                        "background": "#051424",
+                        "on-surface-variant": "#b9cac9",
+                        "surface-tint": "#00dddd",
+                        "secondary": "#6bd8cb",
+                        "tertiary-fixed-dim": "#bbc9cb",
+                        "on-primary": "#003737",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "on-secondary-fixed": "#00201d",
+                        "on-secondary-fixed-variant": "#005049",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#010f1f",
+                        "surface-container-low": "#0d1c2d",
+                        "on-error": "#690005",
+                        "on-primary-container": "#007070",
+                        "primary-fixed-dim": "#00dddd",
+                        "on-secondary": "#003732",
+                        "inverse-primary": "#006a6a",
+                        "on-surface": "#d4e4fa",
+                        "surface-dim": "#051424",
+                        "outline": "#839493",
+                        "surface-variant": "#273647",
+                        "primary-container": "#00fbfb",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#00fbfb",
+                        "surface": "#051424",
+                        "secondary-fixed": "#89f5e7",
+                        "surface-container": "#122131",
+                        "tertiary-container": "#d7e5e8",
+                        "outline-variant": "#3a4a49",
+                        "surface-container-high": "#1c2b3c",
+                        "tertiary": "#ffffff",
+                        "on-tertiary-container": "#5a6769",
+                        "on-tertiary": "#263235",
+                        "on-primary-fixed-variant": "#004f4f",
+                        "inverse-on-surface": "#233143",
+                        "primary": "#ffffff",
+                        "on-primary-fixed": "#002020",
+                        "on-tertiary-fixed-variant": "#3c494b",
+                        "secondary-container": "#29a195",
+                        "surface-container-highest": "#273647",
+                        "on-tertiary-fixed": "#111e20",
+                        "surface-bright": "#2c3a4c",
+                        "on-secondary-container": "#00302b",
+                        "inverse-surface": "#d4e4fa",
+                        "tertiary-fixed": "#d7e5e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "4rem",
+                        "stack-sm": "0.5rem",
+                        "gutter": "2rem",
+                        "stack-md": "1.5rem",
+                        "margin-mobile": "1.5rem",
+                        "container-max": "1440px",
+                        "stack-lg": "3rem"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "stats-xl": ["Sora"],
+                        "display-lg": ["Sora"],
+                        "headline-md": ["Sora"],
+                        "headline-lg": ["Sora"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Sora"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "stats-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(13, 28, 45, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-panel-gradient-border {
+            position: relative;
+        }
+        
+        .glass-panel-gradient-border::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(0, 221, 221, 0.2) 0%, transparent 50%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .cyber-glow {
+            box-shadow: 0 0 15px rgba(0, 221, 221, 0.15);
+        }
+
+        .pulse-ring {
+            position: relative;
+        }
+        
+        .pulse-ring::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 221, 221, 0.5);
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        /* Thin scrollbar for lists */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 221, 221, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md text-body-md overflow-x-hidden selection:bg-surface-tint selection:text-background">
+<!-- TopNavBar (Web) -->
+<nav class="hidden md:flex bg-surface/80 dark:bg-surface/80 backdrop-blur-lg border-b border-white/5 shadow-sm docked full-width top-0 sticky z-50 flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
+<div class="font-display-lg text-headline-md tracking-tighter text-surface-tint uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">sensors</span>
+            ECE Pulse
+        </div>
+<div class="flex items-center gap-6">
+<a class="font-headline-md text-headline-md text-on-surface-variant hover:text-on-surface transition-colors hover:bg-white/5 transition-all duration-300 px-3 py-1 rounded scale-95 active:scale-90 transition-transform" href="#">Dashboard</a>
+<a class="font-headline-md text-headline-md text-on-surface-variant hover:text-on-surface transition-colors hover:bg-white/5 transition-all duration-300 px-3 py-1 rounded scale-95 active:scale-90 transition-transform" href="#">Analytics</a>
+<a class="font-headline-md text-headline-md text-on-surface-variant hover:text-on-surface transition-colors hover:bg-white/5 transition-all duration-300 px-3 py-1 rounded scale-95 active:scale-90 transition-transform" href="#">Reports</a>
+<a class="font-headline-md text-headline-md text-surface-tint border-b-2 border-surface-tint pb-1 px-3 py-1 rounded scale-95 active:scale-90 transition-transform" href="#">Categories</a>
+<a class="font-headline-md text-headline-md text-on-surface-variant hover:text-on-surface transition-colors hover:bg-white/5 transition-all duration-300 px-3 py-1 rounded scale-95 active:scale-90 transition-transform" href="#">Admin</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="Executive User Profile" class="w-8 h-8 rounded-full border border-white/10" data-alt="A small, circular avatar portrait of a confident executive user. The lighting is soft and professional, fitting seamlessly into a premium, dark-mode dashboard interface with subtle cyber-aesthetic accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzVYZCMd3os8pcjHCqagMn8FXJKxvgElL_6EgQtsl3R5vEJ1sTQvCJPGnG4yWJCBQWy55dHsetiizJrMTOHnrkTheoJxd8mrpd0-BtK5jIJm9a0dFf61OCbRsd8UWeDssfkb8LC7A7iNuY8PzD6Lv0fXjrSUShyjYatC0C0MXEQIzvnaZiyaWK1czmP1XAVRbgoemVwxflfnyxuTvFlQVRi8d4Jn4XTQ3WmgX5SgMaOgTs9MhKrPISoPJ-rQhHw_R36sJpLfc4ChA"/>
+</div>
+</nav>
+<!-- Main Layout -->
+<div class="flex max-w-container-max mx-auto">
+<!-- SideNavBar (Web) -->
+<aside class="hidden md:flex flex-col bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 backdrop-blur-xl border-r border-white/5 shadow-2xl docked left-0 h-screen w-64 fixed top-16 py-stack-md z-40">
+<!-- Navigation Links -->
+<nav class="flex-1 px-4 flex flex-col gap-2 mt-4 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">rate_review</span>
+<span class="font-label-sm text-label-sm">Submit Feedback</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">sensors</span>
+<span class="font-label-sm text-label-sm">Pulse Feed</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-sm text-label-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">location_on</span>
+<span class="font-label-sm text-label-sm">Sites</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-sm text-label-sm">Accounts</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-secondary-container/20 text-surface-tint border-l-4 border-surface-tint hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">category</span>
+<span class="font-label-sm text-label-sm">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="font-label-sm text-label-sm">Alerts</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-sm text-label-sm">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="font-label-sm text-label-sm">Admin</span>
+</a>
+</nav>
+<div class="px-4 mt-auto border-t border-white/5 pt-4 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-sm text-label-sm">Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-sm text-label-sm">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full md:ml-64 px-margin-mobile md:px-margin-desktop py-stack-lg min-h-[calc(100vh-4rem)]">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Category Performance Dashboard</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Segment analysis and localized feedback metrics.</p>
+</div>
+<!-- Global Dropdown -->
+<div class="relative w-full md:w-64 z-20">
+<label class="block font-label-sm text-label-sm text-surface-tint mb-2">Select Category</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-low border border-white/10 rounded-lg px-4 py-3 font-body-md text-primary focus:outline-none focus:border-surface-tint focus:ring-1 focus:ring-surface-tint shadow-inner transition-colors">
+<option selected="" value="it">Information Technology (IT)</option>
+<option value="facilities">Facilities &amp; Workspace</option>
+<option value="security">Physical Security</option>
+<option value="hr">Employee Experience</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-surface-tint">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State Layer (Hidden by default, used when no data) -->
+<!-- 
+            <div class="w-full h-96 flex flex-col items-center justify-center glass-panel glass-panel-gradient-border rounded-xl">
+                <span class="material-symbols-outlined text-surface-tint/30 text-6xl mb-4">analytics</span>
+                <p class="font-headline-md text-headline-md text-on-surface-variant mb-2">Awaiting Telemetry</p>
+                <p class="font-body-md text-on-surface-variant/70">Data will appear once real feedback is submitted.</p>
+            </div>
+            -->
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- KPI 1: Total Submissions -->
+<div class="md:col-span-4 glass-panel glass-panel-gradient-border rounded-xl p-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-surface-tint">mail</span>
+</div>
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Total Submissions</h3>
+<div class="flex items-baseline gap-3">
+<span class="font-stats-xl text-stats-xl text-primary">1,429</span>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">+12%</span>
+</div>
+<div class="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-surface-tint w-[70%]"></div>
+</div>
+</div>
+<!-- KPI 2: Avg Rating -->
+<div class="md:col-span-4 glass-panel glass-panel-gradient-border rounded-xl p-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-surface-tint">star</span>
+</div>
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Avg. Rating</h3>
+<div class="flex items-baseline gap-3">
+<span class="font-stats-xl text-stats-xl text-primary">4.2</span>
+<span class="font-body-md text-on-surface-variant">/ 5.0</span>
+</div>
+<div class="mt-4 flex gap-1">
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-white/20" style="font-variation-settings: 'FILL' 1;">star_half</span>
+</div>
+</div>
+<!-- KPI 3: Criticality Ratio -->
+<div class="md:col-span-4 glass-panel glass-panel-gradient-border rounded-xl p-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-error">warning</span>
+</div>
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Criticality Ratio</h3>
+<div class="flex items-baseline gap-3">
+<span class="font-stats-xl text-stats-xl text-error">8.4%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">High Severity</span>
+</div>
+<div class="mt-4 flex h-2 w-full rounded-full overflow-hidden bg-white/5">
+<div class="h-full bg-error w-[8.4%] pulse-ring"></div>
+<div class="h-full bg-surface-tint/50 w-[41.6%]"></div>
+<div class="h-full bg-secondary/30 w-[50%]"></div>
+</div>
+</div>
+<!-- Subcategory Breakdown -->
+<div class="md:col-span-8 glass-panel glass-panel-gradient-border rounded-xl p-6">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-primary">Subcategory Breakdown</h2>
+<button class="text-surface-tint hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="space-y-6">
+<!-- Sub item 1 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-2">
+<span class="text-primary">Internet &amp; Network</span>
+<span class="text-surface-tint">45% (643)</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-surface-tint w-[45%]"></div>
+</div>
+</div>
+<!-- Sub item 2 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-2">
+<span class="text-primary">Hardware / Devices</span>
+<span class="text-secondary">30% (428)</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[30%]"></div>
+</div>
+</div>
+<!-- Sub item 3 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-2">
+<span class="text-primary">Software &amp; Tools</span>
+<span class="text-tertiary-fixed-dim">15% (214)</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim w-[15%]"></div>
+</div>
+</div>
+<!-- Sub item 4 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-2">
+<span class="text-primary">VPN / Remote Access</span>
+<span class="text-error">10% (144)</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-error w-[10%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sentiment Analysis -->
+<div class="md:col-span-4 glass-panel glass-panel-gradient-border rounded-xl p-6 flex flex-col">
+<h2 class="font-headline-md text-headline-md text-primary mb-6">Sentiment Analysis</h2>
+<div class="flex-1 flex flex-col justify-center relative">
+<!-- Abstract Donut Chart Visualization using CSS -->
+<div class="w-48 h-48 mx-auto rounded-full border-8 border-white/5 relative flex items-center justify-center">
+<div class="absolute inset-0 rounded-full border-8 border-surface-tint" style="clip-path: polygon(50% 50%, 100% 0, 100% 100%, 0 100%, 0 50%); transform: rotate(45deg);"></div>
+<div class="absolute inset-0 rounded-full border-8 border-secondary" style="clip-path: polygon(50% 50%, 0 50%, 0 0, 50% 0); transform: rotate(45deg);"></div>
+<div class="absolute inset-0 rounded-full border-8 border-error" style="clip-path: polygon(50% 50%, 50% 0, 100% 0); transform: rotate(45deg);"></div>
+<div class="text-center z-10 bg-background/80 w-32 h-32 rounded-full flex flex-col items-center justify-center backdrop-blur-sm">
+<span class="font-stats-xl text-stats-xl text-primary">68%</span>
+<span class="font-label-sm text-label-sm text-surface-tint">Positive</span>
+</div>
+</div>
+<div class="mt-8 flex justify-center gap-6">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-surface-tint"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Pos</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Neu</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-error"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Neg</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Tickets List -->
+<div class="md:col-span-12 glass-panel glass-panel-gradient-border rounded-xl p-6">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-primary">Recent Diagnostics (IT)</h2>
+<button class="px-4 py-2 bg-transparent border border-surface-tint text-surface-tint hover:bg-surface-tint/10 rounded font-label-sm text-label-sm transition-colors">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-white/10">
+<th class="pb-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-normal">Ticket ID</th>
+<th class="pb-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-normal">Subcategory</th>
+<th class="pb-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-normal">Subject</th>
+<th class="pb-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-normal">Status</th>
+<th class="pb-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-normal">Time</th>
+</tr>
+</thead>
+<tbody class="font-body-md">
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer group">
+<td class="py-4 text-surface-tint font-label-sm text-label-sm">#IT-9042</td>
+<td class="py-4 text-on-surface-variant">Internet &amp; Network</td>
+<td class="py-4 text-primary">Wifi dropping in conference room B</td>
+<td class="py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-label-sm bg-error/10 text-error border border-error/20">
+<span class="w-1.5 h-1.5 rounded-full bg-error pulse-ring"></span>
+                                            Open
+                                        </span>
+</td>
+<td class="py-4 text-on-surface-variant text-sm">10 mins ago</td>
+</tr>
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer">
+<td class="py-4 text-surface-tint font-label-sm text-label-sm">#IT-9041</td>
+<td class="py-4 text-on-surface-variant">VPN / Remote Access</td>
+<td class="py-4 text-primary">Cannot connect to Chicago VPN gateway</td>
+<td class="py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-label-sm bg-surface-tint/10 text-surface-tint border border-surface-tint/20">
+<span class="w-1.5 h-1.5 rounded-full bg-surface-tint"></span>
+                                            In Progress
+                                        </span>
+</td>
+<td class="py-4 text-on-surface-variant text-sm">45 mins ago</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors cursor-pointer">
+<td class="py-4 text-surface-tint font-label-sm text-label-sm">#IT-9040</td>
+<td class="py-4 text-on-surface-variant">Hardware / Devices</td>
+<td class="py-4 text-primary">Requesting new monitor arm installation</td>
+<td class="py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-label-sm bg-secondary/10 text-secondary border border-secondary/20">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                            Resolved
+                                        </span>
+</td>
+<td class="py-4 text-on-surface-variant text-sm">2 hours ago</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

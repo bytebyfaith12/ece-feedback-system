@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ECE Pulse - Smoking Area Satisfaction</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#c6c6cd",
+                        "on-secondary-fixed": "#1a1b21",
+                        "primary": "#e0fdff",
+                        "outline": "#849495",
+                        "on-secondary-fixed-variant": "#45474c",
+                        "on-primary-fixed": "#002022",
+                        "surface-bright": "#333b3b",
+                        "tertiary-fixed-dim": "#e8c423",
+                        "surface-container": "#192122",
+                        "secondary-container": "#47494f",
+                        "surface-container-high": "#232b2c",
+                        "secondary-fixed": "#e2e2e9",
+                        "surface-container-lowest": "#081010",
+                        "on-primary-container": "#006a70",
+                        "on-tertiary-fixed-variant": "#554500",
+                        "surface-dim": "#0d1515",
+                        "inverse-on-surface": "#2a3232",
+                        "primary-fixed": "#6ff6ff",
+                        "on-tertiary-container": "#725e00",
+                        "surface-container-low": "#151d1e",
+                        "surface-tint": "#00dce6",
+                        "tertiary": "#fff6e4",
+                        "background": "#0d1515",
+                        "on-tertiary": "#3b2f00",
+                        "inverse-primary": "#00696f",
+                        "on-primary-fixed-variant": "#004f53",
+                        "on-tertiary-fixed": "#221b00",
+                        "inverse-surface": "#dce4e4",
+                        "error": "#ffb4ab",
+                        "on-surface": "#dce4e4",
+                        "on-background": "#dce4e4",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#ffe173",
+                        "on-primary": "#00373a",
+                        "surface-container-highest": "#2e3637",
+                        "surface-variant": "#2e3637",
+                        "on-secondary-container": "#b7b8bf",
+                        "outline-variant": "#3a494b",
+                        "tertiary-container": "#fed83a",
+                        "on-secondary": "#2e3036",
+                        "secondary-fixed-dim": "#c6c6cd",
+                        "surface": "#0d1515",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#00dce6",
+                        "primary-container": "#00f2fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "gutter": "20px",
+                        "container-padding": "24px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "widget-gap": "24px"
+                    },
+                    "fontFamily": {
+                        "display-kpi": ["metropolis"],
+                        "display-kpi-mobile": ["metropolis"],
+                        "body-lg": ["metropolis"],
+                        "body-md": ["metropolis"],
+                        "label-sm": ["jetbrainsMono"],
+                        "headline-md": ["metropolis"],
+                        "headline-lg": ["metropolis"]
+                    },
+                    "fontSize": {
+                        "display-kpi": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-kpi-mobile": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Glassmorphism utility classes */
+        .glass-panel {
+            background: rgba(25, 33, 34, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-panel-hover:hover {
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+            background: rgba(25, 33, 34, 0.6);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        .neon-glow {
+            text-shadow: 0 0 8px rgba(0, 220, 230, 0.5);
+        }
+        .neon-border {
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 border-r border-white/10 z-50 overflow-y-auto bg-white/5 backdrop-blur-xl dark:bg-surface-container/30 border-r border-outline-variant/20 shadow-[0_0_15px_rgba(0,242,254,0.1)]">
+<!-- Header -->
+<div class="p-6 border-b border-white/5 flex items-center space-x-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img alt="ECE Executive Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5bofq4QNafm6EC4OwE0FpkcgcUrFeaZaX2z64Y90q4N1Uphl_uEZXgRFC91b92kYuo_G7wQ3rNkB0RiHxi01hIWPk1oHA8bPakcKCQVkiCwMLbPcQyjyWf9b_9GKOdaYlG8pNHYrZYpPRP7uI8bNubVF4HOKiYCqvCI24PAm_vC3lOFfInqwj66TVHiI4d7XtmwmWyuN20QhYepJ7u5TJ_Ob4YefEFfY33tKoAKmJxT3uXL5ntDFccIHUwkPCkTpD-XTgnIgeBPk"/>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tighter text-surface-tint dark:text-primary-fixed drop-shadow-[0_0_8px_rgba(0,220,230,0.5)]">ECE Pulse</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Command Center</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 py-6 flex flex-col space-y-1">
+<a class="flex items-center space-x-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center space-x-3 text-primary-fixed-dim font-bold bg-primary/10 border-r-4 border-surface-tint py-3 px-6 transition-all translate-x-1 transition-transform duration-200 shadow-[inset_0_0_15px_rgba(0,242,254,0.05)]" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats" style="font-variation-settings: 'FILL' 1;">query_stats</span>
+<span class="text-body-md font-body-md">Analytics</span>
+</a>
+<a class="flex items-center space-x-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="text-body-md font-body-md">Pulse Feed</span>
+</a>
+<a class="flex items-center space-x-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="text-body-md font-body-md">Reporting</span>
+</a>
+<a class="flex items-center space-x-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+<span class="text-body-md font-body-md">Alerts</span>
+</a>
+<a class="flex items-center space-x-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-body-md font-body-md">Settings</span>
+</a>
+</div>
+<!-- CTA & Footer -->
+<div class="p-6 border-t border-white/5 space-y-4">
+<button class="w-full py-2 px-4 bg-primary-container text-on-primary-container font-headline-md text-sm rounded-lg hover:bg-primary-fixed transition-colors shadow-[0_0_10px_rgba(0,242,254,0.3)]">
+                New Report
+            </button>
+<div class="flex flex-col space-y-2 pt-2">
+<a class="flex items-center space-x-3 text-on-surface-variant hover:text-on-surface transition-colors text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="help">help</span>
+<span>Support</span>
+</a>
+<a class="flex items-center space-x-3 text-on-surface-variant hover:text-on-surface transition-colors text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span>
+<span>Log Out</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 md:ml-64 flex flex-col min-h-screen bg-gradient-to-br from-background to-surface-container-lowest">
+<!-- TopNavBar (Shared Component) -->
+<header class="w-full h-16 sticky top-0 z-40 bg-surface/80 backdrop-blur-md dark:bg-background/80 border-b border-outline-variant/20 flex justify-between items-center px-gutter">
+<div class="flex items-center space-x-6">
+<!-- Mobile Menu Button -->
+<button class="md:hidden text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="text-lg font-display-kpi text-surface-tint dark:text-primary-fixed hidden sm:block">Command Center</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex space-x-1">
+<a class="px-3 py-4 text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-lg transition-colors text-label-sm font-label-sm flex items-center h-full" href="#">Global View</a>
+<a class="px-3 py-4 text-surface-tint dark:text-primary-fixed border-b-2 border-surface-tint pb-[14px] text-label-sm font-label-sm flex items-center h-full" href="#">BPO Sector</a>
+<a class="px-3 py-4 text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-lg transition-colors text-label-sm font-label-sm flex items-center h-full" href="#">Real-time</a>
+</nav>
+</div>
+<div class="flex items-center space-x-4">
+<!-- Search (on_left logic conceptually applied here before trailing actions) -->
+<div class="hidden lg:flex items-center bg-surface-container rounded-full px-3 py-1.5 border border-outline-variant/30 focus-within:border-surface-tint transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] mr-2">search</span>
+<input class="bg-transparent border-none text-label-sm focus:ring-0 text-on-surface placeholder-on-surface-variant w-48" placeholder="Search parameters..." type="text"/>
+</div>
+<button class="hidden sm:flex items-center px-4 py-1.5 bg-surface-container-high border border-outline-variant/50 rounded-full text-label-sm font-label-sm text-primary hover:bg-surface-container-highest transition-colors">
+<span class="w-2 h-2 rounded-full bg-error mr-2 animate-pulse"></span>
+                    Live Status
+                </button>
+<div class="flex items-center space-x-2">
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-full transition-colors flex items-center justify-center relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary-container rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 p-container-padding overflow-y-auto">
+<!-- Page Header -->
+<div class="mb-stack-lg flex flex-col sm:flex-row justify-between items-start sm:items-end space-y-4 sm:space-y-0">
+<div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface neon-glow">Smoking Area Analytics</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">Real-time satisfaction and environmental metrics for designated smoking zones.</p>
+</div>
+<div class="flex space-x-3">
+<div class="glass-panel px-4 py-2 rounded-lg flex items-center space-x-2 border-l-2 border-surface-tint">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Status</span>
+<span class="text-body-md font-body-md font-semibold text-primary-fixed">Active Monitoring</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-widget-gap">
+<!-- Main KPI Card - Cleanliness -->
+<div class="md:col-span-4 glass-panel rounded-xl p-6 glass-panel-hover flex flex-col relative overflow-hidden">
+<div class="absolute -right-6 -top-6 w-32 h-32 bg-primary-container/5 rounded-full blur-2xl"></div>
+<div class="flex justify-between items-center mb-6 z-10">
+<h3 class="text-headline-md font-headline-md text-on-surface">Cleanliness Score</h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<!-- Donut Chart Representation -->
+<div class="flex-1 flex flex-col items-center justify-center py-4 z-10">
+<div class="relative w-40 h-40">
+<!-- SVG Donut -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<!-- Background Circle -->
+<path class="text-surface-container-highest" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+<!-- Value Circle (Green - Satisfied) -->
+<path class="text-primary-container" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="75, 100" stroke-linecap="round" stroke-width="4"></path>
+<!-- Value Circle (Yellow - Neutral) - Start offset -->
+<path class="text-tertiary-container" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="15, 100" stroke-dashoffset="-75" stroke-linecap="round" stroke-width="4"></path>
+<!-- Value Circle (Red - Dissatisfied) - Start offset -->
+<path class="text-error" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="10, 100" stroke-dashoffset="-90" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+<!-- Center Text -->
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-display-kpi font-display-kpi text-on-surface">4.2</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">/ 5.0 Avg</span>
+</div>
+</div>
+</div>
+<!-- Legend -->
+<div class="mt-4 space-y-3 z-10">
+<div class="flex justify-between items-center text-body-sm">
+<div class="flex items-center space-x-2">
+<div class="w-1 h-4 bg-primary-container rounded"></div>
+<span class="text-on-surface">Excellent/Good</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">75%</span>
+</div>
+<div class="flex justify-between items-center text-body-sm">
+<div class="flex items-center space-x-2">
+<div class="w-1 h-4 bg-tertiary-container rounded"></div>
+<span class="text-on-surface">Acceptable</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">15%</span>
+</div>
+<div class="flex justify-between items-center text-body-sm">
+<div class="flex items-center space-x-2">
+<div class="w-1 h-4 bg-error rounded"></div>
+<span class="text-on-surface">Needs Attention</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">10%</span>
+</div>
+</div>
+<!-- Sentiment Icons -->
+<div class="mt-6 flex justify-between items-center px-2 pt-4 border-t border-white/5 z-10">
+<span class="material-symbols-outlined text-primary-container text-[28px] drop-shadow-[0_0_8px_rgba(0,242,254,0.5)]">sentiment_very_satisfied</span>
+<span class="material-symbols-outlined text-on-surface-variant/50 text-[24px]">sentiment_satisfied</span>
+<span class="material-symbols-outlined text-on-surface-variant/50 text-[24px]">sentiment_neutral</span>
+<span class="material-symbols-outlined text-on-surface-variant/50 text-[24px]">sentiment_dissatisfied</span>
+<span class="material-symbols-outlined text-on-surface-variant/50 text-[24px]">sentiment_very_dissatisfied</span>
+</div>
+</div>
+<!-- Middle Column: Ventilation Trend & Crowding -->
+<div class="md:col-span-5 flex flex-col space-y-widget-gap">
+<!-- Ventilation Trend -->
+<div class="glass-panel rounded-xl p-6 flex-1 glass-panel-hover">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-headline-md font-headline-md text-on-surface">Ventilation Rating Trend</h3>
+<div class="flex items-center space-x-2 bg-surface-container rounded-md px-2 py-1 border border-outline-variant/30">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">calendar_today</span>
+<span class="text-label-sm font-label-sm text-on-surface">Today</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
+</div>
+</div>
+<!-- Bar Chart Placeholder -->
+<div class="h-48 flex items-end justify-between space-x-2 pt-8 relative">
+<!-- Y-axis labels -->
+<div class="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-label-sm font-label-sm text-on-surface-variant pb-6">
+<span>100%</span>
+<span>75%</span>
+<span>50%</span>
+<span>25%</span>
+</div>
+<!-- Bars -->
+<div class="w-full flex justify-between items-end pl-10 h-full pb-6">
+<div class="w-1/12 bg-surface-container-highest rounded-t-sm h-[40%] hover:bg-primary-container/20 transition-colors"></div>
+<div class="w-1/12 bg-surface-container-highest rounded-t-sm h-[55%] hover:bg-primary-container/20 transition-colors"></div>
+<div class="w-1/12 bg-surface-container-highest rounded-t-sm h-[45%] hover:bg-primary-container/20 transition-colors"></div>
+<div class="w-1/12 bg-surface-container-highest rounded-t-sm h-[30%] hover:bg-primary-container/20 transition-colors"></div>
+<div class="w-1/12 bg-surface-container-highest rounded-t-sm h-[60%] hover:bg-primary-container/20 transition-colors"></div>
+<!-- Active Bar -->
+<div class="w-1/12 bg-primary-container rounded-t-sm h-[85%] relative neon-border group">
+<div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-label-sm font-label-sm py-1 px-3 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                                        14:00 - 85% Positive
+                                    </div>
+</div>
+<div class="w-1/12 bg-surface-container-highest rounded-t-sm h-[70%] hover:bg-primary-container/20 transition-colors"></div>
+<div class="w-1/12 bg-surface-container-highest rounded-t-sm h-[65%] hover:bg-primary-container/20 transition-colors"></div>
+<div class="w-1/12 bg-surface-container-highest rounded-t-sm h-[50%] hover:bg-primary-container/20 transition-colors"></div>
+<div class="w-1/12 bg-surface-container-highest rounded-t-sm h-[40%] hover:bg-primary-container/20 transition-colors"></div>
+</div>
+<!-- X-axis labels -->
+<div class="absolute bottom-0 left-10 right-0 flex justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>08</span>
+<span>10</span>
+<span>12</span>
+<span>14</span>
+<span>16</span>
+<span>18</span>
+</div>
+</div>
+</div>
+<!-- Crowding Level (Mini KPI) -->
+<div class="glass-panel rounded-xl p-6 glass-panel-hover flex items-center justify-between">
+<div>
+<h3 class="text-body-lg font-body-lg text-on-surface-variant mb-1">Current Crowding</h3>
+<div class="flex items-baseline space-x-2">
+<span class="text-display-kpi font-display-kpi text-on-surface">Moderate</span>
+</div>
+</div>
+<div class="w-16 h-16 rounded-full bg-tertiary-container/10 flex items-center justify-center border border-tertiary-container/30">
+<span class="material-symbols-outlined text-[32px] text-tertiary-container">groups</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Recent Feedback & Status -->
+<div class="md:col-span-3 flex flex-col space-y-widget-gap">
+<!-- Location Status Card -->
+<div class="glass-panel rounded-xl p-6 glass-panel-hover border-t-2 border-surface-tint">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-headline-md font-headline-md text-on-surface">Area Status</h3>
+<span class="px-2 py-1 bg-primary/10 text-primary-fixed text-label-sm font-label-sm rounded border border-primary/20">Operational</span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center border-b border-white/5 pb-2">
+<span class="text-body-md text-on-surface-variant">Location</span>
+<span class="text-body-md text-on-surface font-medium">Terminal B, Gate 14</span>
+</div>
+<div class="flex justify-between items-center border-b border-white/5 pb-2">
+<span class="text-body-md text-on-surface-variant">Last Cleaned</span>
+<span class="text-body-md text-on-surface font-medium">45 mins ago</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">Air Quality Index</span>
+<span class="text-body-md text-tertiary-container font-medium">Moderate (55)</span>
+</div>
+</div>
+<button class="mt-6 w-full py-2 bg-transparent border border-surface-tint text-surface-tint hover:bg-surface-tint/10 rounded-lg transition-colors text-label-sm font-label-sm flex items-center justify-center space-x-2">
+<span class="material-symbols-outlined text-[18px]">cleaning_services</span>
+<span>Dispatch Cleaning Crew</span>
+</button>
+</div>
+<!-- Live Feedback Stream -->
+<div class="glass-panel rounded-xl p-6 flex-1 glass-panel-hover flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-body-lg font-body-lg text-on-surface">Live Feedback</h3>
+<span class="flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-primary-fixed opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary-container"></span>
+</span>
+</div>
+<!-- Stepper / Timeline style -->
+<div class="relative pl-4 space-y-6 flex-1 overflow-y-auto pr-2 custom-scrollbar">
+<!-- Vertical Line -->
+<div class="absolute left-[7px] top-2 bottom-2 w-[2px] bg-white/5"></div>
+<!-- Feedback Item 1 -->
+<div class="relative z-10">
+<div class="absolute -left-5 top-1 w-3 h-3 rounded-full bg-primary-container shadow-[0_0_8px_rgba(0,242,254,0.6)] border-2 border-background"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-label-sm font-label-sm text-primary-fixed">Positive</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Just now</span>
+</div>
+<p class="text-body-md text-on-surface">"Very clean today, good ventilation."</p>
+</div>
+<!-- Feedback Item 2 -->
+<div class="relative z-10">
+<div class="absolute -left-5 top-1 w-3 h-3 rounded-full bg-tertiary-container border-2 border-background"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-label-sm font-label-sm text-tertiary-container">Neutral</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">12 mins ago</span>
+</div>
+<p class="text-body-md text-on-surface">"A bit crowded but acceptable."</p>
+</div>
+<!-- Feedback Item 3 -->
+<div class="relative z-10">
+<div class="absolute -left-5 top-1 w-3 h-3 rounded-full bg-error border-2 border-background"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-label-sm font-label-sm text-error">Negative</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">28 mins ago</span>
+</div>
+<p class="text-body-md text-on-surface">"Ashtrays are full, needs emptying."</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Custom Scrollbar Style for the feed -->
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 242, 254, 0.3);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 242, 254, 0.5);
+        }
+    </style>
+</body></html>

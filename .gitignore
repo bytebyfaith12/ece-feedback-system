@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+build
+dist
+.data
+server/uploads/*
+!server/uploads/.gitkeep
+.env*
+!.env.example
+*.log
+.next-dev*.log

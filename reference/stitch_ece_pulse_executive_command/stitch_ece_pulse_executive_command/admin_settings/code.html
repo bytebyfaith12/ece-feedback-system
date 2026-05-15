@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Settings - Command Center</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Sora:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#d4e4fa",
+                      "error-container": "#93000a",
+                      "background": "#051424",
+                      "on-surface-variant": "#b9cac9",
+                      "surface-tint": "#00dddd",
+                      "secondary": "#6bd8cb",
+                      "tertiary-fixed-dim": "#bbc9cb",
+                      "on-primary": "#003737",
+                      "secondary-fixed-dim": "#6bd8cb",
+                      "on-secondary-fixed": "#00201d",
+                      "on-secondary-fixed-variant": "#005049",
+                      "error": "#ffb4ab",
+                      "surface-container-lowest": "#010f1f",
+                      "surface-container-low": "#0d1c2d",
+                      "on-error": "#690005",
+                      "on-primary-container": "#007070",
+                      "primary-fixed-dim": "#00dddd",
+                      "on-secondary": "#003732",
+                      "inverse-primary": "#006a6a",
+                      "on-surface": "#d4e4fa",
+                      "surface-dim": "#051424",
+                      "outline": "#839493",
+                      "surface-variant": "#273647",
+                      "primary-container": "#00fbfb",
+                      "on-error-container": "#ffdad6",
+                      "primary-fixed": "#00fbfb",
+                      "surface": "#051424",
+                      "secondary-fixed": "#89f5e7",
+                      "surface-container": "#122131",
+                      "tertiary-container": "#d7e5e8",
+                      "outline-variant": "#3a4a49",
+                      "surface-container-high": "#1c2b3c",
+                      "tertiary": "#ffffff",
+                      "on-tertiary-container": "#5a6769",
+                      "on-tertiary": "#263235",
+                      "on-primary-fixed-variant": "#004f4f",
+                      "inverse-on-surface": "#233143",
+                      "primary": "#ffffff",
+                      "on-primary-fixed": "#002020",
+                      "on-tertiary-fixed-variant": "#3c494b",
+                      "secondary-container": "#29a195",
+                      "surface-container-highest": "#273647",
+                      "on-tertiary-fixed": "#111e20",
+                      "surface-bright": "#2c3a4c",
+                      "on-secondary-container": "#00302b",
+                      "inverse-surface": "#d4e4fa",
+                      "tertiary-fixed": "#d7e5e8"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "4rem",
+                      "stack-sm": "0.5rem",
+                      "gutter": "2rem",
+                      "stack-md": "1.5rem",
+                      "margin-mobile": "1.5rem",
+                      "container-max": "1440px",
+                      "stack-lg": "3rem"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "stats-xl": ["Sora"],
+                      "display-lg": ["Sora"],
+                      "headline-md": ["Sora"],
+                      "headline-lg": ["Sora"],
+                      "label-sm": ["JetBrains Mono"],
+                      "headline-lg-mobile": ["Sora"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "stats-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Hide scrollbar for a cleaner look while maintaining functionality */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 221, 221, 0.3); 
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased overflow-hidden flex h-screen">
+<!-- Global SideNavBar (From JSON Anchor) -->
+<aside class="bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 backdrop-blur-xl docked left-0 h-screen w-64 fixed border-r border-white/5 shadow-2xl flex flex-col h-full py-stack-md z-50">
+<!-- Header -->
+<div class="px-6 pb-6 border-b border-white/5 mb-4">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded bg-surface-tint/20 border border-surface-tint/50 flex items-center justify-center">
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+</div>
+<h1 class="font-display-lg text-primary text-lg">Command Center</h1>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">V2.0.4 Online</p>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 overflow-y-auto px-4 space-y-1">
+<!-- Inactive -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-lg">rate_review</span>
+<span class="font-label-sm text-label-sm">Submit Feedback</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-lg">sensors</span>
+<span class="font-label-sm text-label-sm">Pulse Feed</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-lg">analytics</span>
+<span class="font-label-sm text-label-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-lg">location_on</span>
+<span class="font-label-sm text-label-sm">Sites</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-lg">group</span>
+<span class="font-label-sm text-label-sm">Accounts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-lg">category</span>
+<span class="font-label-sm text-label-sm">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-lg">notifications_active</span>
+<span class="font-label-sm text-label-sm">Alerts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-lg">description</span>
+<span class="font-label-sm text-label-sm">Reports</span>
+</a>
+<!-- Active State (Admin) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-secondary-container/20 text-surface-tint border-l-4 border-surface-tint hover:bg-white/10 hover:shadow-[0_0_15px_rgba(0,221,221,0.1)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+<span class="font-label-sm text-label-sm">Admin</span>
+</a>
+</nav>
+<!-- CTA & Footer -->
+<div class="px-4 mt-auto pt-6 border-t border-white/5 space-y-4">
+<button class="w-full py-2.5 bg-surface-tint text-on-primary font-label-sm text-label-sm rounded-lg hover:shadow-[0_0_15px_rgba(0,221,221,0.3)] transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                New Report
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-on-surface transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-lg">help</span>
+<span class="font-label-sm text-label-sm">Support</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-error transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-lg">logout</span>
+<span class="font-label-sm text-label-sm">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 flex-1 h-screen overflow-y-auto relative bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-surface-container-high/40 via-background to-background">
+<!-- Ambient Light Effect -->
+<div class="absolute top-0 right-0 w-[800px] h-[800px] bg-surface-tint/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="max-w-container-max mx-auto px-margin-desktop py-stack-lg min-h-full flex flex-col z-10 relative">
+<!-- Page Header -->
+<header class="mb-stack-lg">
+<h2 class="font-display-lg text-display-lg text-on-background tracking-tight">Global Configuration</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">Manage core system parameters, site-level access, service level agreements, and environmental branding across the platform ecosystem.</p>
+</header>
+<!-- Master Settings Card (Glass Pane) -->
+<div class="flex-1 flex flex-row bg-surface/30 backdrop-blur-[20px] border border-white/5 rounded-xl shadow-2xl overflow-hidden min-h-[600px] relative">
+<!-- Inner Sidebar (Settings Categories) -->
+<div class="w-64 border-r border-white/5 bg-surface-container-lowest/30 flex flex-col py-6 relative z-10">
+<h3 class="px-6 mb-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Settings Menu</h3>
+<nav class="flex-1 space-y-1 px-3">
+<a class="flex items-center justify-between px-3 py-3 rounded-lg text-on-background hover:bg-white/5 transition-colors" href="#">
+<span class="font-headline-md text-body-md">General</span>
+</a>
+<!-- Active Inner Tab: Sites -->
+<a class="flex items-center justify-between px-3 py-3 rounded-lg bg-surface-tint/10 border-l-2 border-surface-tint text-surface-tint" href="#">
+<span class="font-headline-md text-body-md">Sites</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+<a class="flex items-center justify-between px-3 py-3 rounded-lg text-on-background hover:bg-white/5 transition-colors" href="#">
+<span class="font-headline-md text-body-md">Accounts</span>
+</a>
+<a class="flex items-center justify-between px-3 py-3 rounded-lg text-on-background hover:bg-white/5 transition-colors" href="#">
+<span class="font-headline-md text-body-md">Categories</span>
+</a>
+<a class="flex items-center justify-between px-3 py-3 rounded-lg text-on-background hover:bg-white/5 transition-colors" href="#">
+<span class="font-headline-md text-body-md">SLAs</span>
+</a>
+<a class="flex items-center justify-between px-3 py-3 rounded-lg text-on-background hover:bg-white/5 transition-colors" href="#">
+<span class="font-headline-md text-body-md">Branding</span>
+</a>
+</nav>
+</div>
+<!-- Main Configuration View (Sites Active) -->
+<div class="flex-1 flex flex-col bg-gradient-to-br from-white/[0.02] to-transparent relative z-10">
+<!-- View Header -->
+<div class="px-8 py-6 border-b border-white/5 flex items-center justify-between">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-background">Site Management</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Configure physical locations and their operational status.</p>
+</div>
+<button class="bg-surface-tint text-on-primary px-4 py-2 rounded-md font-label-sm text-label-sm flex items-center gap-2 hover:shadow-[0_0_15px_rgba(0,221,221,0.4)] transition-shadow">
+<span class="material-symbols-outlined text-sm">add</span>
+                            Provision New Site
+                        </button>
+</div>
+<!-- Toolbar (Search & Filter) -->
+<div class="px-8 py-4 border-b border-white/5 flex gap-4 bg-surface-container-low/20">
+<div class="relative flex-1 max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-dim/50 border border-white/10 rounded-md py-2 pl-10 pr-4 text-body-md text-on-background focus:border-surface-tint focus:ring-1 focus:ring-surface-tint/50 transition-colors placeholder:text-on-surface-variant/50" placeholder="Search sites by name or ID..." type="text"/>
+</div>
+<button class="px-4 py-2 border border-white/10 rounded-md text-on-background hover:bg-white/5 font-label-sm text-label-sm flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                            Filter
+                        </button>
+</div>
+<!-- Data List Area -->
+<div class="flex-1 overflow-y-auto p-8 space-y-4">
+<!-- Site Item: Noel -->
+<div class="group bg-surface-container/40 border border-white/5 rounded-lg p-5 flex items-center justify-between hover:border-surface-tint/30 hover:bg-surface-container/60 transition-all">
+<div class="flex items-center gap-5">
+<div class="w-10 h-10 rounded-full bg-surface-tint/10 flex items-center justify-center border border-surface-tint/20">
+<span class="material-symbols-outlined text-surface-tint">domain</span>
+</div>
+<div>
+<h4 class="font-headline-md text-body-md text-on-background group-hover:text-surface-tint transition-colors">Noel Facility</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">ID: ST-8820 • Sector Alpha</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1">Status</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/20 border border-secondary-container/30 text-surface-tint font-label-sm text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-surface-tint animate-pulse"></span>
+                                        ONLINE
+                                    </span>
+</div>
+<div class="w-px h-8 bg-white/10"></div>
+<div class="flex gap-2">
+<button class="p-2 rounded-md text-on-surface-variant hover:text-surface-tint hover:bg-surface-tint/10 transition-colors" title="Edit Configuration">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 rounded-md text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="Disable Site">
+<span class="material-symbols-outlined text-sm">block</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Site Item: Macias -->
+<div class="group bg-surface-container/40 border border-white/5 rounded-lg p-5 flex items-center justify-between hover:border-surface-tint/30 hover:bg-surface-container/60 transition-all">
+<div class="flex items-center gap-5">
+<div class="w-10 h-10 rounded-full bg-surface-tint/10 flex items-center justify-center border border-surface-tint/20">
+<span class="material-symbols-outlined text-surface-tint">domain</span>
+</div>
+<div>
+<h4 class="font-headline-md text-body-md text-on-background group-hover:text-surface-tint transition-colors">Macias Logistics Hub</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">ID: ST-9104 • Sector Beta</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1">Status</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/20 border border-secondary-container/30 text-surface-tint font-label-sm text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-surface-tint animate-pulse"></span>
+                                        ONLINE
+                                    </span>
+</div>
+<div class="w-px h-8 bg-white/10"></div>
+<div class="flex gap-2">
+<button class="p-2 rounded-md text-on-surface-variant hover:text-surface-tint hover:bg-surface-tint/10 transition-colors" title="Edit Configuration">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 rounded-md text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="Disable Site">
+<span class="material-symbols-outlined text-sm">block</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Site Item: Consuelo -->
+<div class="group bg-surface-container/20 border border-white/5 rounded-lg p-5 flex items-center justify-between opacity-75 hover:opacity-100 transition-opacity">
+<div class="flex items-center gap-5">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-on-surface-variant">domain_disabled</span>
+</div>
+<div>
+<h4 class="font-headline-md text-body-md text-on-surface-variant">Consuelo Data Center</h4>
+<p class="font-label-sm text-label-sm text-outline">ID: ST-4402 • Sector Gamma</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1">Status</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-variant border border-white/10 text-on-surface-variant font-label-sm text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                                        OFFLINE
+                                    </span>
+</div>
+<div class="w-px h-8 bg-white/10"></div>
+<div class="flex gap-2">
+<button class="p-2 rounded-md text-on-surface-variant hover:text-surface-tint hover:bg-surface-tint/10 transition-colors" title="Edit Configuration">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 rounded-md text-surface-tint hover:bg-surface-tint/10 transition-colors flex items-center gap-1 px-3 border border-surface-tint/30" title="Enable Site">
+<span class="material-symbols-outlined text-sm">power_settings_new</span>
+<span class="font-label-sm text-[10px]">ENABLE</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

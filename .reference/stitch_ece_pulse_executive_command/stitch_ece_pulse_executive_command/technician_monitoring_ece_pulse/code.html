@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Technician Monitoring - ECE Pulse</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* Fallback for Metropolis if not installed locally, using system sans-serif but maintaining weights */
+        @font-face {
+            font-family: 'metropolis';
+            src: local('-apple-system'), local('BlinkMacSystemFont'), local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'), local('sans-serif');
+        }
+        
+        /* Custom scrollbar for deep dark aesthetic */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #081010; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e3637; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dce6; 
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#c6c6cd",
+                        "on-secondary-fixed": "#1a1b21",
+                        "primary": "#e0fdff",
+                        "outline": "#849495",
+                        "on-secondary-fixed-variant": "#45474c",
+                        "on-primary-fixed": "#002022",
+                        "surface-bright": "#333b3b",
+                        "tertiary-fixed-dim": "#e8c423",
+                        "surface-container": "#192122",
+                        "secondary-container": "#47494f",
+                        "surface-container-high": "#232b2c",
+                        "secondary-fixed": "#e2e2e9",
+                        "surface-container-lowest": "#081010",
+                        "on-primary-container": "#006a70",
+                        "on-tertiary-fixed-variant": "#554500",
+                        "surface-dim": "#0d1515",
+                        "inverse-on-surface": "#2a3232",
+                        "primary-fixed": "#6ff6ff",
+                        "on-tertiary-container": "#725e00",
+                        "surface-container-low": "#151d1e",
+                        "surface-tint": "#00dce6",
+                        "tertiary": "#fff6e4",
+                        "background": "#0d1515",
+                        "on-tertiary": "#3b2f00",
+                        "inverse-primary": "#00696f",
+                        "on-primary-fixed-variant": "#004f53",
+                        "on-tertiary-fixed": "#221b00",
+                        "inverse-surface": "#dce4e4",
+                        "error": "#ffb4ab",
+                        "on-surface": "#dce4e4",
+                        "on-background": "#dce4e4",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#ffe173",
+                        "on-primary": "#00373a",
+                        "surface-container-highest": "#2e3637",
+                        "surface-variant": "#2e3637",
+                        "on-secondary-container": "#b7b8bf",
+                        "outline-variant": "#3a494b",
+                        "tertiary-container": "#fed83a",
+                        "on-secondary": "#2e3036",
+                        "secondary-fixed-dim": "#c6c6cd",
+                        "surface": "#0d1515",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#00dce6",
+                        "primary-container": "#00f2fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "gutter": "20px",
+                        "container-padding": "24px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "widget-gap": "24px"
+                    },
+                    "fontFamily": {
+                        "display-kpi": ["metropolis"],
+                        "display-kpi-mobile": ["metropolis"],
+                        "body-lg": ["metropolis"],
+                        "body-md": ["metropolis"],
+                        "label-sm": ["jetbrainsMono", "monospace"],
+                        "headline-md": ["metropolis"],
+                        "headline-lg": ["metropolis"]
+                    },
+                    "fontSize": {
+                        "display-kpi": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-kpi-mobile": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col md:flex-row relative">
+<!-- TopNavBar (Shared Component) -->
+<nav class="flex justify-between items-center px-gutter w-full md:ml-64 bg-surface/80 backdrop-blur-md dark:bg-background/80 border-b border-outline-variant/20 h-16 sticky top-0 z-40">
+<!-- Mobile Menu Toggle (Visible only on small screens, functionally visual only here) -->
+<button class="md:hidden text-primary dark:text-primary-fixed p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Brand / Product Name -->
+<div class="text-lg font-display-kpi text-surface-tint dark:text-primary-fixed hidden md:block">
+            Command Center
+        </div>
+<div class="text-lg font-display-kpi-mobile text-surface-tint dark:text-primary-fixed md:hidden">
+            Command Center
+        </div>
+<!-- Navigation Links (Hidden on Mobile as per constraints) -->
+<div class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-lg transition-colors px-3 py-1 text-label-sm font-label-sm" href="#">Global View</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-lg transition-colors px-3 py-1 text-label-sm font-label-sm" href="#">BPO Sector</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-primary-container/20 rounded-lg transition-colors px-3 py-1 text-label-sm font-label-sm" href="#">Real-time</a>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-4">
+<button class="hidden sm:block px-4 py-1.5 rounded bg-white/5 border border-surface-tint/30 text-surface-tint text-label-sm font-label-sm hover:bg-white/10 transition-colors">
+                Live Status
+            </button>
+<div class="flex gap-2">
+<button class="text-on-surface-variant hover:text-surface-tint transition-colors p-1 rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="text-on-surface-variant hover:text-surface-tint transition-colors p-1 rounded-full hover:bg-white/5 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full shadow-[0_0_5px_rgba(255,180,171,0.8)]"></span>
+</button>
+<button class="text-on-surface-variant hover:text-surface-tint transition-colors p-1 rounded-full hover:bg-white/5 hidden sm:block">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<!-- Avatar Placeholder -->
+<img alt="Executive User" class="w-8 h-8 rounded-full border border-surface-tint/50 ml-2 hidden sm:block" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA28TbRLefMp2blFMKeeNH26Om_-sW_GftWkBnjMNc-lYNNOjtd5OL2cKx6CX6Yuu3mczpDV2kWPlAjX2R3ZtR9AJWJu7WyzukhVjYuQxLJnF_sJmEJ4_C0SFb1Gojg8MjLtv2G-ThbV6d1ZOs3SYmcEry_6bTqzvOE8JOcXqjKx6uvy6qJT8dIsd3X6odGq_QSMxOtWQcMICTHTcC7RYSG6O4vjvFkqCvld_wQpjBt6LMSRZlO9BRzmbDz2U40IOVMZbP4l2_6Cko"/>
+</div>
+</nav>
+<!-- SideNavBar (Shared Component - Hidden on mobile) -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 border-r border-white/10 bg-white/5 backdrop-blur-xl dark:bg-surface-container/30 border-r border-outline-variant/20 shadow-[0_0_15px_rgba(0,242,254,0.1)] z-50 overflow-y-auto">
+<!-- Header -->
+<div class="p-6 border-b border-white/5">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-container to-surface-container flex items-center justify-center shadow-[0_0_10px_rgba(0,242,254,0.2)]">
+<span class="material-symbols-outlined text-background">radar</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tighter text-surface-tint dark:text-primary-fixed drop-shadow-[0_0_8px_rgba(0,220,230,0.5)]">ECE Pulse</h1>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Command Center</div>
+</div>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex flex-col flex-grow py-4 gap-1">
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-sm font-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="text-label-sm font-label-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="text-label-sm font-label-sm">Pulse Feed</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-label-sm font-label-sm">Reporting</span>
+</a>
+<!-- Active Tab: Alerts -->
+<a class="flex items-center gap-3 text-primary-fixed-dim font-bold bg-primary/10 border-r-4 border-surface-tint py-3 px-6 transition-all translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="text-label-sm font-label-sm">Alerts</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-3 px-6 transition-all hover:bg-white/5 hover:backdrop-blur-md transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-sm font-label-sm">Settings</span>
+</a>
+</div>
+<!-- CTA & Footer -->
+<div class="p-6 mt-auto border-t border-white/5">
+<button class="w-full mb-6 bg-white/5 hover:bg-white/10 border border-primary/30 text-primary py-2 rounded text-label-sm font-label-sm transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span> New Report
+            </button>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">help</span>
+<span class="text-label-sm font-label-sm">Support</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant/70 hover:text-on-surface py-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+<span class="text-label-sm font-label-sm">Log Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full md:ml-64 p-container-padding flex flex-col gap-widget-gap min-h-[calc(100vh-64px)] md:min-h-screen">
+<!-- Header Section -->
+<header class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-2">
+<div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface drop-shadow-[0_0_8px_rgba(0,220,230,0.2)]">Field Operations</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">Live monitoring: Sector 7G • 3 Critical Issues</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-error/10 border border-error/30 text-error text-label-sm font-label-sm flex items-center gap-2 shadow-[0_0_10px_rgba(255,180,171,0.1)]">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span> 2 Offline
+                </span>
+<span class="px-3 py-1 rounded-full bg-tertiary-container/10 border border-tertiary-container/30 text-tertiary-container text-label-sm font-label-sm flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span> 4 Warnings
+                </span>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-widget-gap">
+<!-- Primary Action List: Active Tickets (Spans 8 cols on desktop) -->
+<div class="lg:col-span-8 bg-[rgba(255,255,255,0.03)] backdrop-blur-[12px] border border-white/5 rounded-xl p-6 flex flex-col gap-stack-md hover:bg-[rgba(255,255,255,0.05)] hover:shadow-[0_0_15px_rgba(0,242,254,0.1)] transition-all duration-300">
+<div class="flex justify-between items-center mb-2 border-b border-white/5 pb-4">
+<h3 class="text-headline-md font-headline-md text-primary-fixed">Active Maintenance Tickets</h3>
+<button class="text-label-sm font-label-sm text-surface-tint hover:text-primary transition-colors flex items-center gap-1">
+                        View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Ticket Item 1 (High Priority) -->
+<div class="bg-surface-container/60 border-l-4 border-error rounded-lg p-4 flex flex-col sm:flex-row justify-between gap-4 group hover:-translate-y-[2px] transition-transform duration-200 shadow-sm relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-error/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-1 z-10">
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm text-error bg-error/10 px-2 py-0.5 rounded">CRITICAL</span>
+<span class="text-label-sm font-label-sm text-secondary font-mono">TKT-8924</span>
+</div>
+<h4 class="text-body-lg font-body-lg font-bold text-on-surface">Terminal B Kiosk - Main Display Dead</h4>
+<div class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Concourse C, Gate 12
+                        </div>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center gap-2 z-10 w-full sm:w-auto mt-2 sm:mt-0">
+<button class="flex-1 sm:flex-none text-center bg-[#00f2fe] text-black px-5 py-2.5 rounded text-label-sm font-label-sm font-bold shadow-[0_0_10px_rgba(0,242,254,0.4)] hover:shadow-[0_0_15px_rgba(0,242,254,0.6)] hover:bg-primary-fixed transition-all">
+                            Start Repair
+                        </button>
+</div>
+</div>
+<!-- Ticket Item 2 -->
+<div class="bg-surface-container/60 border-l-4 border-tertiary-container rounded-lg p-4 flex flex-col sm:flex-row justify-between gap-4 group hover:-translate-y-[2px] transition-transform duration-200 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-tertiary-container/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-1 z-10">
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm text-tertiary-container bg-tertiary-container/10 px-2 py-0.5 rounded">HIGH</span>
+<span class="text-label-sm font-label-sm text-secondary font-mono">TKT-8919</span>
+</div>
+<h4 class="text-body-lg font-body-lg font-bold text-on-surface">Card Reader Failure</h4>
+<div class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Main Lobby, Entrance West
+                        </div>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center gap-2 z-10 w-full sm:w-auto mt-2 sm:mt-0">
+<button class="flex-1 sm:flex-none bg-transparent border border-surface-tint text-surface-tint px-4 py-2 rounded text-label-sm font-label-sm hover:bg-surface-tint/10 transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add_a_photo</span> Upload Photo
+                        </button>
+<button class="flex-1 sm:flex-none bg-[#00f2fe] text-black px-5 py-2 rounded text-label-sm font-label-sm font-bold shadow-[0_0_10px_rgba(0,242,254,0.4)] hover:shadow-[0_0_15px_rgba(0,242,254,0.6)] hover:bg-primary-fixed transition-all">
+                            Resolve
+                        </button>
+</div>
+</div>
+</div>
+<!-- Secondary Alerts Column (Spans 4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-widget-gap">
+<!-- Network Offline Status Widget -->
+<div class="bg-[rgba(255,255,255,0.03)] backdrop-blur-[12px] border border-error/20 rounded-xl p-6 relative overflow-hidden group hover:shadow-[0_0_15px_rgba(255,180,171,0.1)] transition-shadow">
+<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-error to-transparent"></div>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-error/10 flex items-center justify-center border border-error/30">
+<span class="material-symbols-outlined text-error">wifi_off</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-error">Network Alerts</h3>
+</div>
+<div class="flex flex-col gap-3 relative pl-4 border-l border-white/10 ml-5 mt-2">
+<!-- Timeline Event -->
+<div class="relative">
+<div class="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-error shadow-[0_0_8px_rgba(255,180,171,0.8)] animate-pulse"></div>
+<div class="text-body-md font-body-md text-on-surface">Subnet Alpha-2 Down</div>
+<div class="text-label-sm font-label-sm text-secondary font-mono mt-1">14:02:45 UTC</div>
+</div>
+<!-- Timeline Event -->
+<div class="relative">
+<div class="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-error/50 border border-error"></div>
+<div class="text-body-md font-body-md text-on-surface">Gateway Timeout Error</div>
+<div class="text-label-sm font-label-sm text-secondary font-mono mt-1">13:45:10 UTC</div>
+</div>
+</div>
+</div>
+<!-- Battery Warnings Widget -->
+<div class="bg-[rgba(255,255,255,0.03)] backdrop-blur-[12px] border border-tertiary-container/20 rounded-xl p-6 relative group hover:shadow-[0_0_15px_rgba(254,216,58,0.1)] transition-shadow flex-1">
+<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-tertiary-container to-transparent"></div>
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-tertiary-container text-[28px]">battery_alert</span>
+<h3 class="text-headline-md font-headline-md text-tertiary-container">Battery Low</h3>
+</div>
+<ul class="flex flex-col gap-stack-sm">
+<li class="flex justify-between items-center bg-surface-container/40 p-3 rounded border border-white/5">
+<span class="text-body-md font-body-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">ev_station</span> Unit X-42
+                            </span>
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-surface-bright rounded-full overflow-hidden">
+<div class="h-full bg-error w-[12%]"></div>
+</div>
+<span class="text-label-sm font-label-sm text-error font-mono">12%</span>
+</div>
+</li>
+<li class="flex justify-between items-center bg-surface-container/40 p-3 rounded border border-white/5">
+<span class="text-body-md font-body-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">ev_station</span> Unit Y-09
+                            </span>
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-surface-bright rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container w-[18%]"></div>
+</div>
+<span class="text-label-sm font-label-sm text-tertiary-container font-mono">18%</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</main>
+</body></html>
