@@ -13,6 +13,8 @@ server/uploads/*
 .env.local
 .DS_Store
 coverage/
+test-results/
+playwright-report/
 .cache/
 .vite/
 *.tsbuildinfo

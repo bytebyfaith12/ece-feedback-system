@@ -8,9 +8,12 @@ function ParticleCloud({ count = 520 }: { count?: number }) {
   const positions = useMemo(() => {
     const data = new Float32Array(count * 3);
     for (let index = 0; index < count; index += 1) {
-      data[index * 3] = (Math.random() - 0.5) * 8;
-      data[index * 3 + 1] = (Math.random() - 0.5) * 4.5;
-      data[index * 3 + 2] = (Math.random() - 0.5) * 4;
+      const x = Math.sin(index * 12.9898) * 43758.5453;
+      const y = Math.sin((index + 37) * 78.233) * 24634.6345;
+      const z = Math.sin((index + 101) * 43.123) * 12515.8734;
+      data[index * 3] = ((x - Math.floor(x)) - 0.5) * 8;
+      data[index * 3 + 1] = ((y - Math.floor(y)) - 0.5) * 4.5;
+      data[index * 3 + 2] = ((z - Math.floor(z)) - 0.5) * 4;
     }
     return data;
   }, [count]);
@@ -34,7 +37,7 @@ export function ThreeParticleField({ className = "", density = "normal" }: { cla
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const smallScreen = window.innerWidth < 760;
-    setEnabled(!reduceMotion && !smallScreen);
+    queueMicrotask(() => setEnabled(!reduceMotion && !smallScreen));
   }, []);
 
   if (!enabled) {

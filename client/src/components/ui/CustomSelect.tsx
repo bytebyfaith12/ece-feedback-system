@@ -35,7 +35,7 @@ export function CustomSelect({
 }: {
   label?: string;
   value?: string;
-  options: Array<string | SelectOption>;
+  options: ReadonlyArray<string | SelectOption>;
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
@@ -126,7 +126,7 @@ export function CustomSelect({
   }, [close, open, updatePosition]);
 
   useEffect(() => {
-    close();
+    queueMicrotask(close);
   }, [close, location.pathname]);
 
   useLayoutEffect(() => {

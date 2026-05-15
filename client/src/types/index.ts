@@ -3,6 +3,9 @@ export type FeedbackMode = "4button" | "5button";
 
 export interface FeedbackResponse {
   id: string;
+  submissionId?: string;
+  feedbackType?: string;
+  sentiment?: string;
   fullName?: string;
   contact?: string;
   locationId: string;
@@ -18,16 +21,20 @@ export interface FeedbackResponse {
   subcategory?: string;
   rating: SmileyRating;
   priority?: "Low" | "Medium" | "High" | "Critical";
-  status?: "New" | "Reviewed" | "Assigned" | "In Progress" | "On Hold" | "Escalated" | "Resolved" | "Closed" | "Declined";
+  status?: "New" | "Reviewed" | "Assigned" | "In Progress" | "On Hold" | "Escalated" | "Resolved" | "Closed" | "Declined" | "Archived";
   assignedTeam?: string;
   source?: "Web" | "Kiosk" | "QR";
   followUpItems?: string[];
   comment?: string;
+  message?: string;
+  adminNotes?: string;
   isAnonymous: boolean;
   respondentType: "customer" | "employee" | "visitor" | "applicant";
   language: string;
   deviceId: string;
   submittedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   sessionDuration?: number;
 }
 

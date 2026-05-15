@@ -29,7 +29,7 @@ function CountUpValue({ value, suffix = "" }: { value: number; suffix?: string }
 
   useEffect(() => {
     if (reducedMotion) {
-      setDisplay(value);
+      queueMicrotask(() => setDisplay(value));
       return undefined;
     }
     const controls = animate(count, value, { duration: 0.85, ease: "easeOut" });

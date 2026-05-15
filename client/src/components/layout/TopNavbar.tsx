@@ -333,8 +333,10 @@ export function TopNavbar() {
   }, []);
 
   useEffect(() => {
-    closeDropdown();
-    setMobileOpen(false);
+    queueMicrotask(() => {
+      closeDropdown();
+      setMobileOpen(false);
+    });
   }, [closeDropdown, location.pathname]);
 
   useEffect(() => {

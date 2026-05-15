@@ -1,16 +1,48 @@
 # ECE Echo Feedback & Satisfaction Command System
 
-Frontend-only React + Vite + TypeScript app for collecting workplace, service, visitor, applicant, and account feedback across ECE sites.
+A production-oriented React + Vite + TypeScript feedback platform for ECE Contact Centers. It collects workplace, service, visitor, applicant, and account feedback for Noel, Macias, and Consuelo, then powers a protected admin dashboard from real submitted records only.
 
-## Current Architecture
+## Stack
 
 - React 18 + Vite + TypeScript
-- React Router for client-side routing
-- Zustand + LocalStorage for temporary feedback, dashboard, alert, and case data
-- No production backend database yet
-- Static-hosting ready for Vercel, Netlify, and Cloudflare Pages
+- Tailwind CSS, Framer Motion, Lucide React, Recharts
+- React Router for SPA routing
+- Zustand for UI/session state
+- Supabase for production database, auth, and attachment storage
+- Vitest for validation tests and Playwright for form happy paths
 
-Dashboards start at zero and update from real LocalStorage feedback submissions. Unhappy, Very Unhappy, High, or Critical feedback creates alert/case activity locally.
+## Data Policy
+
+Production feedback must be stored in Supabase. The app has a browser LocalStorage fallback only for local development when Supabase env variables are missing. In production, submissions fail loudly if Supabase is not configured, so live feedback is not silently trapped on one device.
+
+Dashboard values always start at zero and calculate from real submitted feedback records only. No fake production analytics are loaded automatically.
+
+## Environment Variables
+
+Create `.env.local` for local development or configure these in Vercel:
+
+```bash
+APP_URL=https://ece-feedback-system-bay.vercel.app
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
+Only `VITE_*` variables are exposed to the browser. Never expose a Supabase service-role key with a `VITE_` prefix.
+
+## Supabase Setup
+
+1. Create a Supabase project.
+2. Run [`supabase/schema.sql`](./supabase/schema.sql) in the Supabase SQL editor.
+3. Create at least one Supabase Auth user.
+4. Insert a matching profile row with `role = 'admin'`:
+
+```sql
+insert into public.profiles (id, full_name, email, role)
+values ('AUTH_USER_UUID', 'Admin User', 'admin@example.com', 'admin');
+```
+
+5. Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to Vercel.
 
 ## Local Development
 
@@ -19,36 +51,22 @@ npm install
 npm run dev
 ```
 
-Open:
+Open `http://127.0.0.1:5173`.
 
-```text
-http://127.0.0.1:5173
-```
-
-## Production Build
+## Quality Checks
 
 ```bash
 npm run build
-npm run preview
+npm run lint
+npm test
+npm run test:e2e
 ```
 
-The production build outputs static files to:
+Playwright starts a Vite dev server on port `5175`.
 
-```text
-dist
-```
+## Deployment
 
-## Deployment Files
-
-- `vercel.json` rewrites all routes to `index.html` for React Router refresh support on Vercel.
-- `public/_redirects` rewrites all routes to `index.html` for Netlify and Cloudflare Pages.
-- Do not commit `.env` files with secrets. `.env.example` contains placeholder development values only.
-
-## Deploy To Vercel
-
-1. Push this repository to GitHub, GitLab, or Bitbucket.
-2. In Vercel, click **Add New Project** and import the repository.
-3. Use these settings:
+### Vercel
 
 ```text
 Framework preset: Vite
@@ -57,31 +75,18 @@ Build command: npm run build
 Output directory: dist
 ```
 
-4. Leave environment variables empty unless a future backend is added.
-5. Deploy.
+`vercel.json` rewrites every route to `/index.html` so React Router refreshes work.
 
-Vercel uses `vercel.json` so refreshing `/submit-feedback`, `/dashboard`, or any other route returns the React app.
-
-## Deploy To Netlify
-
-1. Push this repository to GitHub, GitLab, or Bitbucket.
-2. In Netlify, choose **Add new site > Import an existing project**.
-3. Use these settings:
+### Netlify
 
 ```text
 Build command: npm run build
 Publish directory: dist
 ```
 
-4. Deploy.
+`public/_redirects` provides the SPA fallback.
 
-Netlify uses `public/_redirects`, copied into `dist/_redirects`, so React Router routes work on refresh.
-
-## Deploy To Cloudflare Pages
-
-1. Push this repository to GitHub or GitLab.
-2. In Cloudflare Pages, choose **Create a project** and connect the repository.
-3. Use these settings:
+### Cloudflare Pages
 
 ```text
 Framework preset: Vite or None
@@ -90,13 +95,13 @@ Build output directory: dist
 Production branch: main
 ```
 
-4. Deploy.
+## Admin Access
 
-Cloudflare Pages can use the `_redirects` file copied into `dist` for SPA route fallback.
+Admin pages are protected by the app route guard and Supabase profile role checks. Users with `role = 'viewer'` can submit feedback but cannot access admin analytics.
 
-## Important Limitations
+## Important Notes
 
-- Data is stored in the visitor's browser LocalStorage, not in a shared database.
-- Feedback, alerts, tickets, and reports are local to each browser/device.
-- Authentication is demo/local state only.
-- A backend API and database should be added before using this as a multi-user production system.
+- Do not commit `.env`, `.env.local`, `.vercel`, `dist`, or `node_modules`.
+- Do not add hardcoded dashboard numbers or fake production feedback.
+- Keep attachments limited to images and PDFs up to 5MB.
+- If Supabase is not configured, cross-device persistence will not work.

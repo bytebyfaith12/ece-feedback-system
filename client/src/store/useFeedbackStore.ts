@@ -6,6 +6,9 @@ import { mockFeedback } from "@/data/mockFeedback";
 import { mockInsights } from "@/data/mockInsights";
 import { mockLocations, mockSites } from "@/data/mockLocations";
 import { mockUsers } from "@/data/mockUsers";
+import type { ProductionFeedbackInput, ProductionFeedbackRecord, ProductionFeedbackStatus } from "@/types/feedback";
+import { createProductionFeedback, isProductionDatabaseConfigured, listProductionFeedback, productionRecordToFeedbackResponse, productionRecordsToFeedback, updateProductionFeedbackStatus } from "@/lib/feedbackRepository";
+import { getCurrentAdmin, signInAdmin, signOutAdmin } from "@/lib/authRepository";
 
 export interface EchoUser {
   id: string;
@@ -58,17 +61,23 @@ interface PulseStore {
   sidebarCollapsed: boolean;
   authenticated: boolean;
   user: EchoUser | null;
+  remoteStatus: "idle" | "loading" | "ready" | "error";
+  remoteError?: string;
   addFeedback: (feedback: FeedbackResponse) => void;
   submitFeedback: (input: SubmitFeedbackInput) => FeedbackResponse;
+  submitProductionFeedback: (input: ProductionFeedbackInput, attachment?: File | null) => Promise<ProductionFeedbackRecord>;
+  syncFeedback: () => Promise<void>;
+  updateProductionFeedbackStatus: (id: string, status: ProductionFeedbackStatus, adminNotes?: string) => Promise<void>;
   addGeneratedFeedback: () => void;
   updateAlertStatus: (id: string, status: Alert["status"]) => void;
   updateTicketStatus: (id: string, status: Ticket["status"]) => void;
   addReport: (title: string, type: Report["type"]) => void;
   loadDemoData: () => void;
   toggleSidebar: () => void;
-  login: (email: string, password: string) => void;
+  bootstrapAuth: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   signup: (name: string, email: string, password: string, role?: string) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   addAudit: (action: string, module: string, details: string, user?: string) => void;
 }
 
@@ -88,10 +97,11 @@ function readStored(): Partial<PersistedState> {
 
 function persist(state: Partial<PulseStore>) {
   if (typeof window === "undefined") return;
+  const remoteConfigured = isProductionDatabaseConfigured();
   const persisted: PersistedState = {
-    feedback: state.feedback ?? [],
-    alerts: state.alerts ?? [],
-    tickets: state.tickets ?? [],
+    feedback: remoteConfigured ? [] : state.feedback ?? [],
+    alerts: remoteConfigured ? [] : state.alerts ?? [],
+    tickets: remoteConfigured ? [] : state.tickets ?? [],
     reports: state.reports ?? [],
     auditLogs: state.auditLogs ?? [],
     authenticated: state.authenticated ?? false,
@@ -168,6 +178,20 @@ function createTicketFromFeedback(feedback: FeedbackResponse, alertId?: string):
   };
 }
 
+function deriveActionItems(feedback: FeedbackResponse[]) {
+  const alerts: Alert[] = [];
+  const tickets: Ticket[] = [];
+  feedback.forEach((item) => {
+    const actionable = item.rating <= 2 || item.priority === "High" || item.priority === "Critical";
+    if (!actionable) return;
+    const alert = { ...createAlertFromFeedback(item), id: `ALT-${item.id}`, triggeredAt: item.submittedAt };
+    const ticket = { ...createTicketFromFeedback(item, alert.id), id: `TK-${item.id}`, createdAt: item.submittedAt, updatedAt: item.updatedAt ?? item.submittedAt };
+    alerts.push(alert);
+    tickets.push(ticket);
+  });
+  return { alerts, tickets };
+}
+
 const stored = readStored();
 
 export const useFeedbackStore = create<PulseStore>((set, get) => ({
@@ -184,6 +208,8 @@ export const useFeedbackStore = create<PulseStore>((set, get) => ({
   sidebarCollapsed: false,
   authenticated: stored.authenticated ?? false,
   user: stored.user ?? null,
+  remoteStatus: "idle",
+  remoteError: undefined,
   addFeedback: (feedback) =>
     set((state) => {
       const actionable = feedback.rating <= 2 || feedback.priority === "High" || feedback.priority === "Critical";
@@ -234,6 +260,50 @@ export const useFeedbackStore = create<PulseStore>((set, get) => ({
     get().addFeedback(feedback);
     return feedback;
   },
+  submitProductionFeedback: async (input, attachment) => {
+    const record = await createProductionFeedback(input, attachment);
+    const feedback = productionRecordToFeedbackResponse(record);
+    set((state) => {
+      const actionable = feedback.rating <= 2 || feedback.priority === "High" || feedback.priority === "Critical";
+      const alert = actionable ? createAlertFromFeedback(feedback) : null;
+      const ticket = alert ? createTicketFromFeedback(feedback, alert.id) : null;
+      const next = {
+        ...state,
+        feedback: [feedback, ...state.feedback.filter((item) => item.id !== feedback.id)],
+        alerts: alert ? [alert, ...state.alerts] : state.alerts,
+        tickets: ticket ? [ticket, ...state.tickets] : state.tickets,
+        auditLogs: [audit("Submitted feedback", "Feedback", `${feedback.id} submitted for ${feedback.locationName}.`, feedback.fullName ?? "Anonymous"), ...state.auditLogs],
+        remoteStatus: "ready" as const,
+        remoteError: undefined,
+      };
+      persist(next);
+      return next;
+    });
+    return record;
+  },
+  syncFeedback: async () => {
+    set({ remoteStatus: "loading", remoteError: undefined });
+    try {
+      const records = await listProductionFeedback();
+      const feedback = productionRecordsToFeedback(records);
+      const { alerts, tickets } = deriveActionItems(feedback);
+      set((state) => ({ ...state, feedback, alerts, tickets, remoteStatus: "ready", remoteError: undefined }));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not load feedback.";
+      set({ remoteStatus: "error", remoteError: message });
+    }
+  },
+  updateProductionFeedbackStatus: async (id, status, adminNotes = "") => {
+    const record = await updateProductionFeedbackStatus(id, status, adminNotes);
+    if (!record) return;
+    const feedback = productionRecordToFeedbackResponse(record);
+    set((state) => {
+      const nextFeedback = state.feedback.map((item) => (item.id === feedback.id || item.submissionId === feedback.submissionId ? feedback : item));
+      const next = { ...state, feedback: nextFeedback, auditLogs: [audit("Feedback updated", "Admin", `${feedback.id} moved to ${status}.`, state.user?.email ?? "Admin"), ...state.auditLogs] };
+      persist(next);
+      return next;
+    });
+  },
   addGeneratedFeedback: () => undefined,
   updateAlertStatus: (id, status) =>
     set((state) => {
@@ -277,29 +347,42 @@ export const useFeedbackStore = create<PulseStore>((set, get) => ({
       return next;
     }),
   toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
-  login: (email) =>
+  bootstrapAuth: async () => {
+    if (!isProductionDatabaseConfigured()) return;
+    const user = await getCurrentAdmin();
     set((state) => {
-      const user = { id: `user-${Date.now()}`, name: email.split("@")[0] || "ECE User", email, role: "Admin", loginTime: new Date().toISOString() };
+      const next = { ...state, authenticated: Boolean(user), user };
+      persist(next);
+      return next;
+    });
+  },
+  login: async (email, password) => {
+    const user = await signInAdmin(email, password);
+    set((state) => {
       const next = { ...state, authenticated: true, user, auditLogs: [audit("Login", "Authentication", "User logged in.", email), ...state.auditLogs] };
       persist(next);
       toast.success("Login successful.");
       return next;
-    }),
-  signup: (name, email, _password, role = "Viewer") =>
+    });
+  },
+  signup: (name, email, password) =>
     set((state) => {
-      const user = { id: `user-${Date.now()}`, name, email, role, loginTime: new Date().toISOString() };
+      void password;
+      const user = { id: `user-${Date.now()}`, name, email, role: "Viewer", loginTime: new Date().toISOString() };
       const next = { ...state, authenticated: true, user, auditLogs: [audit("Signup", "Authentication", `${name} created an account.`, email), ...state.auditLogs] };
       persist(next);
       toast.success("Signup successful.");
       return next;
     }),
-  logout: () =>
+  logout: async () => {
+    await signOutAdmin();
     set((state) => {
       const next = { ...state, authenticated: false, user: null, auditLogs: [audit("Logout", "Authentication", "User logged out.", state.user?.email ?? "Current User"), ...state.auditLogs] };
       persist(next);
       toast.success("Logged out.");
       return next;
-    }),
+    });
+  },
   addAudit: (action, module, details, user) =>
     set((state) => {
       const next = { ...state, auditLogs: [audit(action, module, details, user ?? state.user?.email ?? "System"), ...state.auditLogs] };

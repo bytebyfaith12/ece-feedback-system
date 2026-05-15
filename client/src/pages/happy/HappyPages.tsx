@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { format, isAfter, parseISO, subDays } from "date-fns";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import type { ComponentProps, ComponentType, ReactNode } from "react";
-import { ArrowRight, BarChart3, Building2, ChevronDown, Download, FileText, LockKeyhole, MapPin, Menu, Monitor, PlayCircle, QrCode, Radio, Search, ShieldCheck, Smile, Sparkles, Users, X, Zap } from "lucide-react";
+import { ArrowRight, Building2, ChevronDown, Download, FileText, MapPin, Menu, Monitor, QrCode, Radio, ShieldCheck, Smile, Sparkles, Users, X } from "lucide-react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import type { FeedbackResponse, Location, LocationScope, SmileyRating } from "@/types/index";
@@ -14,13 +14,12 @@ import { FilterBar } from "@/components/ui/FilterBar";
 import { DataTable } from "@/components/ui/DataTable";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { SmileyBadge } from "@/components/ui/SmileyBadge";
-import { SmileyFeedback } from "@/components/ui/SmileyFeedback";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { PortalMenu } from "@/components/ui/PortalMenu";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KioskTerminal } from "@/components/feedback/KioskTerminal";
 import { QRLandingPage } from "@/components/feedback/QRLandingPage";
-import { FeedbackForm } from "@/components/feedback/FeedbackForm";
+import { ProductionFeedbackForm } from "@/components/forms/ProductionFeedbackForm";
 import { UserTable } from "@/components/admin/UserTable";
 import { LocationManager } from "@/components/admin/LocationManager";
 import { DeviceManager } from "@/components/admin/DeviceManager";
@@ -34,13 +33,14 @@ import { HourlyHeatmapChart } from "@/components/charts/HourlyHeatmapChart";
 import { WeeklyComparisonChart } from "@/components/charts/WeeklyComparisonChart";
 import { TrendSparkline } from "@/components/charts/TrendSparkline";
 import { calculateHappinessIndex } from "@/utils/happinessCalculator";
-import { formatNumber, formatShortDate, minutesUntil, timeAgo } from "@/utils/formatters";
+import { formatShortDate, minutesUntil, timeAgo } from "@/utils/formatters";
 import { useFeedbackStore } from "@/store/useFeedbackStore";
 import { useExport } from "@/hooks/useExport";
 import { configuredAccountCount, configuredSiteCount, feedbackCategories, siteAccounts } from "@/data/echoConfig";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import { ParallaxSection } from "@/components/shared/ParallaxSection";
 import { HeroSection } from "@/components/landing/HeroSection";
+import { feedbackTypeCards } from "@/lib/feedbackConfig";
 
 const ThreeParticleField = lazy(() => import("@/components/visual/ThreeParticleField").then((module) => ({ default: module.ThreeParticleField })));
 type IconComponent = ComponentType<ComponentProps<typeof Radio>>;
@@ -165,6 +165,7 @@ export function LandingPage() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
+  const [openFaq, setOpenFaq] = useState("submit");
   const hi = calculateHappinessIndex(feedback);
   const features: Array<[string, string, IconComponent]> = [
     ["Signal captured", "Employees, applicants, visitors, and clients send one clear feedback signal.", Radio],
@@ -177,6 +178,13 @@ export function LandingPage() {
     Analytics: ["Real-Time Monitoring", "AI Sentiment Analysis", "Reports Center", "Site Performance", "Account Performance", "Category Performance"],
     Resources: ["Documentation", "Help Center", "Feedback Guide", "Best Practices", "Release Notes"],
   };
+  const faqs = [
+    ["submit", "What happens after I submit feedback?", "Your submission is saved, assigned a submission ID, and appears in the admin dashboard. Negative ratings can create an alert for follow-up."],
+    ["anonymous", "Is feedback anonymous?", "Yes. Turn on anonymous mode and your name is not required. Optional email is used only for follow-up if you provide it."],
+    ["visibility", "Who can view my feedback?", "Authorized admins can view submissions and analytics. Normal users can submit feedback only."],
+    ["again", "Can I submit another feedback?", "Yes. You can submit another feedback anytime from the Submit Feedback page."],
+    ["data", "How is my data used?", "Feedback is used to understand site, service, recruitment, visitor, workplace, and account experience trends."],
+  ];
   const closeDropdown = useCallback(() => {
     if (closeTimerRef.current) {
       window.clearTimeout(closeTimerRef.current);
@@ -203,8 +211,10 @@ export function LandingPage() {
   }, [cancelCloseDropdown]);
 
   useEffect(() => {
-    closeDropdown();
-    setMobileOpen(false);
+    queueMicrotask(() => {
+      closeDropdown();
+      setMobileOpen(false);
+    });
   }, [closeDropdown, location.pathname]);
 
   useEffect(() => {
@@ -310,9 +320,19 @@ export function LandingPage() {
       </ParallaxSection>
 
       <ParallaxSection className="mx-auto max-w-7xl px-4 py-16" strength={28}>
-        <h2 className="display-title text-3xl text-white md:text-4xl">Feedback Touchpoints</h2>
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
-          {["IT Service", "Facilities", "HR Support", "Payroll", "Visitor Welcome", "Recruitment", "Security", "Training", "WiFi Quality", "AC Comfort", "Restroom", "Pantry"].map((item) => <motion.div whileHover={{ y: -4 }} key={item} className="rounded-3xl border border-cyan-300/15 bg-white/[0.04] p-5 font-bold text-slate-200"><Smile className="mb-4 size-5 text-emerald-200" />{item}</motion.div>)}
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-200">Feedback categories</p>
+        <h2 className="display-title mt-3 text-3xl text-white md:text-4xl">Five Ways To Capture Better Signals</h2>
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          {feedbackTypeCards.map(({ type, title, description, icon: Icon }, index) => (
+            <motion.article key={type} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ delay: index * 0.05 }} whileHover={{ y: -5 }} className="flex min-h-[250px] flex-col rounded-3xl border border-cyan-300/15 bg-white/[0.04] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.16)] backdrop-blur">
+              <Icon className="size-8 text-emerald-200" />
+              <h3 className="mt-5 text-lg font-extrabold text-white">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-400">{description}</p>
+              <Link to={`/submit-feedback?type=${type}`} className="mt-auto inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 px-4 text-sm font-extrabold text-cyan-100 transition hover:bg-cyan-300 hover:text-[#031017]">
+                Start form <ArrowRight className="size-4" />
+              </Link>
+            </motion.article>
+          ))}
         </div>
       </ParallaxSection>
 
@@ -335,6 +355,27 @@ export function LandingPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20">
+        <div className="mb-14 grid gap-6 lg:grid-cols-[0.7fr_1.3fr]">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-200">FAQ</p>
+            <h2 className="display-title mt-3 text-3xl text-white md:text-4xl">Clear Answers Before People Submit</h2>
+            <p className="mt-4 text-sm leading-6 text-slate-400">Designed for agents, applicants, visitors, clients, and employees without exposing technical database language.</p>
+          </div>
+          <div className="space-y-3">
+            {faqs.map(([id, question, answer]) => {
+              const open = openFaq === id;
+              return (
+                <div key={id} className="rounded-3xl border border-cyan-300/15 bg-white/[0.04]">
+                  <button onClick={() => setOpenFaq(open ? "" : id)} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-extrabold text-white">
+                    {question}
+                    <ChevronDown className={`size-4 shrink-0 text-cyan-100 transition ${open ? "rotate-180" : ""}`} />
+                  </button>
+                  {open ? <p className="border-t border-cyan-300/10 px-5 pb-5 pt-4 text-sm leading-6 text-slate-400">{answer}</p> : null}
+                </div>
+              );
+            })}
+          </div>
+        </div>
         <div className="rounded-[2rem] border border-emerald-300/20 bg-gradient-to-r from-cyan-300/15 to-emerald-300/15 p-8 text-center shadow-[0_0_80px_rgba(0,242,254,0.12)]">
           <h2 className="display-title text-3xl text-white">Ready to capture the first signal?</h2>
           <p className="mx-auto mt-3 max-w-2xl text-slate-300">Start with one response. ECE Echo will build the dashboard from real feedback only.</p>
@@ -342,7 +383,14 @@ export function LandingPage() {
         </div>
       </section>
 
-      <footer className="border-t border-cyan-300/10 px-4 py-10 text-center text-sm text-slate-500">© 2026 ECE Echo — Feedback & Satisfaction Command System.</footer>
+      <footer className="border-t border-cyan-300/10 px-4 py-10 text-sm text-slate-500">
+        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+          <div><p className="logo-font text-xl text-white">ECE Echo</p><p className="mt-2">Feedback & Satisfaction Command System.</p></div>
+          <div><p className="font-bold text-slate-300">Version</p><p className="mt-2">Production-ready frontend 1.0</p></div>
+          <div><p className="font-bold text-slate-300">Contact</p><p className="mt-2">ECE Contact Centers support team</p></div>
+        </div>
+        <p className="mx-auto mt-8 max-w-7xl border-t border-cyan-300/10 pt-6">© 2026 ECE Echo. All rights reserved.</p>
+      </footer>
     </main>
   );
 }
@@ -353,15 +401,22 @@ export function LoginPage() {
   const login = useFeedbackStore((state) => state.login);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const demo = ["admin@ece.echo", "stl@ece.echo", "it@ece.echo", "hr@ece.echo"];
+  const [loading, setLoading] = useState(false);
   const from = (location.state as { from?: string } | null)?.from ?? "/dashboard";
-  const submit = () => {
+  const submit = async () => {
     if (!email.trim() || !password.trim()) {
-      toast.error("Enter any email and password to continue in demo mode.");
+      toast.error("Email and password are required.");
       return;
     }
-    login(email.trim(), password);
-    navigate(from, { replace: true });
+    setLoading(true);
+    try {
+      await login(email.trim(), password);
+      navigate(from, { replace: true });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not sign in.");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <main className="relative grid min-h-screen overflow-hidden bg-[#020b12] text-slate-100 lg:grid-cols-[0.43fr_0.57fr]">
@@ -374,12 +429,12 @@ export function LoginPage() {
             <span><b className="logo-font text-xl text-white">ECE Echo</b><span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-200">Feedback Command</span></span>
           </Link>
           <h1 className="display-title text-3xl text-white">Access Command Center</h1>
-          <p className="mt-2 text-sm text-slate-400">Demo mode: enter any email and password to continue.</p>
+          <p className="mt-2 text-sm text-slate-400">Sign in with an admin account to view feedback analytics and exports.</p>
           <input value={email} onChange={(event) => setEmail(event.target.value)} className="echo-input mt-8 h-12 w-full px-4" placeholder="Executive Identifier" />
-          <input value={password} onChange={(event) => setPassword(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") submit(); }} className="echo-input mt-3 h-12 w-full px-4" placeholder="Secure Passcode" type="password" />
+          <input value={password} onChange={(event) => setPassword(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") void submit(); }} className="echo-input mt-3 h-12 w-full px-4" placeholder="Secure Passcode" type="password" />
           <div className="mt-4 flex justify-between text-sm text-slate-300"><label><input type="checkbox" className="mr-2 accent-cyan-300" />Remember Me</label><a className="text-cyan-200">Forgot Password?</a></div>
-          <button onClick={submit} className="mt-6 w-full rounded-2xl bg-cyan-300 py-3 font-extrabold text-[#031017] hover:bg-emerald-300">Access Command Center</button>
-          <div className="mt-8 rounded-3xl border border-cyan-300/15 bg-white/[0.04] p-4"><p className="font-bold text-white">Demo Accounts</p>{demo.map((item) => <button key={item} onClick={() => { setEmail(item); setPassword("demo123"); }} className="mt-2 block text-sm text-slate-400 hover:text-cyan-200">{item}</button>)}</div>
+          <button onClick={() => void submit()} disabled={loading} className="mt-6 w-full rounded-2xl bg-cyan-300 py-3 font-extrabold text-[#031017] hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-70">{loading ? "Signing in..." : "Access Command Center"}</button>
+          <div className="mt-8 rounded-3xl border border-cyan-300/15 bg-white/[0.04] p-4"><p className="font-bold text-white">Production access</p><p className="mt-2 text-sm leading-6 text-slate-400">Use Supabase Auth admin credentials in production. Local development can use the fallback only when Supabase env variables are not configured.</p></div>
           <p className="mt-6 text-sm text-slate-400">Need access? <Link to="/signup" className="font-bold text-cyan-200">Create an account</Link></p>
         </motion.div>
       </section>
@@ -766,6 +821,6 @@ export function AuditLogs() {
 }
 
 export function WebFeedbackPage() {
-  return <Page title="Submit Feedback" subtitle="Share workplace, service, visitor, applicant, or account feedback in a few guided steps."><FeedbackForm /></Page>;
+  return <ProductionFeedbackForm />;
 }
 

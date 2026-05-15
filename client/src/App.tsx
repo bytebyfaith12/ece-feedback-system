@@ -1,7 +1,10 @@
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { useFeedbackStore } from "@/store/useFeedbackStore";
+import { ProductionAdminDashboard } from "@/components/dashboard/ProductionAdminDashboard";
+import { ThankYouPage } from "@/components/forms/ThankYouPage";
 import {
   AdminPanel,
   AlertCenter,
@@ -27,7 +30,6 @@ import {
   LocationsPage,
   LoginPage,
   NotificationSettings,
-  OverviewDashboard,
   QRFeedbackPage,
   QRGridPage,
   RealTimeFeed,
@@ -50,11 +52,16 @@ import {
   WebFeedbackPage,
 } from "@/pages/happy/HappyPages";
 
-function ProtectedRoute() {
+function ProtectedRoute({ adminOnly = false }: { adminOnly?: boolean }) {
   const authenticated = useFeedbackStore((state) => state.authenticated);
+  const user = useFeedbackStore((state) => state.user);
   const location = useLocation();
 
   if (!authenticated) {
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  }
+
+  if (adminOnly && user?.role !== "Admin") {
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
 
@@ -62,8 +69,21 @@ function ProtectedRoute() {
 }
 
 export function App() {
+  const bootstrapAuth = useFeedbackStore((state) => state.bootstrapAuth);
+  const syncFeedback = useFeedbackStore((state) => state.syncFeedback);
+  const authenticated = useFeedbackStore((state) => state.authenticated);
+
+  useEffect(() => {
+    void bootstrapAuth();
+  }, [bootstrapAuth]);
+
+  useEffect(() => {
+    if (authenticated) void syncFeedback();
+  }, [authenticated, syncFeedback]);
+
   return (
     <BrowserRouter>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[12000] focus:rounded-xl focus:bg-cyan-300 focus:px-4 focus:py-3 focus:font-bold focus:text-[#031017]">Skip to content</a>
       <Toaster
         position="top-right"
         containerStyle={{ zIndex: 11000 }}
@@ -84,11 +104,14 @@ export function App() {
         <Route path="/kiosk/:locationId" element={<KioskPage />} />
         <Route path="/qr/:locationId" element={<QRFeedbackPage />} />
         <Route path="/qr-feedback" element={<QRGridPage />} />
+        <Route path="/submit-feedback" element={<WebFeedbackPage />} />
+        <Route path="/feedback/new" element={<WebFeedbackPage />} />
+        <Route path="/thank-you" element={<ThankYouPage />} />
 
-        <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute adminOnly />}>
           <Route path="/tv" element={<SmartTVWallboard />} />
           <Route element={<AppLayout />}>
-          <Route path="/dashboard" element={<OverviewDashboard />} />
+          <Route path="/dashboard" element={<ProductionAdminDashboard />} />
           <Route path="/pulse-feed" element={<RealTimeFeed />} />
           <Route path="/analytics" element={<AnalyticsOverview />} />
           <Route path="/analytics/hourly" element={<HourlyAnalytics />} />
@@ -103,8 +126,6 @@ export function App() {
           <Route path="/locations/floor-map" element={<FloorMapPage />} />
           <Route path="/locations/site-comparison" element={<SiteComparison />} />
           <Route path="/feedback" element={<FeedbackInbox />} />
-          <Route path="/feedback/new" element={<WebFeedbackPage />} />
-          <Route path="/submit-feedback" element={<WebFeedbackPage />} />
           <Route path="/feedback/:id" element={<FeedbackDetail />} />
           <Route path="/case/:id" element={<FeedbackDetail />} />
           <Route path="/feedback/trends" element={<ResponseTrends />} />
@@ -133,10 +154,11 @@ export function App() {
           <Route path="/smoking-area" element={<FacilitiesPage />} />
           <Route path="/training" element={<TrainingFeedbackPage />} />
           <Route path="/stl" element={<STLDashboard />} />
-          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/admin" element={<ProductionAdminDashboard />} />
           <Route path="/users" element={<UserManagement />} />
           <Route path="/audit-logs" element={<AuditLogs />} />
           <Route path="/admin/users" element={<UserManagement />} />
+          <Route path="/admin/settings" element={<AdminPanel />} />
           <Route path="/admin/roles" element={<RoleAccess />} />
           <Route path="/admin/surveys" element={<SurveyManagement />} />
           <Route path="/admin/notifications" element={<NotificationSettings />} />
