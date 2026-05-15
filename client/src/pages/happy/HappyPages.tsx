@@ -40,6 +40,7 @@ import { useExport } from "@/hooks/useExport";
 import { configuredAccountCount, configuredSiteCount, feedbackCategories, siteAccounts } from "@/data/echoConfig";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import { ParallaxSection } from "@/components/shared/ParallaxSection";
+import { HeroSection } from "@/components/landing/HeroSection";
 
 const ThreeParticleField = lazy(() => import("@/components/visual/ThreeParticleField").then((module) => ({ default: module.ThreeParticleField })));
 
@@ -156,6 +157,7 @@ function AnimatedEchoHero() {
 export function LandingPage() {
   const location = useLocation();
   const feedback = useFeedbackStore((state) => state.feedback);
+  const alerts = useFeedbackStore((state) => state.alerts);
   const authenticated = useFeedbackStore((state) => state.authenticated);
   const navRef = useRef<HTMLElement>(null);
   const closeTimerRef = useRef<number | null>(null);
@@ -290,29 +292,7 @@ export function LandingPage() {
         ) : null}
       </nav>
 
-      <section className="relative mx-auto grid min-h-[760px] max-w-7xl items-center gap-12 px-4 py-20 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="absolute left-1/2 top-24 h-80 w-80 rounded-full bg-cyan-400/15 blur-[120px]" />
-        <Suspense fallback={null}><ThreeParticleField className="opacity-50" /></Suspense>
-        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-          <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/10 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-cyan-100">Real-Time Feedback Command System</p>
-          <h1 className="hero-title mt-6 max-w-3xl text-4xl leading-[1.08] text-white md:text-5xl xl:text-[56px]">Real-Time Feedback for Better Workplace Decisions</h1>
-          <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300">Collect accurate feedback from employees, applicants, visitors, clients, IT teams, facilities, HR, payroll, and security across ECE Contact Centers.</p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link to="/submit-feedback" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-300 to-emerald-300 px-6 py-4 font-extrabold text-[#031017] shadow-[0_0_35px_rgba(0,242,254,0.28)] hover:scale-[1.01]">Submit Feedback <ArrowRight className="size-4" /></Link>
-            <Link to={authenticated ? "/dashboard" : "/login"} className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cyan-300/25 bg-white/[0.03] px-6 py-4 font-bold text-cyan-100 hover:bg-cyan-300/10">View Dashboard <PlayCircle className="size-4" /></Link>
-          </div>
-          <div className="mt-10 grid max-w-xl grid-cols-3 gap-3">
-            {[["Feedback", feedback.length], ["Happiness", `${hi.score}%`], ["Alerts", useFeedbackStore.getState().alerts.length]].map(([label, value]) => (
-              <div key={label} className="rounded-3xl border border-cyan-300/15 bg-white/[0.04] p-4">
-                <p className="display-title text-2xl text-white">{value}</p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-wide text-slate-400">{label}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        <AnimatedEchoHero />
-      </section>
+      <HeroSection feedback={feedback} alertsCount={alerts.length} authenticated={authenticated} />
 
       <section className="border-y border-cyan-300/10 bg-white/[0.025] py-8">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 text-center md:grid-cols-4">
