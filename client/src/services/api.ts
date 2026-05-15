@@ -8,13 +8,15 @@ function authHeaders() {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const headers = new Headers(options.headers);
+  if (!(options.body instanceof FormData) && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+  Object.entries(authHeaders()).forEach(([key, value]) => headers.set(key, value));
+
   const response = await fetch(`${API_BASE}${path}`, {
     ...options,
-    headers: {
-      ...(options.body instanceof FormData ? {} : { "Content-Type": "application/json" }),
-      ...authHeaders(),
-      ...options.headers,
-    },
+    headers,
   });
 
   if (!response.ok) {

@@ -333,13 +333,29 @@ function CyberBackground() {
   );
 }
 
+type CommandFeedbackForm = {
+  fullName: string;
+  contact: string;
+  roleType: string;
+  site: SiteName;
+  floor: string;
+  account: string;
+  category: string;
+  subcategory: string;
+  rating: RatingLabel | undefined;
+  ratingScore: number;
+  priority: Priority;
+  description: string;
+  attachmentName: string;
+};
+
 export function SubmitFeedbackPage() {
   const submitFeedback = useCommandCenter((state) => state.submitFeedback);
   const accounts = useCommandCenter((state) => state.accounts);
   const { showToast } = useToast();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [createdCase, setCreatedCase] = useState<string | null>(null);
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<CommandFeedbackForm>({
     fullName: "",
     contact: "",
     roleType: "Employee",
@@ -354,7 +370,7 @@ export function SubmitFeedbackPage() {
     description: "",
     attachmentName: "",
   });
-  const update = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) => setForm((current) => ({ ...current, [key]: value }));
+  const update = <K extends keyof CommandFeedbackForm>(key: K, value: CommandFeedbackForm[K]) => setForm((current) => ({ ...current, [key]: value }));
   const selectedGroup = feedbackCategoryGroups.find((group) => group.group === form.category) ?? feedbackCategoryGroups[0];
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -665,7 +681,7 @@ export function AccountsPage() {
 
 export function CategoriesPage() {
   const feedback = useCommandCenter((state) => state.feedback);
-  const [category, setCategory] = useState(feedbackCategoryGroups[0].group);
+  const [category, setCategory] = useState<string>(feedbackCategoryGroups[0].group);
   const rows = feedback.filter((item) => item.category === category);
   const selected = feedbackCategoryGroups.find((item) => item.group === category) ?? feedbackCategoryGroups[0];
   return (
@@ -691,7 +707,7 @@ export function ReportsPage() {
   const history = useCommandCenter((state) => state.reportHistory);
   const exportReport = useCommandCenter((state) => state.exportReport);
   const { showToast } = useToast();
-  const [type, setType] = useState(reportTypes[0]);
+  const [type, setType] = useState<(typeof reportTypes)[number]>(reportTypes[0]);
   const doExport = (format: string) => {
     exportReport(`${type} - ${format}`, "Current filter set");
     showToast({ title: `${format} export simulated.`, message: "Report history and audit logs were updated.", type: "success" });

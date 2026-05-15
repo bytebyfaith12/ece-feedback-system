@@ -1,0 +1,10 @@
+.reference/** linguist-generated
+reference/** linguist-generated
+public/reference/** linguist-generated
+stitch_exports/** linguist-generated
+design_exports/** linguist-generated
+prototype/** linguist-generated
+prototype_exports/** linguist-generated
+*.generated.html linguist-generated
+dist/** linguist-generated
+build/** linguist-generated

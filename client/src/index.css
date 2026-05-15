@@ -127,8 +127,36 @@
   }
 }
 
+@keyframes hero-grid-drift {
+  0%, 100% {
+    background-position: 0 0, 0 0;
+  }
+  50% {
+    background-position: 22px 18px, 18px 22px;
+  }
+}
+
+@keyframes hero-orb-pulse {
+  0%, 100% {
+    opacity: 0.78;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
 .hero-glow-word {
   animation: hero-word-glow 3.6s ease-in-out infinite;
+}
+
+.hero-grid-drift {
+  animation: hero-grid-drift 18s ease-in-out infinite;
+}
+
+.hero-orb-pulse {
+  animation: hero-orb-pulse 5.5s ease-in-out infinite;
 }
 
 .hero-primary-cta {
@@ -174,6 +202,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hero-glow-word,
+  .hero-grid-drift,
+  .hero-orb-pulse,
   .hero-primary-cta::before {
     animation: none;
     transition: none;

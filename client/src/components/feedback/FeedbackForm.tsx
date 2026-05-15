@@ -285,7 +285,7 @@ export function FeedbackForm() {
   const [areaType, setAreaType] = useState<AreaType>("shared-site-area");
   const [exactAreaId, setExactAreaId] = useState(firstAreaId("Noel", "shared-site-area"));
   const [category, setCategory] = useState<FeedbackCategory>("IT / Technical Feedback");
-  const [subcategory, setSubcategory] = useState(feedbackCategories["IT / Technical Feedback"][0]);
+  const [subcategory, setSubcategory] = useState<string>(feedbackCategories["IT / Technical Feedback"][0] ?? "");
   const [priority, setPriority] = useState<(typeof priorityLevels)[number]>("Low");
   const [rating, setRating] = useState<SmileyRating | null>(null);
   const [comment, setComment] = useState("");

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { format, isAfter, parseISO, subDays } from "date-fns";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, ComponentType, ReactNode } from "react";
 import { ArrowRight, BarChart3, Building2, ChevronDown, Download, FileText, LockKeyhole, MapPin, Menu, Monitor, PlayCircle, QrCode, Radio, Search, ShieldCheck, Smile, Sparkles, Users, X, Zap } from "lucide-react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -43,6 +43,7 @@ import { ParallaxSection } from "@/components/shared/ParallaxSection";
 import { HeroSection } from "@/components/landing/HeroSection";
 
 const ThreeParticleField = lazy(() => import("@/components/visual/ThreeParticleField").then((module) => ({ default: module.ThreeParticleField })));
+type IconComponent = ComponentType<ComponentProps<typeof Radio>>;
 
 function Page({ title, subtitle, children, actions }: { title: string; subtitle?: string; children: ReactNode; actions?: ReactNode }) {
   return (
@@ -165,7 +166,7 @@ export function LandingPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
   const hi = calculateHappinessIndex(feedback);
-  const features = [
+  const features: Array<[string, string, IconComponent]> = [
     ["Signal captured", "Employees, applicants, visitors, and clients send one clear feedback signal.", Radio],
     ["AI categorizes", "ECE Echo sorts the signal by site, account, category, priority, and team.", Sparkles],
     ["Team resolves", "Alerts and cases appear only when real feedback requires action.", ShieldCheck],
@@ -300,7 +301,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <ParallaxSection className="mx-auto max-w-7xl px-4 py-24">
+      <ParallaxSection id="feedback-journey" className="mx-auto max-w-7xl px-4 py-24">
         <div className="absolute left-8 top-20 hidden h-[72%] w-px bg-gradient-to-b from-cyan-300/0 via-cyan-300/45 to-emerald-300/0 md:block" />
         <h2 className="display-title text-3xl text-white md:text-4xl">Feedback Journey</h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -729,7 +730,7 @@ export function TicketDetail() { const { id } = useParams(); const tickets = use
 export function DeviceDetail() { const { id } = useParams(); const devices = useFeedbackStore((s) => s.devices); const d = devices.find((x) => x.id === id) ?? devices[0]; return <Page title={d.id} subtitle={d.locationName}><Card><StatusBadge value={d.status} /><div className="mt-6 grid gap-4 md:grid-cols-4"><KPICard label="Battery" value={`${d.batteryLevel}%`} /><KPICard label="Signal" value={`${d.signalStrength}%`} /><KPICard label="Touchscreen" value={`${d.touchscreenHealth}%`} /><KPICard label="Uptime" value={`${d.uptime}h`} /></div></Card></Page>; }
 export function ReportViewer() { const reports = useFeedbackStore((s) => s.reports); const feedback = useFeedbackStore((s) => s.feedback); if (!reports.length) return <Page title="Report Viewer"><DashboardEmptyChart title="No reports generated yet" /></Page>; return <Page title="Report Viewer"><Card><h2 className="text-xl font-extrabold text-white">{reports[0].title}</h2><HappinessIndexChart feedback={feedback} /></Card></Page>; }
 
-export function DepartmentPage({ title, category, icon: Icon = Building2 }: { title: string; category: string; icon?: typeof Building2 }) {
+export function DepartmentPage({ title, category, icon: Icon = Building2 }: { title: string; category: string; icon?: IconComponent }) {
   const feedback = useFeedbackStore((s) => s.feedback);
   const rows = feedback.filter((item) => item.category === category || item.subcategory?.includes(category));
   const scoped = rows;

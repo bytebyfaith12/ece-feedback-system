@@ -157,7 +157,7 @@ export const usePulseStore = create<PulseState>((set) => ({
     const generatedTicket = negative ? createGeneratedTicket(record) : null;
 
     set((state) => {
-      const next = {
+      const next: PersistedPulseState = {
         feedback: [record, ...state.feedback],
         generatedAlerts: generatedAlert ? [generatedAlert, ...state.generatedAlerts] : state.generatedAlerts,
         generatedTickets: generatedTicket ? [generatedTicket, ...state.generatedTickets] : state.generatedTickets,
@@ -184,8 +184,8 @@ export const usePulseStore = create<PulseState>((set) => ({
     }),
   archiveFeedback: (feedbackId) =>
     set((state) => {
-      const feedback = state.feedback.map((record) => (record.id === feedbackId || record.feedbackId === feedbackId ? { ...record, status: "Archived" } : record));
-      const persisted = { feedback, generatedAlerts: state.generatedAlerts, generatedTickets: state.generatedTickets };
+      const feedback: FeedbackRecord[] = state.feedback.map((record) => (record.id === feedbackId || record.feedbackId === feedbackId ? { ...record, status: "Archived" } : record));
+      const persisted: PersistedPulseState = { feedback, generatedAlerts: state.generatedAlerts, generatedTickets: state.generatedTickets };
       writePersisted(persisted);
       return { feedback };
     }),

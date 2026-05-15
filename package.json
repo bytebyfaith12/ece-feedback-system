@@ -4,11 +4,11 @@
   "description": "ECE Echo Feedback & Satisfaction Command System - Vite React frontend",
   "private": true,
   "scripts": {
-    "dev": "vite --host 127.0.0.1 --port 5173",
+    "dev": "vite",
     "client:dev": "vite --host 127.0.0.1 --port 5173",
     "server:dev": "nodemon server/index.js",
-    "build": "vite build",
-    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
     "start": "node server/index.js",
     "lint": "eslint \"client/src/**/*.{ts,tsx}\" \"server/**/*.js\""
   },
