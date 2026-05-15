@@ -18,11 +18,29 @@ function devUser(email: string): EchoUser {
   };
 }
 
+async function authApi<T>(path: string, init: RequestInit = {}) {
+  const response = await fetch(path, {
+    ...init,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      ...(init.headers ?? {}),
+    },
+  });
+  const payload = (await response.json()) as { success: boolean; data?: T; error?: string };
+  if (!response.ok || !payload.success) throw new Error(payload.error ?? "Authentication request failed.");
+  return payload.data as T;
+}
+
 export async function signInAdmin(email: string, password: string): Promise<EchoUser> {
+  if (import.meta.env.PROD) {
+    return authApi<EchoUser>("/api/admin/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
+  }
+
   if (!isSupabaseConfigured) {
-    if (import.meta.env.PROD) {
-      throw new Error("Admin authentication is not configured. Add Supabase auth environment variables in Vercel.");
-    }
     if (!email.trim() || !password.trim()) throw new Error("Email and password are required.");
     return devUser(email.trim());
   }
@@ -54,6 +72,9 @@ export async function signInAdmin(email: string, password: string): Promise<Echo
 }
 
 export async function getCurrentAdmin(): Promise<EchoUser | null> {
+  if (import.meta.env.PROD) {
+    return authApi<EchoUser | null>("/api/admin/me");
+  }
   if (!isSupabaseConfigured || !supabase) return null;
   const { data } = await supabase.auth.getUser();
   if (!data.user) return null;
@@ -70,6 +91,10 @@ export async function getCurrentAdmin(): Promise<EchoUser | null> {
 }
 
 export async function signOutAdmin() {
+  if (import.meta.env.PROD) {
+    await authApi<{ loggedOut: boolean }>("/api/admin/logout", { method: "POST" });
+    return;
+  }
   if (supabase) {
     await supabase.auth.signOut();
   }

@@ -47,10 +47,29 @@ function canUseLocalFallback() {
   return !import.meta.env.PROD && !isSupabaseConfigured;
 }
 
+function shouldUseServerApi() {
+  return import.meta.env.PROD;
+}
+
 function requireConfiguredOrDevFallback() {
+  if (shouldUseServerApi()) return;
   if (!isSupabaseConfigured && !canUseLocalFallback()) {
     throw new Error("Feedback database is not configured for production. Add Supabase environment variables before accepting live submissions.");
   }
+}
+
+async function apiRequest<T>(path: string, init: RequestInit = {}) {
+  const response = await fetch(path, {
+    ...init,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      ...(init.headers ?? {}),
+    },
+  });
+  const payload = (await response.json()) as { success: boolean; data?: T; error?: string };
+  if (!response.ok || !payload.success) throw new Error(payload.error ?? "Request failed.");
+  return payload.data as T;
 }
 
 function submissionId() {
@@ -202,13 +221,21 @@ export async function createProductionFeedback(input: ProductionFeedbackInput, a
     updatedAt: now,
   };
 
-  if (!isSupabaseConfigured) {
+  if (!isSupabaseConfigured && !shouldUseServerApi()) {
     const records = [next, ...readLocal()];
     writeLocal(records);
     return next;
   }
 
-  const attachmentUrl = attachment ? await uploadAttachment(attachment, next.submissionId) : undefined;
+  const attachmentUrl = attachment ? (isSupabaseConfigured ? await uploadAttachment(attachment, next.submissionId) : (() => { throw new Error("Attachment storage is not configured."); })()) : undefined;
+  if (shouldUseServerApi()) {
+    const row = await apiRequest<FeedbackRow>("/api/feedback", {
+      method: "POST",
+      body: JSON.stringify({ ...clean, attachmentUrl, attachmentName: next.attachmentName, attachmentType: next.attachmentType }),
+    });
+    return rowToRecord(row);
+  }
+
   const row = {
     submission_id: next.submissionId,
     feedback_type: next.feedbackType,
@@ -254,7 +281,7 @@ export async function createProductionFeedback(input: ProductionFeedbackInput, a
 
 export async function listProductionFeedback(filters: FeedbackFilters = {}): Promise<ProductionFeedbackRecord[]> {
   requireConfiguredOrDevFallback();
-  if (!isSupabaseConfigured) {
+  if (!isSupabaseConfigured && !shouldUseServerApi()) {
     return readLocal().filter((record) => {
       if (filters.site && record.site !== filters.site) return false;
       if (filters.feedbackType && record.feedbackType !== filters.feedbackType) return false;
@@ -268,6 +295,15 @@ export async function listProductionFeedback(filters: FeedbackFilters = {}): Pro
       }
       return true;
     });
+  }
+
+  if (shouldUseServerApi()) {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) params.set(key, String(value));
+    });
+    const rows = await apiRequest<FeedbackRow[]>(`/api/admin/feedback${params.toString() ? `?${params}` : ""}`);
+    return rows.map(rowToRecord);
   }
 
   let query = requireSupabase().from(FEEDBACK_TABLE).select("*").order("created_at", { ascending: false });
@@ -290,10 +326,18 @@ export async function listProductionFeedback(filters: FeedbackFilters = {}): Pro
 
 export async function updateProductionFeedbackStatus(id: string, status: ProductionFeedbackStatus, adminNotes = "") {
   requireConfiguredOrDevFallback();
-  if (!isSupabaseConfigured) {
+  if (!isSupabaseConfigured && !shouldUseServerApi()) {
     const records = readLocal().map((record) => (record.submissionId === id || record.id === id ? { ...record, status, adminNotes, updatedAt: new Date().toISOString() } : record));
     writeLocal(records);
     return records.find((record) => record.submissionId === id || record.id === id) ?? null;
+  }
+
+  if (shouldUseServerApi()) {
+    const row = await apiRequest<FeedbackRow>(`/api/admin/feedback/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status, adminNotes }),
+    });
+    return rowToRecord(row);
   }
 
   const key = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id) ? "id" : "submission_id";
@@ -308,5 +352,5 @@ export async function updateProductionFeedbackStatus(id: string, status: Product
 }
 
 export function isProductionDatabaseConfigured() {
-  return isSupabaseConfigured;
+  return isSupabaseConfigured || shouldUseServerApi();
 }

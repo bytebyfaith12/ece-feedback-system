@@ -24,7 +24,7 @@ const eslintConfig = [
     },
   },
   {
-    files: ["server/**/*.js"],
+    files: ["server/**/*.js", "api/**/*.js"],
     languageOptions: {
       ecmaVersion: 2022,
       globals: globals.node,
